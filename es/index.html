@@ -1,0 +1,914 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#16c60c" />
+
+    <!-- ⏳ Preload critical assets for better performance -->
+    <link rel="preload" href="../assets/fonts/jetbrains-mono-v24-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonts/jetbrains-mono-v24-latin-500.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonts/jetbrains-mono-v24-latin-600.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/img/picture.avif" as="image" type="image/avif" fetchpriority="high" />
+    <link rel="preload" href="../assets/img/favicon.svg" as="image" type="image/svg+xml" />
+    <link rel="preload" href="../assets/img/sprite.svg" as="image" type="image/svg+xml" />
+    <link rel="preload" href="../assets/css/style.css" as="style" />
+
+    <!-- 🖼️ Favicon -->
+    <link rel="icon" type="image/png" href="../assets/img/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg" />
+    <link rel="shortcut icon" href="../assets/img/favicon.ico" />
+    <link rel="apple-touch-icon" href="../assets/img/favicon-96x96.png" />
+
+    <!-- 📈 SEO Meta Description -->
+    <meta
+      name="description"
+      content="Miguel Payá Vañó | Desarrollador Full-Stack especializado en Vue, Node.js, TypeScript y MongoDB. Construyendo aplicaciones web rápidas y accesibles con puntuaciones perfectas en PageSpeed."
+    />
+    <meta
+      name="keywords"
+      content="Miguel Payá Vañó, desarrollador full stack, desarrollador Vue, desarrollador Node.js, desarrollador TypeScript, MongoDB, desarrollador web, ingeniero de software, desarrollador frontend, desarrollador backend, desarrollador Alcoy, desarrollador España, experto JavaScript, APIs RESTful, Tailwind CSS, desarrollador React, optimización rendimiento web, diseño web accesible"
+    />
+    <meta name="author" content="Miguel Payá Vañó" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://miguelpv.dev/es/" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <link rel="alternate" hreflang="en" href="https://miguelpv.dev/en/" />
+    <link rel="alternate" hreflang="es" href="https://miguelpv.dev/es/" />
+    <link rel="alternate" hreflang="x-default" href="https://miguelpv.dev/en/" />
+
+    <title>Miguel Payá Vañó | Portafolio Desarrollador Full-Stack</title>
+
+    <!-- 🔎 Google / Search Engine Tags -->
+    <meta itemprop="name" content="Miguel Payá Vañó | Desarrollador Full-Stack" />
+    <meta
+      itemprop="description"
+      content="Desarrollador Full-Stack especializado en Vue, Node.js, TypeScript y MongoDB. Construyendo aplicaciones web rápidas y accesibles con puntuaciones perfectas en PageSpeed."
+    />
+    <meta itemprop="image" content="https://miguelpv.dev/assets/img/picture.jpg" />
+
+    <!-- 🔎 Open Graph Meta Tags (Facebook, LinkedIn) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:site_name" content="Miguel Payá Vañó Portafolio" />
+    <meta property="og:title" content="Miguel Payá Vañó | Portafolio Desarrollador Full-Stack" />
+    <meta
+      property="og:description"
+      content="Desarrollador Full-Stack especializado en Vue, Node.js, TypeScript y MongoDB. Construyendo aplicaciones web rápidas y accesibles con puntuaciones perfectas en PageSpeed."
+    />
+    <meta property="og:url" content="https://miguelpv.dev/es/" />
+    <meta property="og:image" content="https://miguelpv.dev/assets/img/picture.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Miguel Payá Vañó - Desarrollador Full-Stack" />
+
+    <!-- 🔎 Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Miguel Payá Vañó | Portafolio Desarrollador Full-Stack" />
+    <meta
+      name="twitter:description"
+      content="Desarrollador Full-Stack especializado en Vue, Node.js, TypeScript y MongoDB. Construyendo aplicaciones web rápidas y accesibles."
+    />
+    <meta name="twitter:image" content="https://miguelpv.dev/assets/img/picture.jpg" />
+    <meta name="twitter:image:alt" content="Miguel Payá Vañó - Desarrollador Full-Stack" />
+    <meta name="twitter:url" content="https://miguelpv.dev/es/" />
+    <meta property="twitter:domain" content="miguelpv.dev" />
+
+    <!-- 🤖 Structured Data (SEO) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Miguel Payá Vañó",
+        "url": "https://miguelpv.dev",
+        "image": "https://miguelpv.dev/assets/img/picture.jpg",
+        "jobTitle": "Desarrollador Full-Stack",
+        "description": "Desarrollador Full-Stack especializado en Vue, Node.js, TypeScript y MongoDB",
+        "email": "mailto:miguelpayav@gmail.com",
+        "telephone": "+34633105371",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Alcoy",
+          "addressRegion": "Alacant, Comunitat Valenciana",
+          "postalCode": "03802",
+          "addressCountry": "ES"
+        },
+        "sameAs": [
+          "https://miguelpv.dev",
+          "https://github.com/miguelpv26",
+          "https://linkedin.com/in/miguel-payá-vañó",
+          "https://www.npmjs.com/~miguelpv"
+        ],
+        "knowsAbout": [
+          "JavaScript",
+          "TypeScript",
+          "Vue.js",
+          "React",
+          "Node.js",
+          "MongoDB",
+          "RESTful APIs",
+          "Tailwind CSS",
+          "Optimización de Rendimiento Web",
+          "Accesibilidad (a11y)",
+          "Metodologías Ágiles"
+        ],
+        "alumniOf": {
+          "@type": "Organization",
+          "name": "CIP FP Batoi"
+        }
+      }
+    </script>
+
+    <!-- Schema for Biglo Project -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Biglo",
+        "applicationCategory": "BusinessApplication",
+        "applicationSubCategory": "Plataforma de Logística",
+        "description": "Plataforma B2B de logística construida con Vue, Node.js, TypeScript y MongoDB. Cuenta con puntuaciones perfectas en PageSpeed y cumplimiento total de accesibilidad.",
+        "url": "https://biglosolutions.com",
+        "screenshot": "https://miguelpv.dev/assets/img/biglo/landing-page.jpg",
+        "operatingSystem": "Navegador Web",
+        "inLanguage": "es",
+        "author": {
+          "@type": "Person",
+          "name": "Miguel Payá Vañó",
+          "url": "https://miguelpv.dev"
+        },
+        "programmingLanguage": [
+          "JavaScript",
+          "TypeScript"
+        ],
+        "softwareVersion": "1.0",
+        "datePublished": "2024"
+      }
+    </script>
+
+    <!-- Schema for Digitalando Project -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Digitalando",
+        "applicationCategory": "WebApplication",
+        "applicationSubCategory": "Plataforma de Comunidad para Desarrolladores",
+        "description": "Plataforma de comunidad digital para empresas y desarrolladores de software. Construida con React y APIs RESTful, con motor de búsqueda rápido e integración de pasarela de pago.",
+        "url": "https://digitalando.org",
+        "screenshot": "https://miguelpv.dev/assets/img/digitalando/landing.jpg",
+        "operatingSystem": "Navegador Web",
+        "inLanguage": ["es", "en"],
+        "author": {
+          "@type": "Person",
+          "name": "Miguel Payá Vañó",
+          "url": "https://miguelpv.dev"
+        },
+        "contributor": {
+          "@type": "Organization",
+          "name": "Equipo Digitalando"
+        },
+        "programmingLanguage": [
+          "JavaScript",
+          "React"
+        ],
+        "softwareVersion": "1.0",
+        "datePublished": "2024"
+      }
+    </script>
+
+    <!-- Schema for Input Color Feedback NPM Package -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareSourceCode",
+        "name": "Input Color Feedback",
+        "description": "Una librería de utilidades ligera para mejorar la UI/UX de aplicaciones web con retroalimentación visual en campos de entrada. Paquete npm de código abierto.",
+        "url": "https://github.com/miguelpv26/input-color-feedback",
+        "codeRepository": "https://github.com/miguelpv26/input-color-feedback",
+        "programmingLanguage": "CSS3",
+        "runtimePlatform": "Navegador Web",
+        "inLanguage": "es",
+        "author": {
+          "@type": "Person",
+          "name": "Miguel Payá Vañó",
+          "url": "https://miguelpv.dev"
+        },
+        "license": "https://opensource.org/licenses/MIT",
+        "version": "1.0.0",
+        "datePublished": "2024",
+        "keywords": "npm, css, ui, ux, input, feedback, diseño",
+        "downloadUrl": "https://www.npmjs.com/package/input-color-feedback"
+      }
+    </script>
+    
+    <link rel="stylesheet" href="../assets/css/style.css" />
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="header__container">
+        <div class="header__content">
+          <a href="#hero" class="header__logo" aria-label="Ir a la página de inicio">
+            <img src="../assets/img/favicon.svg" alt="Logo Miguel PV" class="header__logo-image" width="44" height="44" loading="eager" fetchpriority="high" />
+            <span class="header__logo-name">Miguel PV</span> 
+          </a>
+
+          <input type="checkbox" id="nav-toggle" class="header__toggle-checkbox" />
+          <label for="nav-toggle" class="header__toggle-button" aria-label="Alternar menú de navegación">
+            <svg width="28" height="28" fill="currentColor">
+              <use href="../assets/img/sprite.svg#bars" />
+            </svg>
+          </label>
+
+          <ul class="nav">
+            <li class="nav__item">
+              <a href="#about">
+                <svg width="16" height="16" fill="currentColor">
+                  <use href="../assets/img/sprite.svg#user" />
+                </svg>
+                Sobre Mí
+              </a>
+            </li>
+            <li class="nav__separator" aria-hidden="true"></li>
+            <li class="nav__item">
+              <a href="#skills">
+                <svg width="20" height="20" fill="currentColor" id="lightbulb">
+                  <use href="../assets/img/sprite.svg#lightbulb" />
+                </svg>
+                Habilidades
+              </a>
+            </li>
+            <li class="nav__separator" aria-hidden="true"></li>
+            <li class="nav__item">
+              <a href="#projects">
+                <svg width="20" height="20" fill="currentColor" id="laptop-code">
+                  <use href="../assets/img/sprite.svg#laptop-code" />
+                </svg>
+                Proyectos
+              </a>
+            </li>
+            <li class="nav__separator" aria-hidden="true"></li>
+            <li class="nav__item">
+              <a href="#contact">
+                <svg width="20" height="20" fill="currentColor" id="envelope">
+                  <use href="../assets/img/sprite.svg#envelope" />
+                </svg>
+                Contacto
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <canvas id="matrix-canvas"></canvas>
+
+      <!-- Hero Section -->
+      <section id="hero" class="hero" aria-label="Sección principal">
+        <div class="hero__grid">
+          <picture data-fullres="../assets/img/picture.jpg">
+            <source srcset="../assets/img/picture.avif" type="image/avif" />
+            <source srcset="../assets/img/picture.webp" type="image/webp" />
+            <img
+              src="../assets/img/picture.png"
+              alt="Miguel Payá Vañó"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </picture>
+
+          <div class="hero__content">
+            <span class="hero__title">
+              <span class="hero__greet">Hola, soy</span>
+              <br class="hero__line-break" />
+              <span class="hero__name">Miguel Payá Vañó</span><span class="hero__dot">.</span>
+            </span>
+
+            <h2 class="hero__subtitle">
+              <span>Un </span><span class="hero__highlight">Desarrollador Full-Stack</span
+              ><span> que ama</span>
+              <br class="hero__line-break--alt" />
+              construir y mejorar aplicaciones web<span class="hero__dot--alt">.</span>
+            </h2>
+          </div>
+
+          <div class="hero__paragraph">
+            <p>
+              Me especializo en construir aplicaciones web rápidas, accesibles y fiables utilizando Vue, Node / 
+              Express, MongoDB, TypeScript, Tailwind y React.
+            </p>
+            <br />
+            <p>
+              Mi trabajo obtiene consistentemente puntuaciones perfectas en
+                <a class="hero__paragraph-link" target="_blank" href="https://pagespeed.web.dev/analysis/https-miguelpv-dev-en/j48u2zc7bs?form_factor=mobile">PageSpeed Insights<svg width="20" height="20" fill="currentColor" class="external-link__alt"><use href="../assets/img/sprite.svg#external-link" /></svg></a> en rendimiento, accesibilidad,
+              SEO y mejores prácticas. Me enorgullezco de crear interfaces limpias y eficientes que se sienten
+              fluidas y agradables de usar.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Me Section -->
+      <div class="section-divider-container">
+        <!-- Section Divider -->
+        <div class="section-divider">
+          <div class="section-divider__tab">
+            <svg fill="currentColor" class="section-divider__icon" id="section-divider-user">
+              <use href="../assets/img/sprite.svg#user" />
+            </svg>
+            <span class="section-divider__label">Sobre Mí</span>
+          </div>
+        </div>
+
+        <section id="about" class="about">
+          <div class="about__container">
+            <div class="about__paragraph">
+              <p>
+                Me impulsa la curiosidad—siempre explorando historia, filosofía, política y las ideas que dan forma a nuestro mundo. Equilibro ese lado analítico con un amor por la naturaleza, el arte, la cultura y la creatividad que inspiran. Uno lógica e imaginación para construir estructuras limpias, diseños reflexivos y experiencias que se sienten reales y significativas.
+              </p>
+              <br />
+              <p>
+                En mi tiempo libre me gusta aprender algo nuevo, leer, escuchar música —desde rock hasta música orquestal— o disfrutar momentos tranquilos con las personas que me importan. Ya sea al aire libre, descubriendo nuevas ideas o creando algo desde cero, disfruto de aportar esa curiosidad y aprecio por la belleza a todo lo que hago.
+              </p>
+            </div>
+
+            <div class="about__headlines">
+              <ul>
+                <li>Amante de la<br />Naturaleza</li>
+                <li>Adicto a la<br />Música</li>
+                <li>Friki de la<br />Historia</li>
+                <li>Aventurero al<br />Aire Libre</li>
+                <li>Apasionado del Conocimiento</li>
+                <li>Observador<br />Reflexivo</li>
+              </ul>
+            </div>
+
+            <!-- About Me Image Slider -->
+            <div class="about__slider">
+              <div data-slider>
+                <picture data-fullres="../assets/img/outdoors-and-family.png">
+                  <source
+                    srcset="
+                      ../assets/img/outdoors-and-family-350w.avif 350w,
+                      ../assets/img/outdoors-and-family-700w.avif 700w,
+                      ../assets/img/outdoors-and-family-1050w.avif 1050w
+                    "
+                    sizes="(max-width: 768px) min(100vw, 500px), (max-width: 1200px) 500px, 40vw"
+                  />
+                  <source srcset="../assets/img/outdoors-and-family.webp" type="image/webp" />
+                  <img src="../assets/img/outdoors-and-family.png" alt="Aire Libre y Familia" data-slide class="slider-img active">
+                </picture>
+
+                <picture data-fullres="../assets/img/gym.png">
+                  <source
+                    srcset="
+                      ../assets/img/gym-350w.avif 350w,
+                      ../assets/img/gym-700w.avif 700w,
+                      ../assets/img/gym-1050w.avif 1050w
+                    "
+                    sizes="(max-width: 768px) min(100vw, 500px), (max-width: 1200px) 500px, 40vw"
+                  />
+                  <source srcset="../assets/img/gym.webp" type="image/webp" />
+                  <img src="../assets/img/gym.png" alt="Gimnasio" data-slide class="slider-img" loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/music.png">
+                  <source
+                    srcset="
+                      ../assets/img/music-350w.avif 350w,
+                      ../assets/img/music-700w.avif 700w,
+                      ../assets/img/music-1050w.avif 1050w
+                    "
+                    sizes="(max-width: 768px) min(100vw, 500px), (max-width: 1200px) 500px, 40vw"
+                  />
+                  <source srcset="../assets/img/music.webp" type="image/webp" />
+                  <img src="../assets/img/music.png" alt="Música" data-slide class="slider-img" loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/books.png">
+                  <source
+                    srcset="
+                      ../assets/img/books-350w.avif 350w,
+                      ../assets/img/books-700w.avif 700w,
+                      ../assets/img/books-1050w.avif 1050w
+                    "
+                    sizes="(max-width: 768px) min(100vw, 500px), (max-width: 1200px) 500px, 40vw"
+                  />
+                  <source srcset="../assets/img/books.webp" type="image/webp" />
+                  <img src="../assets/img/books.png" alt="Libros" data-slide class="slider-img" loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/nature.png">
+                  <source 
+                    srcset="
+                      ../assets/img/nature-350w.avif 350w,
+                      ../assets/img/nature-700w.avif 700w,
+                      ../assets/img/nature-1050w.avif 1050w
+                    "
+                    sizes="(max-width: 768px) min(100vw, 500px), (max-width: 1200px) 500px, 40vw"
+                  />
+                  <source srcset="../assets/img/nature.webp" type="image/webp" />
+                  <img src="../assets/img/nature.png" alt="Naturaleza" data-slide class="slider-img" loading="lazy">
+                </picture>
+
+                <!-- Navigation Arrows -->
+                <button data-slide-prev class="slider-prev">&#10094;</button>
+                <button data-slide-next class="slider-next">&#10095;</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Skills Section -->
+      <div class="section-divider-container">
+        <!-- Section Divider -->
+        <div class="section-divider">
+          <div class="section-divider__tab">
+            <svg fill="currentColor" class="section-divider__icon">
+              <use href="../assets/img/sprite.svg#lightbulb" />
+            </svg>
+            <span class="section-divider__label">Habilidades</span>
+          </div>
+        </div>
+
+        <section id="skills" class="skills">
+          <div class="skills__container">
+            <ul class="skills__list">
+              <li class="skills__item">
+                <svg>
+                  <use href="../assets/img/sprite.svg#javascript" />
+                </svg>
+                JavaScript
+              </li>
+
+              <li class="skills__item">
+                <svg fill="currentColor">
+                  <use href="../assets/img/sprite.svg#typescript" />
+                </svg>
+                TypeScript
+              </li>
+
+              <li class="skills__item">
+                <svg fill="currentColor">
+                  <use href="../assets/img/sprite.svg#node" />
+                </svg>
+                Node
+              </li>
+
+              <li class="skills__item">
+                <svg fill="currentColor">
+                  <use href="../assets/img/sprite.svg#vue" />
+                </svg>
+                Vue
+              </li>
+
+              <li class="skills__item">
+                <svg fill="currentColor">
+                  <use href="../assets/img/sprite.svg#react" />
+                </svg>
+                React
+              </li>
+
+              <li class="skills__item">
+                <svg fill="currentColor">
+                  <use href="../assets/img/sprite.svg#mongodb" />
+                </svg>
+                MongoDB
+              </li>
+
+              <li class="skills__item">
+                <svg fill="currentColor">
+                  <use href="../assets/img/sprite.svg#tailwind" />
+                </svg>
+                Tailwind CSS
+              </li>
+
+              <li class="skills__item">
+                <svg fill="currentColor">
+                  <use href="../assets/img/sprite.svg#restful-api" />
+                </svg>
+                APIs RESTful
+              </li>
+
+              <li class="skills__item">
+                <svg fill="currentColor">
+                  <use href="../assets/img/sprite.svg#trello" />
+                </svg>
+                Metodologías Ágiles
+              </li>
+
+              <li class="skills__item">
+                <svg fill="currentColor">
+                  <use href="../assets/img/sprite.svg#jest" />
+                </svg>
+                Testing Unitario e Integración
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- Projects Section -->
+      <div class="section-divider-container">
+        <!-- Section Divider -->
+        <div class="section-divider">
+          <div class="section-divider__tab">
+            <svg fill="currentColor" class="section-divider__icon">
+              <use href="../assets/img/sprite.svg#laptop-code" />
+            </svg>
+            <span class="section-divider__label">Proyectos</span>
+          </div>
+        </div>
+
+        <section id="projects" class="projects">
+          <div class="projects-header">
+            <h2>Trabajo Seleccionado</h2>
+            <p>Algunas cosas que he construido recientemente.</p>
+          </div>
+
+          <!-- Projects Grid -->
+          <div class="projects-grid">
+            <!-- Project 1: Biglo -->
+            <div class="project-card biglo">
+              <div class="project-thumb" data-slider>
+                <picture data-fullres="../assets/img/biglo/landing-page.png">
+                  <source
+                    srcset="
+                      ../assets/img/biglo/landing-page-320w.avif 320w,
+                      ../assets/img/biglo/landing-page-640w.avif 640w,
+                      ../assets/img/biglo/landing-page-960w.avif 960w
+                    "
+                    sizes="(max-width: 768px) 320px, (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/biglo/landing-page.webp" type="image/webp" />
+                  <img src="../assets/img/biglo/landing-page.png" alt="Página Principal de Biglo" data-slide class="active">
+                </picture>
+
+                <picture data-fullres="../assets/img/biglo/our-mission-section.png">
+                  <source
+                    srcset="
+                      ../assets/img/biglo/our-mission-section-320w.avif 320w,
+                      ../assets/img/biglo/our-mission-section-640w.avif 640w,
+                      ../assets/img/biglo/our-mission-section-960w.avif 960w
+                    "
+                    sizes="(max-width: 768px) 320px, (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/biglo/our-mission-section.webp" type="image/webp" />
+                  <img src="../assets/img/biglo/our-mission-section.png" alt="Sección Misión de Biglo" data-slide loading="lazy">
+                </picture>
+
+                <video src="../assets/img/biglo/logo-carousel.mp4" data-slide data-duration="6.9" loading="lazy" muted loop playsinline></video>
+                <video src="../assets/img/biglo/sign-up.mp4" data-slide data-duration="24.8" loading="lazy" muted loop playsinline></video>
+
+                <picture data-fullres="../assets/img/biglo/spaces-map-search-grid.png">
+                  <source 
+                    srcset="
+                      ../assets/img/biglo/spaces-map-search-grid-320w.avif 320w,
+                      ../assets/img/biglo/spaces-map-search-grid-640w.avif 640w,
+                      ../assets/img/biglo/spaces-map-search-grid-960w.avif 960w
+                    "
+                    sizes="(max-width: 768px) 320px, (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/biglo/spaces-map-search-grid.webp" type="image/webp" />
+                  <img src="../assets/img/biglo/spaces-map-search-grid.png" alt="Cuadrícula de Espacios de Biglo" data-slide loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/biglo/spaces-map-search-list.png">
+                  <source 
+                    srcset="
+                      ../assets/img/biglo/spaces-map-search-list-320w.avif 320w,
+                      ../assets/img/biglo/spaces-map-search-list-640w.avif 640w,
+                      ../assets/img/biglo/spaces-map-search-list-960w.avif 960w
+                    "
+                    sizes="(max-width: 768px) 320px, (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/biglo/spaces-map-search-list.webp" type="image/webp" />
+                  <img src="../assets/img/biglo/spaces-map-search-list.png" alt="Lista de Espacios de Biglo" data-slide loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/biglo/lighthouse-perfect-score.png">
+                  <source 
+                    srcset="
+                      ../assets/img/biglo/lighthouse-perfect-score-320w.avif 320w,
+                      ../assets/img/biglo/lighthouse-perfect-score-640w.avif 640w,
+                      ../assets/img/biglo/lighthouse-perfect-score-960w.avif 960w
+                    "
+                    sizes="(max-width: 768px) 320px, (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/biglo/lighthouse-perfect-score.webp" type="image/webp" />
+                  <img src="../assets/img/biglo/lighthouse-perfect-score.png" alt="Puntuación Perfecta en PageSpeed" data-slide loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/biglo/axe-devtools-0-issues.png">
+                  <source 
+                    srcset="
+                      ../assets/img/biglo/axe-devtools-0-issues-320w.avif 320w,
+                      ../assets/img/biglo/axe-devtools-0-issues-640w.avif 640w,
+                      ../assets/img/biglo/axe-devtools-0-issues-960w.avif 960w
+                    "
+                    sizes="(max-width: 768px) 320px, (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/biglo/axe-devtools-0-issues.webp" type="image/webp" />
+                  <img src="../assets/img/biglo/axe-devtools-0-issues.png" alt="Cero Problemas de Accesibilidad" data-slide loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/biglo/ai-overview.png">
+                  <source 
+                    srcset="
+                      ../assets/img/biglo/ai-overview-320w.avif 320w,
+                      ../assets/img/biglo/ai-overview-640w.avif 640w,
+                      ../assets/img/biglo/ai-overview-960w.avif 960w
+                    "
+                    sizes="(max-width: 768px) 320px, (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/biglo/ai-overview.webp" type="image/webp" />
+                  <img src="../assets/img/biglo/ai-overview.png" alt="Resumen IA" data-slide loading="lazy">
+                </picture>
+
+                <!-- Navigation Arrows -->
+                <button data-slide-prev class="slider-prev">&#10094;</button>
+                <button data-slide-next class="slider-next">&#10095;</button>
+              </div>
+
+              <h3 class="project-title">Biglo</h3>
+              <p class="project-desc">Plataforma B2B de logística.</p>
+
+              <div class="project-tags">
+                <span class="tag">Vue</span>
+                <span class="tag">Node</span>
+                <span class="tag">TypeScript</span>
+                <span class="tag">MongoDB</span>
+                <span class="tag">Tailwind CSS</span>
+              </div>
+
+              <ul>
+                <li>· Métricas perfectas en PageSpeed</li>
+                <li>· Puntuación perfecta de accesibilidad axe</li>
+                <li>· Todo el código desarrollado por mí</li>
+              </ul>
+
+              <div class="project-actions">
+                <a class="btn" title="Puede haber variado desde mi salida" target="_blank" href="https://biglosolutions.com/es">
+                  Biglo*
+                  <svg width="18" height="18" fill="currentColor" class="external-link">
+                    <use href="../assets/img/sprite.svg#external-link" /></svg>
+                  </a>
+                <a class="btn" target="_blank" href="https://github.com/miguelpv26/Biglo">
+                  GitHub
+                  <svg width="18" height="18" fill="currentColor" class="external-link">
+                  <use href="../assets/img/sprite.svg#external-link" /></svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Project 2: Digitalando -->
+            <div class="project-card">
+              <div class="project-thumb" data-slider>
+                <picture data-fullres="../assets/img/digitalando/landing.png">
+                  <source
+                    srcset="
+                      ../assets/img/digitalando/landing-320w.avif 320w,
+                      ../assets/img/digitalando/landing-640w.avif 640w,
+                      ../assets/img/digitalando/landing-960w.avif 960w
+                    "
+                    sizes="(max-width: 768px) 320px, (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/digitalando/landing.webp" type="image/webp" />
+                  <img src="../assets/img/digitalando/landing.png" alt="Página Principal de Digitalando" data-slide class="active">
+                </picture>
+
+                <picture data-fullres="../assets/img/digitalando/digital-profile.png">
+                  <source
+                    srcset="
+                      ../assets/img/digitalando/digital-profile-320w.avif 320w,
+                      ../assets/img/digitalando/digital-profile-640w.avif 640w,
+                      ../assets/img/digitalando/digital-profile-960w.avif 960w
+                    "
+                    sizes="(max-width: 768px) 320px, (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/digitalando/digital-profile.webp" type="image/webp" />
+                  <img src="../assets/img/digitalando/digital-profile.png" alt="Perfil Digital de Digitalando" data-slide loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/digitalando/solutions.png">
+                  <source
+                    srcset="
+                      ../assets/img/digitalando/solutions-320w.avif 320w,
+                      ../assets/img/digitalando/solutions-640w.avif 640w,
+                      ../assets/img/digitalando/solutions-960w.avif 960w
+                    "
+                    sizes="(max-width: 768px) 320px, (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/digitalando/solutions.webp" type="image/webp" />
+                  <img src="../assets/img/digitalando/solutions.png" alt="Búsqueda de Soluciones de Digitalando" data-slide loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/digitalando/payment.png">
+                  <source
+                    srcset="
+                      ../assets/img/digitalando/payment-320w.avif 320w,
+                      ../assets/img/digitalando/payment-640w.avif 640w,
+                      ../assets/img/digitalando/payment-960w.avif 960w
+                    "
+                    sizes="(max-width: 768px) 320px, (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/digitalando/payment.webp" type="image/webp" />
+                  <img src="../assets/img/digitalando/payment.png" alt="Pago de Digitalando" data-slide loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/digitalando/ai.png">
+                  <source
+                    srcset="
+                      ../assets/img/digitalando/ai-320w.avif 320w,
+                      ../assets/img/digitalando/ai-640w.avif 640w,
+                      ../assets/img/digitalando/ai-960w.avif 960w
+                    "
+                    sizes="(max-width: 768px) 320px, (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/digitalando/ai.webp" type="image/webp" />
+                  <img src="../assets/img/digitalando/ai.png" alt="Integración IA de Digitalando" data-slide loading="lazy">
+                </picture>
+
+                <button data-slide-prev class="slider-prev">&#10094;</button>
+                <button data-slide-next class="slider-next">&#10095;</button>
+              </div>
+
+              <h3 class="project-title">Digitalando</h3>
+              <p class="project-desc">Comunidad digital para empresas y desarrolladores de software.</p>
+
+              <div class="project-tags">
+                <span class="tag">React</span>
+                <span class="tag">API RESTful</span>
+                <span class="tag">Metodologías Ágiles</span>
+                <span class="tag">Soporte Multilingüe</span>
+              </div>
+
+              <ul>
+                <li>· Motor de búsqueda rápido</li>
+                <li>· Pasarela de Pago</li>
+                <li>· Proyecto enfocado en equipo</li>
+              </ul>
+
+              <div class="project-actions">
+                <a title="Puede haber variado desde mi salida" class="btn" target="_blank" href="https://digitalando.org">
+                  Digitalando*
+                  <svg width="18" height="18" fill="currentColor" class="external-link">
+                    <use href="../assets/img/sprite.svg#external-link"/>
+                  </svg>
+                </a>
+                <a class="btn" target="_blank" href="https://github.com/miguelpv26/digitalando">
+                  GitHub
+                  <svg width="18" height="18" fill="currentColor" class="external-link">
+                    <use href="../assets/img/sprite.svg#external-link"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Project 3: NPM Package -->
+            <div class="project-card">
+              <div class="project-thumb" data-slider>
+                <video src="../assets/img/input-color-feedback/behavior.mp4" data-slide data-duration="24.2" class="active" muted loop playsinline>
+                </video>
+
+                <picture data-fullres="../assets/img/input-color-feedback/readme.png">
+                  <source
+                    srcset="
+                      ../assets/img/input-color-feedback/readme-320w.avif 320w,
+                      ../assets/img/input-color-feedback/readme-640w.avif 640w,
+                      ../assets/img/input-color-feedback/readme-960w.avif 960w
+                    "
+                    sizes="(max-width: 768px) 320px, (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/input-color-feedback/readme.webp" type="image/webp" />
+                  <img src="../assets/img/input-color-feedback/readme.png" alt="README.md de input-color-feedback" data-slide loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/input-color-feedback/mit-license.png">
+                  <source
+                    srcset="
+                      ../assets/img/input-color-feedback/mit-license-320w.avif 320w,
+                      ../assets/img/input-color-feedback/mit-license-640w.avif 640w,
+                      ../assets/img/input-color-feedback/mit-license-960w.avif 960w
+                    "
+                    sizes="(max-width: 768px) 320px, (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/input-color-feedback/mit-license.webp" type="image/webp" />
+                  <img src="../assets/img/input-color-feedback/mit-license.png" alt="Licencias MIT de input-color-feedback" data-slide loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/input-color-feedback/code.png">
+                  <source
+                    srcset="
+                      ../assets/img/input-color-feedback/code-320w.avif 320w,
+                      ../assets/img/input-color-feedback/code-640w.avif 640w,
+                      ../assets/img/input-color-feedback/code-960w.avif 960w
+                    "
+                    sizes="(max-width: 768px) 320px, (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/input-color-feedback/code.webp" type="image/webp" />
+                  <img src="../assets/img/input-color-feedback/code.png" alt="Código de input-color-feedback" data-slide loading="lazy">
+                </picture>
+
+                <button data-slide-prev class="slider-prev">&#10094;</button>
+                <button data-slide-next class="slider-next">&#10095;</button>
+              </div>
+
+              <h3 class="project-title">Input Color Feedback</h3>
+              <p class="project-desc">Una librería de utilidades ligera para aplicaciones web.</p>
+
+              <div class="project-tags">
+                <span class="tag">npm</span>
+                <span class="tag">CSS3</span>
+                <span class="tag">Código Abierto</span>
+                <span class="tag" style="display: block;">Diseño</span>
+              </div>
+
+              <ul>
+                <li>· Mejora de UI/UX</li>
+                <li>· Ligera</li>
+                <li>· Construida sobre valores de código abierto</li>
+              </ul>
+
+              <div class="project-actions">
+                <a class="btn" target="_blank" href="https://www.npmjs.com/package/input-color-feedback">
+                  NPM
+                  <svg width="18" height="18" fill="currentColor" class="external-link">
+                    <use href="../assets/img/sprite.svg#external-link"/>
+                  </svg>
+                </a>
+                <a class="btn" target="_blank" href="https://github.com/miguelpv26/input-color-feedback">
+                  GitHub
+                  <svg width="18" height="18" fill="currentColor" class="external-link">
+                    <use href="../assets/img/sprite.svg#external-link"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Contact section -->
+      <div class="section-divider-container">
+        <!-- Section Divider -->
+        <div class="section-divider">
+          <div class="section-divider__tab">
+            <svg fill="currentColor" class="section-divider__icon">
+              <use href="../assets/img/sprite.svg#envelope" />
+            </svg>
+            <span class="section-divider__label">Contacto</span>
+          </div>
+        </div>
+
+        <section id="contact" class="contact">
+          <div class="contact__container">
+            <p>Si te gustaría hablar de un proyecto u oportunidad, no dudes en contactarme.</p>
+
+            <div class="contact__socials">
+              <a target="_blank" href="mailto:miguelpayav@gmail.com" aria-label="Correo electrónico">
+                <svg>
+                  <use href="../assets/img/sprite.svg#email"/>
+                </svg>
+              </a>
+              <a target="_blank" href="https://linkedin.com/in/miguel-payá-vañó" aria-label="LinkedIn">
+                <svg>
+                  <use href="../assets/img/sprite.svg#linkedin"/>
+                </svg>
+              </a>
+              <a target="_blank" href="https://github.com/miguelpv26" aria-label="GitHub">
+                <svg>
+                  <use href="../assets/img/sprite.svg#github"/>
+                </svg>
+              </a>
+            </div>
+
+            <div class="contact__cv-wrapper">
+              <a target="_blank" href="../assets/pdf/CV-MiguelPV-English.pdf" class="contact__cv-link">
+                Mi CV
+                <svg>
+                  <use href="../assets/img/sprite.svg#pdf"/>
+                </svg>
+              </a>
+              <a href="../assets/pdf/CV-MiguelPV-English.pdf" class="contact__cv-btn" aria-label="Descargar CV" download>
+                <svg>
+                  <use href="../assets/img/sprite.svg#download"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <script src="../assets/js/main.js" defer></script>
+    </main>
+    <footer class="footer">
+      <p>Miguel Payá Vañó © 2025</p>
+    </footer>
+  </body>
+</html>
