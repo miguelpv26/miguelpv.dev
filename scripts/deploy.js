@@ -28,6 +28,7 @@ function buildSitemap() {
     { en: '/en/projects/digitalando', es: '/es/proyectos/digitalando', priority: '0.6' },
     { en: '/en/projects/portfolio',   es: '/es/proyectos/portfolio',   priority: '0.6' },
     { en: '/en/projects/abogada-de-la-tierra', es: '/es/proyectos/abogada-de-la-tierra', priority: '0.6' },
+    { en: '/en/projects/input-color-feedback', es: '/es/proyectos/input-color-feedback', priority: '0.6' },
   ];
 
   const altLinksFor = group =>
