@@ -1,0 +1,99 @@
+/*
+  ============================================================================
+  UNIVERSAL SLIDER SYSTEM
+  ============================================================================
+*/
+[data-slider] {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+[data-slide] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  transition: var(--slider-transition);
+}
+
+[data-slide].active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Slider Navigation Buttons */
+.slider-prev,
+.slider-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-primary);
+  background-color: var(--color-overlay);
+  border: none;
+  font-size: var(--font-size-xl);
+  cursor: pointer;
+  border-radius: var(--border-radius-full);
+  width: var(--slider-button-size);
+  height: var(--slider-button-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: var(--z-dropdown);
+  transition: var(--transition-all);
+}
+
+.slider-prev:hover,
+.slider-next:hover,
+.slider-prev:focus-visible,
+.slider-next:focus-visible {
+  background-color: var(--color-overlay-dark);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.slider-prev {
+  left: 10px;
+}
+
+.slider-next {
+  right: 10px;
+}
+
+/* Slider Indicators (Dots) - Styled by JS */
+.slider-indicators {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--spacing-xs);
+  z-index: var(--z-indicators);
+}
+
+.slider-dot {
+  width: var(--slider-dot-size);
+  height: var(--slider-dot-size);
+  border-radius: var(--border-radius-full);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  background: transparent;
+  cursor: pointer;
+  transition: var(--transition-all);
+  padding: 0;
+}
+
+.slider-dot:hover,
+.slider-dot:focus-visible {
+  border-color: var(--color-primary);
+  background: var(--color-primary-faint);
+}
+
+.slider-dot.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+

@@ -1,0 +1,170 @@
+/*
+  ============================================================================
+  ERROR PAGE (404)
+  ============================================================================
+  Self-contained styles (no inline CSS) so the standalone /404.html stays
+  within the `style-src 'self'` CSP. Linked via /assets/min/style.min.css.
+*/
+
+/*
+  The 404 lives at the site root (no locale), so it's bilingual and styled as a
+  terminal window floating over a full-screen matrix background.
+
+  Layering (the global #matrix-canvas uses z-index:-1 + a center mask, which we
+  override here): html paints --color-bg-dark, the canvas sits at z-index 0
+  un-masked (full matrix), and the terminal window sits above at --z-base.
+*/
+.error-body {
+  background: transparent;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+}
+
+.error-body #matrix-canvas {
+  z-index: 0;
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+
+.terminal {
+  position: relative;
+  z-index: var(--z-base);
+  /* Override the global `main` rule (header-height padding + flex:1), which is
+     meant for the homepage's <main>; here it must hug its content, not grow. */
+  flex: 0 0 auto;
+  padding: 0;
+  width: 100%;
+  max-width: 820px;
+  background: var(--color-bg-black);
+  border: var(--border-width) solid var(--color-primary);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-glow-primary);
+  overflow: hidden;
+}
+
+.terminal__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--color-bg-card);
+  border-bottom: var(--border-width) solid var(--color-primary);
+}
+
+.terminal__prompt {
+  font-size: 0.85rem;
+  color: var(--color-primary);
+}
+
+.terminal__controls {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+/* Decorative window buttons drawn in CSS (no glyph fonts, no inline styles). */
+.terminal__control {
+  position: relative;
+  width: 13px;
+  height: 13px;
+  color: var(--color-text-white);
+}
+
+.terminal__control--min::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1px;
+  height: 2px;
+  background: currentColor;
+}
+
+.terminal__control--max {
+  border: 2px solid currentColor;
+  border-radius: 2px;
+}
+
+.terminal__control--close {
+  color: #ff5f56;
+}
+
+.terminal__control--close::before,
+.terminal__control--close::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 15px;
+  height: 2px;
+  background: currentColor;
+}
+
+.terminal__control--close::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.terminal__control--close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.terminal__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+.error-page__code {
+  margin: 0;
+  font-size: clamp(4rem, 18vw, 9rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  color: var(--color-primary);
+  text-shadow: var(--shadow-glow-md);
+}
+
+.error-page__title {
+  margin: 0;
+  font-size: var(--font-size-xl);
+  color: var(--color-text-white);
+}
+
+.error-page__text {
+  margin: 0;
+  font-size: var(--font-size-md);
+  color: var(--color-text-white);
+}
+
+.error-page__text[lang="es"] {
+  color: var(--color-primary-dim);
+}
+
+.error-page__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+
+.error-page__actions .btn {
+  padding: 0.6rem 1.4rem;
+  border-radius: var(--border-radius-md);
+  border: var(--border-width) solid var(--color-primary);
+  background-color: var(--color-bg-black);
+  color: var(--color-text-white);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  transition: var(--transition-color);
+}
+
+.error-page__actions .btn:hover,
+.error-page__actions .btn:focus-visible {
+  color: var(--color-primary);
+}
+

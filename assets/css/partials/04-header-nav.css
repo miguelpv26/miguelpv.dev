@@ -1,0 +1,207 @@
+/*
+  ============================================================================
+  HEADER
+  ============================================================================
+*/
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-header);
+  background-color: var(--color-bg-black);
+  border-bottom: var(--border-width) solid var(--color-primary);
+  box-shadow: var(--shadow-glow-header);
+  transition: var(--transition-all);
+}
+
+.header__container {
+  width: 100%;
+  background: transparent;
+}
+
+.header__content {
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: var(--header-height);
+  padding: var(--spacing-sm) 0;
+  transition: var(--transition-all);
+}
+
+.header__logo {
+  display: flex;
+  align-items: center;
+  color: var(--color-text-white);
+  user-select: none;
+  margin-right: 48px;
+  transition: var(--transition-color);
+}
+
+.header__logo:hover {
+  color: var(--color-primary);
+}
+
+.header__logo-name {
+  font-size: var(--font-size-2xl);
+  padding-left: var(--spacing-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.header__toggle-button {
+  display: none;
+  padding-top: 5px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 24px;
+  color: var(--color-text-white);
+  transition: var(--transition-color);
+}
+
+.header__toggle-button svg {
+  transition: filter var(--transition-fast);
+}
+
+.header__toggle-button:hover svg,
+.header__toggle-button:focus-visible svg {
+  filter: drop-shadow(var(--shadow-glow-icon));
+}
+
+/*
+  ============================================================================
+  NAVIGATION
+  ============================================================================
+*/
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow: 1;
+  max-width: max(60%, 760px);
+}
+
+.nav:last-child {
+  margin-right: var(--spacing-lg);
+}
+
+.nav__item a {
+  color: var(--color-text-white);
+  font-size: 1.125rem;
+  font-weight: var(--font-weight-medium);
+  padding: var(--spacing-xs) 12px;
+  white-space: nowrap;
+  transition: var(--transition-color);
+}
+
+.nav__item a:hover,
+.nav__item a:focus,
+.nav__item a:focus-visible {
+  color: var(--color-primary);
+}
+
+.nav__separator {
+  margin-left: var(--spacing-xs);
+  margin-right: var(--spacing-xs);
+  height: 32px;
+  width: var(--border-width);
+  background-color: var(--color-text-white);
+}
+
+.nav__item svg {
+  margin-right: 4px;
+  transition: filter var(--transition-fast);
+}
+
+.nav__item a:hover svg,
+.nav__item a:focus svg,
+.nav__item a:focus-visible svg {
+  filter: drop-shadow(var(--shadow-glow-icon));
+}
+
+#laptop-code,
+#lightbulb,
+#envelope {
+  margin-bottom: -2.5px;
+}
+
+
+/*
+  ============================================================================
+  LANGUAGE TOGGLE
+  ============================================================================
+*/
+
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.lang-toggle__link {
+  color: var(--color-text-white);
+  font-size: 1.125rem;
+  padding: var(--spacing-xs) 8px;
+  transition: var(--transition-color);
+}
+
+.lang-toggle__link:hover,
+.lang-toggle__link:focus-visible {
+  color: var(--color-primary);
+}
+
+.lang-toggle .lang-toggle__link--active {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+}
+
+.lang-toggle__sep {
+  color: var(--color-text-white);
+  opacity: 0.6;
+  font-weight: var(--font-weight-regular);
+  pointer-events: none;
+}
+
+/*
+  ============================================================================
+  MOBILE MENU OVERLAY
+  ============================================================================
+*/
+
+.nav-overlay {
+  display: none;
+}
+
+/* Button-driven toggle "active" state (JS sets aria-expanded) */
+.header__toggle-button[aria-expanded="true"] {
+  color: var(--color-primary);
+}
+
+/*
+  ============================================================================
+  MAIN CONTENT WRAPPER
+  ============================================================================
+*/
+
+main {
+  padding-top: var(--header-height);
+  position: relative;
+  z-index: var(--z-base);
+  /*
+    width:100% is load-bearing. <body> is a column flexbox, and a flex item
+    with auto side-margins does NOT stretch to the container — it falls back to
+    its max-content width. Content-heavy pages (the homepage hero) mask this,
+    but content-light pages (the projects hub) would shrink-wrap to ~780px and
+    collapse their grids to one column. Filling 100% (then capped by max-width
+    and centred by the auto margins) keeps every page at the intended 90vw.
+  */
+  width: 100%;
+  max-width: var(--max-content-width);
+  margin-left: auto;
+  margin-right: auto;
+  flex: 1;
+}
+

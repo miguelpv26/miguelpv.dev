@@ -1,0 +1,120 @@
+/*
+  ============================================================================
+  CONTACT SECTION
+  ============================================================================
+*/
+
+.contact {
+  max-width: min(var(--max-content-width), var(--max-hero-width));
+  margin-right: auto;
+  margin-left: auto;
+  padding: 52px 52px 78px;
+  border-top: var(--border-width) solid var(--color-border-default);
+  border-radius: var(--border-radius-2xl);
+  color: var(--color-text-white);
+}
+
+.contact__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-lg);
+  text-align: center;
+}
+
+.contact__container > p {
+  font-size: 1.2rem;
+  line-height: var(--line-height-relaxed);
+  max-width: 600px;
+  margin: 0;
+}
+
+.contact__socials {
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: center;
+}
+
+.contact__socials svg {
+  width: 50px;
+  height: 50px;
+  color: var(--color-text-white);
+  transition: var(--transition-all);
+}
+
+.contact__socials a:hover svg,
+.contact__socials a:focus-visible svg {
+  transform: scale(1.05);
+  color: var(--color-primary);
+  filter: drop-shadow(var(--shadow-glow-icon));
+}
+
+.contact__cv-wrapper {
+  display: flex;
+  gap: 0;
+  align-items: center;
+}
+
+.contact__cv-link {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  height: 52px;
+  padding: 0.75rem var(--spacing-md);
+  border: var(--border-width) solid var(--color-primary);
+  border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
+  background-color: var(--color-bg-black);
+  color: var(--color-text-white);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  transition: var(--transition-color);
+}
+
+.contact__cv-link:hover,
+.contact__cv-link:focus-visible {
+  color: var(--color-primary);
+}
+
+.contact__cv-link svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+  transition: filter var(--transition-fast);
+}
+
+.contact__cv-link:hover svg,
+.contact__cv-link:focus-visible svg {
+  filter: drop-shadow(var(--shadow-glow-icon));
+}
+
+.contact__cv-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem;
+  height: 52px;
+  border: var(--border-width) solid var(--color-primary);
+  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+  background-color: var(--color-bg-black);
+  color: var(--color-text-white);
+  transition: var(--transition-color);
+  cursor: pointer;
+}
+
+.contact__cv-btn:hover,
+.contact__cv-btn:focus-visible {
+  color: var(--color-primary);
+}
+
+.contact__cv-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+  transition: filter var(--transition-fast);
+}
+
+.contact__cv-btn:hover svg,
+.contact__cv-btn:focus-visible svg {
+  filter: drop-shadow(var(--shadow-glow-icon));
+}
+

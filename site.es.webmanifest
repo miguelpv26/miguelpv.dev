@@ -1,0 +1,57 @@
+{
+  "name": "Miguel Payá Vañó - Portafolio",
+  "short_name": "Miguel PV",
+  "description": "Portafolio de Desarrollador Full-Stack - Vue, Node.js, TypeScript, MongoDB",
+  "id": "/es/",
+  "start_url": "/es/",
+  "scope": "/",
+  "lang": "es",
+  "dir": "ltr",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#16c60c",
+  "icons": [
+    {
+      "src": "/assets/img/favicon-manifest.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/img/favicon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Proyectos",
+      "short_name": "Proyectos",
+      "description": "Ver mis proyectos",
+      "url": "/es/proyectos",
+      "icons": [
+        {
+          "src": "/assets/img/laptop-code.svg",
+          "sizes": "any",
+          "type": "image/svg+xml",
+          "purpose": "any"
+        }
+      ]
+    },
+    {
+      "name": "Contacto",
+      "short_name": "Contacto",
+      "description": "Ponte en contacto",
+      "url": "/es/#contacto",
+      "icons": [
+        {
+          "src": "/assets/img/envelope.svg",
+          "sizes": "any",
+          "type": "image/svg+xml",
+          "purpose": "any"
+        }
+      ]
+    }
+  ]
+}

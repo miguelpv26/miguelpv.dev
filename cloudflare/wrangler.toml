@@ -1,0 +1,6 @@
+name = "redirect"
+main = "worker.js"
+compatibility_date = "2025-05-19"
+
+[vars]
+# No environment variables needed for this worker

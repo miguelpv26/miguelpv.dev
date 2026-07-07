@@ -1,0 +1,951 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#16c60c" />
+
+    <!-- ⏳ Preload critical assets for better performance -->
+    <link rel="preload" href="../assets/fonts/jetbrains-mono-v24-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonts/jetbrains-mono-v24-latin-500.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonts/jetbrains-mono-v24-latin-600.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/img/picture.avif" as="image" type="image/avif" fetchpriority="high" />
+
+    <!-- 🖼️ Favicon -->
+    <link rel="icon" type="image/png" href="../assets/img/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg" />
+    <link rel="shortcut icon" href="../assets/img/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="512x512" href="../assets/img/favicon-512x512.png" />
+
+    <!-- 📈 SEO Meta Description -->
+    <meta
+      name="description"
+      content="Miguel Payá Vañó | Full-Stack Developer specializing in Vue, Node.js, TypeScript, and MongoDB. Building fast, accessible web applications with perfect Core Web Vitals (CWV) scores."
+    />
+    <meta
+      name="keywords"
+      content="Miguel Payá Vañó, full stack developer, Vue developer, Node.js developer, TypeScript developer, MongoDB, web developer, software engineer, frontend developer, backend developer, Alcoy developer, Spain developer, JavaScript expert, RESTful APIs, Tailwind CSS, React developer, web performance optimization, accessible web design"
+    />
+    <meta name="author" content="Miguel Payá Vañó" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://miguelpv.dev/en/" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <link rel="alternate" hreflang="en" href="https://miguelpv.dev/en/" />
+    <link rel="alternate" hreflang="es" href="https://miguelpv.dev/es/" />
+    <link rel="alternate" hreflang="x-default" href="https://miguelpv.dev/en/" />
+
+    <title>Miguel Payá Vañó | Full-Stack Developer Portfolio</title>
+
+    <!-- 🔎 Google / Search Engine Tags -->
+    <meta itemprop="name" content="Miguel Payá Vañó | Full-Stack Developer" />
+    <meta
+      itemprop="description"
+      content="Full-Stack Developer specializing in Vue, Node.js, TypeScript, and MongoDB. Building fast, accessible web applications with perfect Core Web Vitals (CWV) scores."
+    />
+    <meta itemprop="image" content="https://miguelpv.dev/assets/img/picture.jpg" />
+
+    <!-- 🔎 Open Graph Meta Tags (Facebook, LinkedIn) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="es_ES" />
+    <meta property="og:site_name" content="Miguel Payá Vañó Portfolio" />
+    <meta property="og:title" content="Miguel Payá Vañó | Full-Stack Developer Portfolio" />
+    <meta
+      property="og:description"
+      content="Full-Stack Developer specializing in Vue, Node.js, TypeScript, and MongoDB. Building fast, accessible web applications with perfect Core Web Vitals (CWV) scores."
+    />
+    <meta property="og:url" content="https://miguelpv.dev/en/" />
+    <meta property="og:image" content="https://miguelpv.dev/assets/img/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Miguel Payá Vañó - Full-Stack Developer" />
+
+    <!-- 🔎 Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Miguel Payá Vañó | Full-Stack Developer Portfolio" />
+    <meta
+      name="twitter:description"
+      content="Full-Stack Developer specializing in Vue, Node.js, TypeScript, and MongoDB. Building fast, accessible web applications."
+    />
+    <meta name="twitter:image" content="https://miguelpv.dev/assets/img/og-image.png" />
+    <meta name="twitter:image:alt" content="Miguel Payá Vañó - Full-Stack Developer" />
+    <meta name="twitter:url" content="https://miguelpv.dev/en/" />
+    <meta property="twitter:domain" content="miguelpv.dev" />
+
+    <!-- 🤖 Structured Data (SEO) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://miguelpv.dev/#website",
+            "url": "https://miguelpv.dev/",
+            "name": "Miguel Payá Vañó",
+            "alternateName": "Miguel Payá Vañó | Full-Stack Developer Portfolio",
+            "inLanguage": "en",
+            "publisher": { "@id": "https://miguelpv.dev/#person" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://miguelpv.dev/en/#webpage",
+            "url": "https://miguelpv.dev/en/",
+            "name": "Miguel Payá Vañó | Full-Stack Developer Portfolio",
+            "isPartOf": { "@id": "https://miguelpv.dev/#website" },
+            "about": { "@id": "https://miguelpv.dev/#person" },
+            "primaryImageOfPage": { "@id": "https://miguelpv.dev/#profile-image" },
+            "inLanguage": "en"
+          },
+          {
+            "@type": "ImageObject",
+            "@id": "https://miguelpv.dev/#profile-image",
+            "url": "https://miguelpv.dev/assets/img/picture.jpg",
+            "contentUrl": "https://miguelpv.dev/assets/img/picture.jpg",
+            "caption": "Miguel Payá Vañó"
+          },
+          {
+            "@type": "ImageObject",
+            "@id": "https://miguelpv.dev/#logo",
+            "url": "https://miguelpv.dev/assets/img/favicon-512x512.png",
+            "contentUrl": "https://miguelpv.dev/assets/img/favicon-512x512.png",
+            "caption": "MiguelPV's logo",
+            "width": "512",
+            "height": "512" 
+          },
+          {
+            "@type": "Person",
+            "@id": "https://miguelpv.dev/#person",
+            "name": "Miguel Payá Vañó",
+            "url": "https://miguelpv.dev/",
+            "image": { "@id": "https://miguelpv.dev/#profile-image" },
+            "jobTitle": "Full-Stack Developer",
+            "description": "Full-Stack developer specializing in Vue, Node.js, TypeScript, and MongoDB.",
+            "email": "mailto:miguelpayav@gmail.com",
+            "telephone": "+34 633105371",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Alcoy",
+              "addressRegion": "Alicante, Valencian Community",
+              "postalCode": "03802",
+              "addressCountry": "ES"
+            },
+            "sameAs": [
+              "https://github.com/miguelpv26",
+              "https://linkedin.com/in/miguel-pay%C3%A1-va%C3%B1%C3%B3",
+              "https://www.npmjs.com/~miguelpv"
+            ],
+            "knowsAbout": [
+              "JavaScript",
+              "TypeScript",
+              "Vue.js",
+              "React",
+              "Node.js",
+              "MongoDB",
+              "REST APIs",
+              "Tailwind CSS",
+              "Web performance",
+              "Web accessibility",
+              "Agile methodologies"
+            ],
+            "alumniOf": {
+              "@type": "Organization",
+              "name": "CIP FP Batoi"
+            }
+          },
+
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://miguelpv.dev/#project-biglo",
+            "name": "Biglo",
+            "applicationCategory": "BusinessApplication",
+            "applicationSubCategory": "Logistics platform",
+            "description": "B2B logistics platform built with Vue, Node.js, TypeScript, and MongoDB.",
+            "url": "https://biglosolutions.com",
+            "screenshot": "https://miguelpv.dev/assets/img/biglo/landing-page.png",
+            "operatingSystem": "Web",
+            "author": { "@id": "https://miguelpv.dev/#person" },
+            "keywords": "JavaScript, TypeScript, Vue, Node.js, MongoDB",
+            "datePublished": "2024",
+            "inLanguage": ["en", "es"]
+          },
+
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://miguelpv.dev/#project-digitalando",
+            "name": "Digitalando",
+            "applicationCategory": "WebApplication",
+            "applicationSubCategory": "Developer community platform",
+            "description": "Community platform for companies and developers. Built with React and REST APIs.",
+            "url": "https://digitalando.org",
+            "screenshot": "https://miguelpv.dev/assets/img/digitalando/landing.png",
+            "operatingSystem": "Web",
+            "author": { "@id": "https://miguelpv.dev/#person" },
+            "contributor": {
+              "@type": "Organization",
+              "name": "Digitalando Team"
+            },
+            "keywords": "JavaScript, React, REST APIs",
+            "datePublished": "2024",
+            "inLanguage": ["en", "es"]
+          },
+
+          {
+            "@type": "SoftwareSourceCode",
+            "@id": "https://miguelpv.dev/#project-input-color-feedback",
+            "name": "Input Color Feedback",
+            "description": "Lightweight utility library that provides visual feedback on input fields. Open-source npm package.",
+            "url": "https://inputcolorfeedback.dev/",
+            "codeRepository": "https://github.com/miguelpv26/input-color-feedback",
+            "programmingLanguage": "CSS",
+            "runtimePlatform": "Web",
+            "author": { "@id": "https://miguelpv.dev/#person" },
+            "license": "https://opensource.org/licenses/MIT",
+            "version": "2.2.0",
+            "datePublished": "2025",
+            "keywords": ["npm", "css", "ui", "ux", "input", "feedback", "design", "accessibility"],
+            "sameAs": ["https://www.npmjs.com/package/input-color-feedback", "https://github.com/miguelpv26/input-color-feedback"]
+          }
+        ]
+      }
+    </script>
+
+    <style id="inline-css">:root{--section-spacing:3.5rem;--spacing-2xs:0.25rem;--spacing-xs:0.5rem;--spacing-sm:1rem;--spacing-md:1.5rem;--spacing-lg:2rem;--spacing-xl:2.5rem;--header-height:86px;--header-border:1px;--max-content-width:90vw;--max-hero-width:1400px;--scroll-offset:150px;--color-primary:#16c60c;--color-primary-dim:rgba(21, 198, 12, 0.85);--color-primary-faint:rgba(21, 198, 12, 0.172);--color-bg-dark:#0d0d0d;--color-bg-black:#000000;--color-bg-card:#1a1a1a;--color-text-white:#ffffff;--color-text-dark:#0d0d0d;--color-text-black:#000000;--color-border-default:var(--color-text-white);--color-overlay:rgba(0, 0, 0, 0.6);--color-overlay-dark:rgba(0, 0, 0, 0.9);--color-standby:#e0a82e;--font-family-base:'JetBrains Mono',monospace,sans-serif;--font-size-base:1rem;--font-size-sm:0.88rem;--font-size-md:1.1rem;--font-size-lg:1.25rem;--font-size-xl:1.5rem;--font-size-2xl:2rem;--font-size-3xl:2.4rem;--font-weight-regular:400;--font-weight-medium:500;--font-weight-semibold:600;--font-weight-bold:700;--line-height-tight:1.3;--line-height-normal:1.5;--line-height-relaxed:1.6;--letter-spacing-base:0.025em;--spacing-golden:0.80901699437rem;--border-width:1px;--border-radius-sm:4px;--border-radius-md:6px;--border-radius-lg:8px;--border-radius-xl:10px;--border-radius-2xl:24px;--border-radius-full:50%;--transition-fast:0.2s ease-out;--transition-medium:0.5s ease-out;--transition-all:all var(--transition-fast);--transition-color:color var(--transition-fast);--shadow-glow-primary:0 0 12px 0 var(--color-primary);--shadow-glow-header:var(--color-primary) 0px -4px 16px 0px;--shadow-glow-footer:var(--color-primary) 0px 0px 16px 0px;--shadow-glow-md:0 0 6px var(--color-primary);--shadow-glow-icon:0 0 5px rgba(21, 198, 12, 0.675);--shadow-image:0 0 10px var(--color-primary-dim);--z-behind:-1;--z-base:1;--z-dropdown:10;--z-indicators:20;--z-footer:999;--z-header:1001;--slider-button-size:32px;--slider-dot-size:10px;--slider-transition:opacity 0.5s ease-in-out;--breakpoint-xs:320px;--breakpoint-sm:640px;--breakpoint-md:1008px;--breakpoint-lg:1040px;--breakpoint-xl:1100px;--breakpoint-2xl:1400px}@font-face{font-display:block;font-family:'JetBrains Mono';font-style:normal;font-weight:400;src:url('/assets/fonts/jetbrains-mono-v24-latin-regular.woff2') format('woff2')}@font-face{font-display:block;font-family:'JetBrains Mono';font-style:normal;font-weight:500;src:url('/assets/fonts/jetbrains-mono-v24-latin-500.woff2') format('woff2')}@font-face{font-display:block;font-family:'JetBrains Mono';font-style:normal;font-weight:600;src:url('/assets/fonts/jetbrains-mono-v24-latin-600.woff2') format('woff2')}*,::after,::before{margin:0;padding:0;box-sizing:border-box;min-width:0;min-height:0}html{scrollbar-width:thin;scrollbar-color:rgba(21,198,12,0.5) var(--color-bg-black);background:var(--color-bg-dark);scroll-behavior:smooth;overflow-x:hidden}body{font-family:var(--font-family-base);letter-spacing:var(--letter-spacing-base);color:var(--color-text-white);background:var(--color-bg-dark);display:flex;flex-direction:column;min-height:100dvh}::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:var(--color-bg-black)}::-webkit-scrollbar-thumb{background-color:rgba(21,198,12,.45);border-radius:999px;border:2px solid var(--color-bg-black)}::-webkit-scrollbar-thumb:hover{background-color:var(--color-primary)}a{text-decoration:none;color:inherit}ol,ul{list-style:none}button{border:none;background:0 0;font-family:inherit;cursor:pointer}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}#about,#contact,#contacto,#habilidades,#hero,#inicio,#projects,#proyectos,#skills,#sobre-mi{scroll-margin-top:var(--scroll-offset)}@media (prefers-reduced-motion:reduce){*,::after,::before{animation-duration:0s!important;animation-iteration-count:1!important;transition-duration:0s!important;scroll-behavior:auto!important}}:focus-visible{outline:2px solid var(--color-primary);outline-offset:2px}.skip-link{position:fixed;top:0;left:0;z-index:1000;padding:var(--spacing-xs) var(--spacing-sm);background:var(--color-bg-black);color:var(--color-primary);border:var(--border-width) solid var(--color-primary);border-radius:0 0 var(--spacing-xs) 0;text-decoration:none;transform:translateY(-110%);transition:transform .15s ease-in-out}.skip-link:focus{transform:translateY(0)}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}.interactive{transition:var(--transition-all)}.interactive:focus-visible,.interactive:hover{color:var(--color-primary)}.header{position:fixed;top:0;left:0;right:0;z-index:var(--z-header);background-color:var(--color-bg-black);border-bottom:var(--border-width) solid var(--color-primary);box-shadow:var(--shadow-glow-header);transition:var(--transition-all)}.header__container{width:100%;background:0 0}.header__content{max-width:var(--max-content-width);margin:0 auto;display:flex;justify-content:space-between;align-items:center;height:var(--header-height);padding:var(--spacing-sm) 0;transition:var(--transition-all)}.header__logo{display:flex;align-items:center;color:var(--color-text-white);user-select:none;margin-right:48px;transition:var(--transition-color)}.header__logo:hover{color:var(--color-primary)}.header__logo-name{font-size:var(--font-size-2xl);padding-left:var(--spacing-sm);font-weight:var(--font-weight-medium)}.header__toggle-button{display:none;padding-top:5px;cursor:pointer;user-select:none;font-size:24px;color:var(--color-text-white);transition:var(--transition-color)}.header__toggle-button svg{transition:filter var(--transition-fast)}.header__toggle-button:focus-visible svg,.header__toggle-button:hover svg{filter:drop-shadow(var(--shadow-glow-icon))}.nav{display:flex;align-items:center;justify-content:space-between;flex-grow:1;max-width:max(60%,760px)}.nav:last-child{margin-right:var(--spacing-lg)}.nav__item a{color:var(--color-text-white);font-size:1.125rem;font-weight:var(--font-weight-medium);padding:var(--spacing-xs) 12px;white-space:nowrap;transition:var(--transition-color)}.nav__item a:focus,.nav__item a:focus-visible,.nav__item a:hover{color:var(--color-primary)}.nav__separator{margin-left:var(--spacing-xs);margin-right:var(--spacing-xs);height:32px;width:var(--border-width);background-color:var(--color-text-white)}.nav__item svg{margin-right:4px;transition:filter var(--transition-fast)}.nav__item a:focus svg,.nav__item a:focus-visible svg,.nav__item a:hover svg{filter:drop-shadow(var(--shadow-glow-icon))}#envelope,#laptop-code,#lightbulb{margin-bottom:-2.5px}.lang-toggle{display:flex;align-items:center;gap:2px}.lang-toggle__link{color:var(--color-text-white);font-size:1.125rem;padding:var(--spacing-xs) 8px;transition:var(--transition-color)}.lang-toggle__link:focus-visible,.lang-toggle__link:hover{color:var(--color-primary)}.lang-toggle .lang-toggle__link--active{font-weight:var(--font-weight-semibold);color:var(--color-primary)}.lang-toggle__sep{color:var(--color-text-white);opacity:.6;font-weight:var(--font-weight-regular);pointer-events:none}.nav-overlay{display:none}.header__toggle-button[aria-expanded=true]{color:var(--color-primary)}main{padding-top:var(--header-height);position:relative;z-index:var(--z-base);width:100%;max-width:var(--max-content-width);margin-left:auto;margin-right:auto;flex:1}#matrix-canvas{position:fixed;inset:0;z-index:var(--z-behind);width:100%;height:100%;display:block;mask-image:linear-gradient(to right,var(--color-text-dark) 0%,var(--color-text-dark) calc(50% - min(var(--max-content-width),var(--max-hero-width))/ 2),transparent calc(50% - min(var(--max-content-width),var(--max-hero-width))/ 2),transparent calc(50% + min(var(--max-content-width),var(--max-hero-width))/ 2),var(--color-text-dark) calc(50% + min(var(--max-content-width),var(--max-hero-width))/ 2),var(--color-text-dark) 100%);-webkit-mask-image:linear-gradient(to right,var(--color-text-dark) 0%,var(--color-text-dark) calc(50% - min(var(--max-content-width),var(--max-hero-width))/ 2),transparent calc(50% - min(var(--max-content-width),var(--max-hero-width))/ 2),transparent calc(50% + min(var(--max-content-width),var(--max-hero-width))/ 2),var(--color-text-dark) calc(50% + min(var(--max-content-width),var(--max-hero-width))/ 2),var(--color-text-dark) 100%)}.hero{min-height:calc(100dvh - 162px);position:relative;padding:52px}.hero__grid{z-index:2;max-width:min(var(--max-content-width),var(--max-hero-width));max-height:calc(100dvh - 4rem - var(--header-height));margin-left:auto;margin-right:auto;display:grid;grid-template-areas:"image heading" "image paragraph";position:relative}.hero__content{grid-area:heading;background-color:var(--color-primary);padding:1.25rem 2rem 2rem;border-radius:var(--spacing-sm);max-width:fit-content;color:var(--color-text-black);position:relative}.hero__content::after{content:"";position:absolute;z-index:var(--z-behind);left:-156px;bottom:-12px;border-width:16px 88px 39px 88px;rotate:-23.5deg;border-style:solid;border-color:transparent var(--color-primary) transparent transparent}.hero__greet{font-size:var(--font-size-xl);color:var(--color-text-dark);font-weight:var(--font-weight-medium)}.hero__name{font-size:var(--font-size-2xl);font-weight:var(--font-weight-bold)}.hero__dot,.hero__dot--alt{color:var(--color-text-dark);font-weight:var(--font-weight-medium)}.hero__dot{font-size:var(--font-size-xl)}.hero__dot--alt{font-size:var(--font-size-lg)}.hero__subtitle{color:var(--color-text-dark);margin-top:1.25rem;max-width:44ch;font-size:1.33rem;line-height:var(--line-height-normal);font-weight:var(--font-weight-medium)}.hero__highlight{color:var(--color-text-black);font-weight:var(--font-weight-semibold)}.hero__paragraph{text-indent:1.25rem;margin-top:var(--spacing-xl);text-align:justify;font-size:var(--font-size-md);line-height:1.5rem;grid-area:paragraph;color:var(--color-text-white);max-width:595px}.hero__paragraph-link{text-decoration:underline;transition:var(--transition-color)}.hero__paragraph-link:hover{color:var(--color-primary)}.external-link{margin-bottom:-2px}.external-link__alt{margin-bottom:-4px}.hero picture{margin-top:var(--spacing-sm);height:100%;width:100%;max-height:400px;max-width:360px;min-width:15rem;align-self:start;grid-area:image;overflow:hidden;filter:drop-shadow(var(--shadow-image))}.hero picture>img{border-radius:var(--border-radius-full);height:100%;width:100%;object-fit:cover;object-position:center}.section-divider{max-width:min(var(--max-content-width),var(--max-hero-width));position:relative;margin-right:auto;margin-left:auto}.section-divider__tab{color:var(--color-text-white);bottom:0;margin-left:56px;border:var(--border-width) solid var(--color-border-default);border-bottom:none;border-radius:var(--border-radius-xl) var(--border-radius-xl) 0 0;padding:var(--spacing-xs) var(--spacing-golden);display:inline-flex;align-items:center;gap:var(--spacing-xs);font-weight:var(--font-weight-medium);font-size:var(--font-size-xl);transition:var(--transition-all)}.section-divider__icon{width:22px;height:22px;transition:filter var(--transition-fast)}#section-divider-user{width:18px;height:18px}.section-divider__label{display:inline-block}.section-divider-container:focus-within .section-divider__tab,.section-divider-container:focus-within section,.section-divider-container:hover .section-divider__tab,.section-divider-container:hover section{border-color:var(--color-primary)}.section-divider-container:focus-within .section-divider__tab,.section-divider-container:hover .section-divider__tab{color:var(--color-primary)}.section-divider-container:focus-within .section-divider__icon,.section-divider-container:hover .section-divider__icon{filter:drop-shadow(var(--shadow-glow-icon))}.about{max-width:min(var(--max-content-width),var(--max-hero-width));min-height:calc(100dvh - var(--header-height) - 2.5 * var(--section-spacing));border-top:var(--border-width) solid var(--color-border-default);border-radius:var(--border-radius-2xl);margin-right:auto;margin-left:auto;color:var(--color-text-white)}.about__container{display:flex;flex-direction:row;padding:52px;justify-content:space-between}.about__paragraph{text-indent:1.25rem;text-align:justify;font-size:var(--font-size-md);line-height:1.5rem;max-width:35%}.about__headlines{max-width:25%}.about__headlines ul{display:flex;flex-direction:column;justify-content:space-between;height:100%}.about__headlines ul li{color:var(--color-text-black);background-color:var(--color-primary);width:12rem;margin:auto;border:var(--border-width) solid var(--color-text-black);border-radius:var(--border-radius-md);padding:var(--spacing-xs) var(--spacing-golden);font-size:1.2rem;font-weight:var(--font-weight-semibold);text-align:center}.about__headlines ul li:first-child{margin-top:0}.about__headlines ul li:last-child{margin-bottom:0}.about__slider{max-width:40%;width:100%;aspect-ratio:1/1;position:relative;overflow:hidden;margin:0}.about__slider img{height:100%;width:100%;object-fit:contain;object-position:center}[data-slider]{width:100%;height:100%;position:relative}[data-slide]{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;pointer-events:none;transition:var(--slider-transition)}[data-slide].active{opacity:1;pointer-events:auto}.slider-next,.slider-prev{position:absolute;top:50%;transform:translateY(-50%);color:var(--color-primary);background-color:var(--color-overlay);border:none;font-size:var(--font-size-xl);cursor:pointer;border-radius:var(--border-radius-full);width:var(--slider-button-size);height:var(--slider-button-size);display:flex;align-items:center;justify-content:center;text-align:center;z-index:var(--z-dropdown);transition:var(--transition-all)}.slider-next:focus-visible,.slider-next:hover,.slider-prev:focus-visible,.slider-prev:hover{background-color:var(--color-overlay-dark);transform:translateY(-50%) scale(1.1)}.slider-prev{left:10px}.slider-next{right:10px}.slider-indicators{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:var(--spacing-xs);z-index:var(--z-indicators)}.slider-dot{width:var(--slider-dot-size);height:var(--slider-dot-size);border-radius:var(--border-radius-full);border:2px solid rgba(255,255,255,.5);background:0 0;cursor:pointer;transition:var(--transition-all);padding:0}.slider-dot:focus-visible,.slider-dot:hover{border-color:var(--color-primary);background:var(--color-primary-faint)}.slider-dot.active{background:var(--color-primary);border-color:var(--color-primary)}.skills{max-width:min(var(--max-content-width),var(--max-hero-width));min-height:calc(100dvh - var(--header-height) - 2.5 * var(--section-spacing));margin-right:auto;margin-left:auto;padding:52px;border-top:var(--border-width) solid var(--color-border-default);border-radius:var(--border-radius-2xl);color:var(--color-text-white)}.skills__list{display:flex;flex-wrap:wrap;gap:var(--spacing-md);justify-content:center}.skills__item{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;border:var(--border-width) solid var(--color-border-default);width:calc(20% - var(--spacing-md));aspect-ratio:0.88/1;background-color:var(--color-bg-card);padding:.618rem var(--spacing-sm);border-radius:var(--border-radius-lg);font-size:var(--font-size-md);font-weight:var(--font-weight-semibold);transition:var(--transition-all)}.skills__item:focus-within,.skills__item:hover{border-color:var(--color-primary);color:var(--color-primary);box-shadow:var(--shadow-glow-primary);transform:scale(1.05)}.skills__item svg{height:100%;aspect-ratio:1/1;margin:var(--spacing-xs) 0;border-radius:var(--border-radius-lg);transition:filter var(--transition-fast)}.skills__item:focus-within svg,.skills__item:hover svg{filter:drop-shadow(var(--shadow-glow-md))}.projects{max-width:min(var(--max-content-width),var(--max-hero-width));margin-right:auto;margin-left:auto;padding:52px;border-top:var(--border-width) solid var(--color-border-default);border-radius:var(--border-radius-2xl);color:var(--color-text-white)}.projects-header{text-align:center;margin-bottom:var(--spacing-xl)}.projects-header h2{font-size:var(--font-size-3xl);font-weight:var(--font-weight-medium);margin:0 0 var(--spacing-xs) 0;color:var(--color-primary)}.projects-header p{margin:0;color:var(--color-text-white)}.projects-grid{align-items:start;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:var(--spacing-md)}.project-card{background:var(--color-bg-dark);border:var(--border-width) solid var(--color-border-default);padding:var(--spacing-md);border-radius:var(--border-radius-xl);display:flex;flex-direction:column;transition:var(--transition-all);min-height:100%}.project-card:focus-within,.project-card:hover{transform:scale(1.033);border-color:var(--color-primary)}.project-card .project-thumb{max-width:100%;width:100%;aspect-ratio:1.833/1;position:relative;overflow:hidden;margin:auto auto var(--spacing-sm);border-radius:var(--border-radius-lg)}.project-card [data-slide]{object-fit:contain;background-color:transparent}.project-title{font-size:var(--font-size-lg);margin:var(--spacing-xs) 0;color:var(--color-primary)}.project-tags{display:flex;flex-wrap:wrap;gap:var(--spacing-xs);margin:var(--spacing-sm) 0}.project-tags .tag{background:var(--color-bg-card);padding:.3rem .6rem;border-radius:var(--border-radius-sm);font-size:.8rem;border:var(--border-width) solid var(--color-text-black)}.project-tags .tag--block{display:block}.project-card ul{margin:0 0 var(--spacing-md) 0}.project-card ul li{margin:.25rem 0}.project-actions{margin-top:auto;display:flex;gap:.7rem}.project-actions .btn{flex:1;text-align:center;padding:.6rem 0;border-radius:var(--border-radius-md);border:var(--border-width) solid var(--color-primary);background-color:var(--color-bg-black);color:var(--color-text-white);cursor:pointer;text-decoration:none;font-weight:var(--font-weight-medium);transition:var(--transition-color)}.project-actions .btn:focus-visible,.project-actions .btn:hover{color:var(--color-primary)}.page-header{max-width:min(var(--max-content-width),var(--max-hero-width));margin:var(--spacing-xl) auto var(--section-spacing);padding:0 52px;display:grid;grid-template-columns:1fr minmax(280px,360px);align-items:center;gap:var(--spacing-xl)}.breadcrumb ol{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;font-size:var(--font-size-sm);color:color-mix(in srgb,var(--color-text-white) 65%,transparent)}.breadcrumb li{display:flex;align-items:center;gap:.5rem}.breadcrumb li:not(:first-child)::before{content:"/";opacity:.5}.breadcrumb a{transition:var(--transition-color)}.breadcrumb a:focus-visible,.breadcrumb a:hover{color:var(--color-primary)}.breadcrumb [aria-current=page]{color:var(--color-primary)}.page-header__title{font-size:var(--font-size-3xl);font-weight:var(--font-weight-semibold);letter-spacing:-.015em;color:var(--color-primary);margin:var(--spacing-sm) 0 var(--spacing-xs)}.page-header__intro{max-width:52ch;font-size:var(--font-size-md);line-height:var(--line-height-relaxed);color:color-mix(in srgb,var(--color-text-white) 82%,transparent)}.proof{overflow:hidden;border:var(--border-width) solid color-mix(in srgb,var(--color-primary) 45%,transparent);border-radius:var(--border-radius-lg);background:var(--color-bg-black);box-shadow:0 0 26px -6px var(--color-primary);font-size:var(--font-size-sm)}.proof__bar{display:flex;align-items:center;gap:.5rem;padding:.5rem .75rem;background:var(--color-bg-card);border-bottom:var(--border-width) solid color-mix(in srgb,var(--color-primary) 25%,transparent)}.proof__dots{display:flex;gap:.4rem}.proof__dot{width:11px;height:11px;border-radius:var(--border-radius-full);background:currentColor}.proof__dot--r{color:#ff5f56}.proof__dot--y{color:var(--color-standby)}.proof__dot--g{color:var(--color-primary)}.proof__file{margin-left:auto;font-size:.78rem;color:color-mix(in srgb,var(--color-text-white) 55%,transparent)}.proof__body{display:flex;flex-direction:column;gap:.7rem;padding:var(--spacing-md)}.proof__cmd{color:color-mix(in srgb,var(--color-text-white) 72%,transparent);overflow-wrap:anywhere}.proof__cmd::before{content:"$ ";color:var(--color-primary)}.proof__scores{display:grid;gap:.3rem;margin:0}.proof__score{display:grid;grid-template-columns:3ch 1fr;align-items:baseline;gap:.8rem}.proof__num{color:var(--color-primary);font-weight:var(--font-weight-semibold);font-variant-numeric:tabular-nums;text-shadow:var(--shadow-glow-md)}.proof__metric{color:color-mix(in srgb,var(--color-text-white) 80%,transparent)}.proof__note{margin-top:.1rem;font-size:.8rem;line-height:var(--line-height-normal);color:color-mix(in srgb,var(--color-text-white) 55%,transparent)}.proof__note::before{content:"\203a  ";color:var(--color-primary)}.project-collection{max-width:min(var(--max-content-width),var(--max-hero-width));margin:0 auto;padding:0 52px 78px}.project-group+.project-group{margin-top:var(--section-spacing)}.project-group__label{font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);letter-spacing:.18em;text-transform:uppercase;color:var(--color-primary);margin-bottom:var(--spacing-md);padding-bottom:var(--spacing-xs);border-bottom:var(--border-width) solid color-mix(in srgb,var(--color-primary) 30%,transparent)}.project-group__label::before{content:"# ";color:color-mix(in srgb,var(--color-primary) 55%,transparent)}.project-collection .projects-grid{display:grid;grid-template-columns:1fr;gap:var(--spacing-lg)}.project-collection .project-card{position:relative;display:grid;grid-template-columns:minmax(0,46%) 1fr;align-items:center;gap:var(--spacing-lg) var(--spacing-xl);min-height:0;padding:var(--spacing-lg);background:var(--color-bg-dark);border:var(--border-width) solid color-mix(in srgb,var(--color-text-white) 14%,transparent);border-radius:var(--border-radius-xl);transition:var(--transition-all)}.project-collection .project-card:nth-child(2n){grid-template-columns:1fr minmax(0,46%)}.project-collection .project-card:nth-child(2n) .project-thumb{grid-column:2;grid-row:1}.project-collection .project-card:nth-child(2n) .project-card__body{grid-column:1;grid-row:1}.project-collection .project-card:focus-within,.project-collection .project-card:hover{transform:none;border-color:color-mix(in srgb,var(--color-primary) 70%,transparent);box-shadow:0 0 22px -8px var(--color-primary)}.project-collection .project-card .project-thumb{z-index:2;cursor:pointer;width:100%;aspect-ratio:16/10;margin:0;overflow:hidden;border-radius:var(--border-radius-md);background:var(--color-bg-black);border:var(--border-width) solid color-mix(in srgb,var(--color-text-white) 10%,transparent)}.project-card__body{display:flex;flex-direction:column;gap:var(--spacing-xs);min-width:0}.project-collection .project-title{font-size:var(--font-size-xl);font-weight:var(--font-weight-semibold);letter-spacing:-.01em;margin:0;color:var(--color-primary)}.project-collection .project-desc{margin:var(--spacing-2xs) 0 0;line-height:var(--line-height-relaxed);color:color-mix(in srgb,var(--color-text-white) 82%,transparent);max-width:60ch}.project-collection .project-tags{margin:var(--spacing-xs) 0 0}.project-card__cue{margin-top:var(--spacing-sm);display:inline-flex;align-items:center;gap:.45rem;font-size:var(--font-size-sm);font-weight:var(--font-weight-medium);color:var(--color-primary)}.project-card__cue::after{content:"\2192";transition:transform var(--transition-fast)}.project-collection .project-card:focus-within .project-card__cue::after,.project-collection .project-card:hover .project-card__cue::after{transform:translateX(4px)}.project-card__link::after{content:"";position:absolute;inset:0;z-index:1}.project-collection .project-card--disabled .project-thumb{cursor:default}.project-collection .project-card--disabled{cursor:default}.project-collection .project-card--disabled:focus-within,.project-collection .project-card--disabled:hover{transform:none;border-color:color-mix(in srgb,var(--color-text-white) 14%,transparent);box-shadow:none}.project-collection .project-card--disabled .project-card__cue{color:color-mix(in srgb,var(--color-text-white) 45%,transparent)}.project-meta{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem .55rem;margin:var(--spacing-2xs) 0 var(--spacing-sm);font-size:var(--font-size-sm);font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--color-text-white) 70%,transparent)}.project-meta__sep{opacity:.45}.project-status{display:inline-flex;align-items:center;gap:.4rem;margin-left:auto;font-weight:var(--font-weight-medium);color:var(--color-text-white)}.project-status::before{content:"";width:7px;height:7px;border-radius:var(--border-radius-full);background:var(--color-primary);box-shadow:var(--shadow-glow-md)}.project-status--standby{color:color-mix(in srgb,var(--color-text-white) 80%,transparent)}.project-status--standby::before{background:var(--color-standby);box-shadow:none}.project-status--archived{color:color-mix(in srgb,var(--color-text-white) 70%,transparent)}.project-status--archived::before{background:color-mix(in srgb,var(--color-text-white) 55%,transparent);box-shadow:none}.projects-back,.projects-cta{text-align:center}.projects-back{margin-top:var(--section-spacing)}.projects-cta{margin-top:var(--spacing-xl)}.projects-back .btn,.projects-cta .btn{display:inline-block;padding:.6rem 1.4rem;border-radius:var(--border-radius-md);border:var(--border-width) solid var(--color-primary);background-color:var(--color-bg-black);color:var(--color-text-white);text-decoration:none;font-weight:var(--font-weight-medium);transition:var(--transition-color)}.projects-back .btn:focus-visible,.projects-back .btn:hover,.projects-cta .btn:focus-visible,.projects-cta .btn:hover{color:var(--color-primary)}.case-study{max-width:min(var(--max-content-width),var(--max-hero-width));margin:0 auto;padding:0 52px 78px;counter-reset:cs-section}.page-header:has(.case-study__terminal){display:block}.case-study__terminal{margin:var(--spacing-lg) 0 0;max-width:720px;border:var(--border-width) solid color-mix(in srgb,var(--color-primary) 50%,transparent);border-radius:var(--border-radius-lg);background:var(--color-bg-black);box-shadow:0 0 30px -6px var(--color-primary);overflow:hidden}.case-study__terminal-bar{display:flex;align-items:center;gap:var(--spacing-sm);padding:.55rem .8rem;background:var(--color-bg-card);border-bottom:var(--border-width) solid color-mix(in srgb,var(--color-primary) 25%,transparent)}.case-study__terminal-file{font-size:var(--font-size-sm);color:color-mix(in srgb,var(--color-text-white) 60%,transparent)}.case-study__terminal-dots{margin-left:auto;display:flex;gap:.45rem}.case-study__dot{width:11px;height:11px;border-radius:var(--border-radius-full);background:currentColor}.case-study__dot--r{color:#ff5f56}.case-study__dot--y{color:var(--color-standby)}.case-study__dot--g{color:var(--color-primary)}.case-study__terminal-body{padding:var(--spacing-md) var(--spacing-md) var(--spacing-sm)}.case-study__cmd{color:color-mix(in srgb,var(--color-text-white) 75%,transparent);margin-bottom:var(--spacing-sm)}.case-study__cmd::before{content:"$ ";color:var(--color-primary)}.case-study__prompt{margin-top:var(--spacing-sm);color:var(--color-primary)}.case-study__prompt::before{content:"$ "}.case-study__caret{display:inline-block;width:9px;height:1.05em;vertical-align:text-bottom;background:var(--color-primary);box-shadow:var(--shadow-glow-md);animation:cs-caret-blink 1.1s steps(1) infinite}@keyframes cs-caret-blink{50%{opacity:0}}.case-study__fields{display:grid;grid-template-columns:max-content 1fr;gap:.45rem 1.3rem;margin:0;line-height:var(--line-height-normal)}.case-study__fields dt{color:color-mix(in srgb,var(--color-primary) 80%,var(--color-text-white))}.case-study__fields dd{color:color-mix(in srgb,var(--color-text-white) 90%,transparent);overflow-wrap:anywhere}.case-study__fields .sep{opacity:.4;padding:0 .15rem}.case-study__fields .project-status{margin-left:0}.case-study__metric{color:var(--color-primary);font-weight:var(--font-weight-semibold);font-variant-numeric:tabular-nums;text-shadow:var(--shadow-glow-md)}.case-study__fields a{color:var(--color-primary);text-decoration:underline;text-underline-offset:2px;transition:var(--transition-color)}.case-study__fields a:focus-visible,.case-study__fields a:hover{color:var(--color-text-white)}.case-study__actions{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:var(--spacing-lg)}.case-study__actions .btn{display:inline-flex;align-items:center;gap:var(--spacing-xs);padding:.6rem 1.4rem;border-radius:var(--border-radius-md);border:var(--border-width) solid var(--color-primary);background-color:var(--color-bg-black);color:var(--color-text-white);text-decoration:none;font-weight:var(--font-weight-medium);transition:var(--transition-color)}.case-study__actions .btn svg{width:18px;height:18px;fill:currentColor}.case-study__actions .btn:focus-visible,.case-study__actions .btn:hover{color:var(--color-primary)}.case-study__media{position:relative;width:100%;aspect-ratio:16/9;margin:var(--spacing-lg) 0 var(--section-spacing);border:var(--border-width) solid var(--color-border-default);border-radius:var(--border-radius-xl);overflow:hidden}.case-study__media [data-slide]{object-fit:contain;background-color:var(--color-bg-dark)}.case-study__section+.case-study__section{margin-top:var(--section-spacing)}.case-study__section{display:grid;grid-template-columns:2.6rem minmax(0,1fr);column-gap:var(--spacing-md);counter-increment:cs-section}.case-study__section>*{grid-column:2;min-width:0}.case-study__section::before{content:counter(cs-section,decimal-leading-zero);grid-column:1;grid-row:1;align-self:start;padding-top:.5rem;font-size:var(--font-size-sm);font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--color-primary) 50%,transparent)}.case-study__section h2{font-size:var(--font-size-xl);font-weight:var(--font-weight-semibold);color:var(--color-primary);margin-bottom:var(--spacing-md);padding-bottom:var(--spacing-xs);border-bottom:var(--border-width) solid color-mix(in srgb,var(--color-primary) 30%,transparent)}.case-study__section h2::before{content:"## ";color:color-mix(in srgb,var(--color-primary) 50%,transparent)}.case-study__section p{max-width:68ch;line-height:var(--line-height-relaxed);margin-bottom:var(--spacing-sm)}.case-study__section ul{max-width:68ch;margin:0 0 var(--spacing-sm);padding-left:var(--spacing-md)}.case-study__section li{list-style:disc;margin-bottom:var(--spacing-2xs);line-height:var(--line-height-normal)}.case-study__section li::marker{color:color-mix(in srgb,var(--color-primary) 70%,transparent)}.case-study__section code{padding:.1em .35em;border-radius:var(--border-radius-sm);background-color:var(--color-bg-card);color:var(--color-primary);font-size:.9em;overflow-wrap:anywhere}.case-study__section li a,.case-study__section p a{color:var(--color-primary);text-decoration:underline;text-underline-offset:2px;transition:var(--transition-color)}.case-study__section li a:focus-visible,.case-study__section li a:hover,.case-study__section p a:focus-visible,.case-study__section p a:hover{color:var(--color-text-white)}.case-study__section--todo{display:block;counter-increment:none;border-left:2px solid var(--color-standby);border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;background:linear-gradient(90deg,color-mix(in srgb,var(--color-standby) 8%,transparent),transparent 55%);padding:var(--spacing-md) var(--spacing-lg)}.case-study__section--todo::before{content:none}.case-study__section--todo h2{color:var(--color-standby);border-bottom:none;padding-bottom:0;margin-bottom:var(--spacing-sm)}.case-study__section--todo h2::before{content:"// ";color:color-mix(in srgb,var(--color-standby) 60%,transparent)}.case-study__section--todo p{color:color-mix(in srgb,var(--color-text-white) 82%,transparent)}.case-study__next{color:var(--color-standby)}.case-study__meta{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem .6rem;margin:var(--spacing-sm) 0;font-size:var(--font-size-md);color:color-mix(in srgb,var(--color-text-white) 75%,transparent)}.case-study__meta .project-status{margin-left:0}.case-study__meta-sep{opacity:.45}.score-panel{width:100%;height:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:center;justify-items:center;gap:var(--spacing-sm) var(--spacing-md);padding:var(--spacing-sm);background-color:var(--color-bg-dark)}.case-study__media:has(.score-panel),.project-card .project-thumb:has(.score-panel){aspect-ratio:auto}.score{display:flex;flex-direction:column;align-items:center;gap:var(--spacing-xs)}.score__ring{display:grid;place-items:center;width:54px;height:54px;border:3px solid var(--color-primary);border-radius:var(--border-radius-full);color:var(--color-primary);font-weight:var(--font-weight-bold);font-size:var(--font-size-md);box-shadow:var(--shadow-glow-md)}.score__label{font-size:.7rem;text-align:center;color:color-mix(in srgb,var(--color-text-white) 75%,transparent)}.case-study__media .score-panel{gap:var(--spacing-md) var(--spacing-xl);padding:var(--spacing-lg)}@media (min-width:700px){.case-study__media .score-panel{grid-template-columns:repeat(4,minmax(0,1fr))}}.case-study__media .score__ring{width:84px;height:84px;font-size:var(--font-size-xl)}.case-study__media .score__label{font-size:var(--font-size-sm)}.media-photo{display:block;width:100%;height:100%}.media-photo img{width:100%;height:100%;object-fit:cover}@media (max-width:600px){.case-study__section{grid-template-columns:1.7rem minmax(0,1fr);column-gap:var(--spacing-sm)}.case-study__section--todo{padding:var(--spacing-md)}.case-study__fields{gap:.4rem 1rem}}.contact{max-width:min(var(--max-content-width),var(--max-hero-width));margin-right:auto;margin-left:auto;padding:52px 52px 78px;border-top:var(--border-width) solid var(--color-border-default);border-radius:var(--border-radius-2xl);color:var(--color-text-white)}.contact__container{display:flex;flex-direction:column;align-items:center;gap:var(--spacing-lg);text-align:center}.contact__container>p{font-size:1.2rem;line-height:var(--line-height-relaxed);max-width:600px;margin:0}.contact__socials{display:flex;gap:var(--spacing-lg);align-items:center}.contact__socials svg{width:50px;height:50px;color:var(--color-text-white);transition:var(--transition-all)}.contact__socials a:focus-visible svg,.contact__socials a:hover svg{transform:scale(1.05);color:var(--color-primary);filter:drop-shadow(var(--shadow-glow-icon))}.contact__cv-wrapper{display:flex;gap:0;align-items:center}.contact__cv-link{display:flex;align-items:center;gap:var(--spacing-sm);height:52px;padding:.75rem var(--spacing-md);border:var(--border-width) solid var(--color-primary);border-radius:var(--border-radius-md) 0 0 var(--border-radius-md);background-color:var(--color-bg-black);color:var(--color-text-white);font-size:var(--font-size-lg);font-weight:var(--font-weight-medium);transition:var(--transition-color)}.contact__cv-link:focus-visible,.contact__cv-link:hover{color:var(--color-primary)}.contact__cv-link svg{width:24px;height:24px;fill:currentColor;transition:filter var(--transition-fast)}.contact__cv-link:focus-visible svg,.contact__cv-link:hover svg{filter:drop-shadow(var(--shadow-glow-icon))}.contact__cv-btn{display:flex;align-items:center;justify-content:center;padding:.8rem;height:52px;border:var(--border-width) solid var(--color-primary);border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;background-color:var(--color-bg-black);color:var(--color-text-white);transition:var(--transition-color);cursor:pointer}.contact__cv-btn:focus-visible,.contact__cv-btn:hover{color:var(--color-primary)}.contact__cv-btn svg{width:24px;height:24px;fill:currentColor;transition:filter var(--transition-fast)}.contact__cv-btn:focus-visible svg,.contact__cv-btn:hover svg{filter:drop-shadow(var(--shadow-glow-icon))}.footer{position:relative;width:100%;background-color:var(--color-bg-black);border-top:var(--border-width) solid var(--color-primary);padding:var(--spacing-lg) var(--spacing-sm) var(--spacing-md);display:flex;flex-direction:column;align-items:center;gap:var(--spacing-sm);color:var(--color-text-white);box-shadow:var(--shadow-glow-footer);z-index:var(--z-footer)}.footer p{margin:0}.footer__divider{width:min(30em,80%);border:0;border-top:var(--border-width) solid color-mix(in srgb,var(--color-text-white) 50%,transparent);margin:var(--spacing-2xs) 0}.footer__copyright{font-size:.9rem}.footer__privacy{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:0 .6em;font-size:1rem;color:var(--color-primary-dim);font-weight:var(--font-weight-medium)}.footer__privacy-item{white-space:nowrap}@media (max-width:480px){.footer__privacy{flex-direction:column;gap:.15rem}}.error-body{background:0 0;align-items:center;justify-content:center;padding:var(--spacing-lg)}.error-body #matrix-canvas{z-index:0;mask-image:none;-webkit-mask-image:none}.terminal{position:relative;z-index:var(--z-base);flex:0 0 auto;padding:0;width:100%;max-width:820px;background:var(--color-bg-black);border:var(--border-width) solid var(--color-primary);border-radius:var(--border-radius-md);box-shadow:var(--shadow-glow-primary);overflow:hidden}.terminal__bar{display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-sm);padding:var(--spacing-xs) var(--spacing-sm);background:var(--color-bg-card);border-bottom:var(--border-width) solid var(--color-primary)}.terminal__prompt{font-size:.85rem;color:var(--color-primary)}.terminal__controls{display:flex;align-items:center;gap:.9rem}.terminal__control{position:relative;width:13px;height:13px;color:var(--color-text-white)}.terminal__control--min::before{content:"";position:absolute;left:0;right:0;bottom:1px;height:2px;background:currentColor}.terminal__control--max{border:2px solid currentColor;border-radius:2px}.terminal__control--close{color:#ff5f56}.terminal__control--close::after,.terminal__control--close::before{content:"";position:absolute;top:50%;left:50%;width:15px;height:2px;background:currentColor}.terminal__control--close::before{transform:translate(-50%,-50%) rotate(45deg)}.terminal__control--close::after{transform:translate(-50%,-50%) rotate(-45deg)}.terminal__body{display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--spacing-sm);padding:var(--spacing-xl) var(--spacing-lg)}.error-page__code{margin:0;font-size:clamp(4rem, 18vw, 9rem);font-weight:var(--font-weight-bold);line-height:1;color:var(--color-primary);text-shadow:var(--shadow-glow-md)}.error-page__title{margin:0;font-size:var(--font-size-xl);color:var(--color-text-white)}.error-page__text{margin:0;font-size:var(--font-size-md);color:var(--color-text-white)}.error-page__text[lang=es]{color:var(--color-primary-dim)}.error-page__actions{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--spacing-sm);margin-top:var(--spacing-sm)}.error-page__actions .btn{padding:.6rem 1.4rem;border-radius:var(--border-radius-md);border:var(--border-width) solid var(--color-primary);background-color:var(--color-bg-black);color:var(--color-text-white);text-decoration:none;font-weight:var(--font-weight-medium);transition:var(--transition-color)}.error-page__actions .btn:focus-visible,.error-page__actions .btn:hover{color:var(--color-primary)}@media (max-width:1400px){.nav:last-child{margin-right:var(--spacing-md)}}@media (max-width:1276px){.header__logo{margin-right:24px}.nav:last-child{margin-right:0}.header__toggle-button{display:block}.nav{position:fixed;width:100vw;max-width:unset;height:calc(100dvh - var(--header-height) - var(--header-border));top:calc(var(--header-height) + var(--header-border));right:-100%;text-align:center;display:flex;flex-direction:column;background-color:var(--color-bg-black);transition:right var(--transition-medium);justify-content:space-evenly;padding:var(--spacing-sm) 0;gap:var(--spacing-sm);z-index:var(--z-dropdown)}.nav[aria-hidden=false]{right:0}.nav-overlay{display:block;position:fixed;left:0;right:0;top:calc(var(--header-height) + var(--header-border));bottom:0;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity var(--transition-medium);z-index:calc(var(--z-dropdown) - 1)}.nav[aria-hidden=false]+.nav-overlay{opacity:1;pointer-events:auto}.nav__separator{width:50%;height:var(--border-width)}}@media (max-width:1200px){.about__container{flex-direction:column;gap:var(--spacing-xl)}.about__headlines,.about__paragraph{max-width:100%}.about__headlines ul{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:var(--spacing-sm)}.about__headlines ul li{margin:0;flex:0 1 calc(33.333% - var(--spacing-sm));min-width:140px}.about__slider{max-width:500px;margin:0 auto}}@media (max-width:1039px){.hero{padding:32px 0}.hero__grid{grid-template-areas:"image heading" "paragraph paragraph"}.hero__content{display:flex;flex-direction:column;justify-content:space-around;margin-left:-33%}.hero__content::after{content:none}.hero__title{font-size:var(--font-size-2xl);max-width:10.5ch}.hero__subtitle{font-size:1.2rem;word-break:break-word}.hero__paragraph{margin-top:50px;max-width:none;padding-left:2.5%;padding-right:2.5%}.hero picture{min-width:15rem;max-height:320px;max-width:288px}.skills__item{width:calc(25% - var(--spacing-md))}.projects-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}}@media (max-width:900px){.page-header{grid-template-columns:1fr;gap:var(--spacing-lg);margin-bottom:var(--spacing-xl)}.project-collection .project-card,.project-collection .project-card:nth-child(2n){grid-template-columns:1fr;gap:var(--spacing-md)}.project-collection .project-card .project-thumb,.project-collection .project-card:nth-child(2n) .project-thumb{grid-column:1;grid-row:auto}.project-collection .project-card:nth-child(2n) .project-card__body,.project-collection .project-card__body{grid-column:1;grid-row:auto}.project-collection .project-title{font-size:var(--font-size-lg)}}@media (max-width:791px){.hero{padding:24px 16px}.hero__grid{grid-template-areas:"heading" "image" "paragraph";grid-template-rows:auto auto auto;gap:var(--spacing-sm);align-items:start;justify-items:center;max-height:none}.hero picture{max-height:300px;max-width:300px;border-radius:var(--spacing-lg);margin:0 auto;display:block}.hero img{border-radius:var(--spacing-lg);display:block;margin:0 auto;width:100%;height:100%}.hero__line-break,.hero__line-break--alt{display:none}.hero__content{display:block;margin:0 auto;padding:10px 20px 16px}.hero__title{font-size:1.75rem;width:100%;max-width:none}.hero__greet{display:inline;font-size:var(--font-size-xl)}.hero__dot{font-size:var(--font-size-lg)}.hero__subtitle{font-size:1.125rem}.hero__paragraph{margin-top:var(--spacing-sm);font-size:var(--font-size-sm);line-height:1.125rem}.section-divider__label{font-size:var(--font-size-lg)}.section-divider__icon{width:16px;height:16px}.about{min-height:auto}.about__container{padding:32px;gap:var(--spacing-lg)}.about__paragraph{font-size:var(--font-size-sm);line-height:1.4rem}.about__headlines ul li{font-size:var(--font-size-base);padding:.4rem .7rem;flex:0 1 calc(50% - var(--spacing-xs))}.skills{padding:32px}.skills__list{gap:var(--spacing-sm)}.skills__item{width:calc(33.333% - var(--spacing-sm));font-size:var(--font-size-base);padding:var(--spacing-xs) .8rem}.skills__item svg{margin:6px 0}.projects{padding:32px}.projects-header h2{font-size:var(--font-size-2xl)}.projects-header p{font-size:.95rem}.projects-grid{grid-template-columns:1fr;gap:var(--spacing-lg)}.page-header{padding:0 32px}.case-study,.project-collection{padding:0 32px 78px}.project-card{padding:1.25rem}.project-card .project-thumb{aspect-ratio:16/9}.project-title{font-size:1.3rem}.project-desc{font-size:.95rem}.project-tags .tag{font-size:.75rem}.project-card ul li{font-size:.9rem}.contact{padding:32px}.contact__container{gap:var(--spacing-md)}.contact__container>p{font-size:1.1rem}.contact__socials{gap:var(--spacing-md)}.contact__socials svg{width:45px;height:45px}.contact__cv-link{font-size:1.1rem;padding:.65rem 1.25rem;height:48px}.contact__cv-btn{height:48px;padding:.7rem}.contact__cv-btn svg,.contact__cv-link svg{width:22px;height:22px}}@media (max-width:600px){.skills__item{width:calc(50% - var(--spacing-sm))}}@media (max-width:500px){.contact,.projects,.skills{padding:16px}.page-header{padding:0 16px}.case-study,.project-collection{padding:0 16px 78px}.about__container{flex-direction:column-reverse;padding:20px}.about__paragraph{font-size:.9rem;line-height:var(--line-height-tight);text-indent:var(--spacing-sm)}.about__headlines ul li{font-size:var(--font-size-base);flex:0 1 100%;width:100%;max-width:200px;margin:0 auto}.projects-header{margin-bottom:var(--spacing-lg)}.projects-header h2{font-size:1.75rem}.projects-grid{gap:var(--spacing-md)}.project-card{padding:var(--spacing-sm)}.project-tags{gap:.4rem;margin:.8rem 0}.project-actions{flex-direction:column;gap:var(--spacing-xs)}.project-actions .btn{padding:.7rem 0}.contact{padding:24px}.contact__container>p{font-size:var(--font-size-base);line-height:var(--line-height-normal)}.contact__socials{gap:1.25rem}.contact__socials svg{width:40px;height:40px}.contact__cv-wrapper{flex-direction:column;width:100%;max-width:280px}.contact__cv-link{width:100%;justify-content:center;border-radius:var(--border-radius-md) var(--border-radius-md) 0 0;font-size:var(--font-size-base);height:44px}.contact__cv-btn{width:100%;border-radius:0 0 var(--border-radius-md) var(--border-radius-md);border-top:none;height:44px}}@media (max-width:400px){.skills{padding:24px}.skills__list{gap:.8rem}.skills__item{width:calc(50% - .8rem);font-size:.9rem;padding:.4rem .6rem}}@media (max-width:320px){.header__logo-name{font-size:1.67rem}.contact__socials svg{width:36px;height:36px}}</style>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <header class="header">
+      <div class="header__container">
+        <div class="header__content">
+          <a href="#hero" class="header__logo" aria-label="Go to homepage">
+            <img src="../assets/img/favicon.svg" alt="Miguel PV Logo" class="header__logo-image" width="44" height="44" loading="eager" fetchpriority="high" />
+            <span class="header__logo-name">Miguel PV</span> 
+          </a>
+
+          <button
+            id="nav-toggle"
+            class="header__toggle-button"
+            type="button"
+            aria-controls="site-nav"
+            aria-expanded="false"
+            aria-label="Toggle navigation menu"
+          >
+            <svg width="28" height="28" fill="currentColor" aria-hidden="true">
+              <use href="../assets/img/sprite.svg#bars" />
+            </svg>
+          </button>
+
+            <ul class="nav" id="site-nav" data-nav>
+              <li class="nav__item">
+                <a href="#about">
+                  <svg width="16" height="16" fill="currentColor">
+                    <use href="../assets/img/sprite.svg#user" />
+                  </svg>
+                  About Me
+                </a>
+              </li>
+              <li class="nav__separator" aria-hidden="true"></li>
+              <li class="nav__item">
+                <a href="#skills">
+                  <svg width="20" height="20" fill="currentColor" id="lightbulb">
+                    <use href="../assets/img/sprite.svg#lightbulb" />
+                  </svg>
+                  Skills
+                </a>
+              </li>
+              <li class="nav__separator" aria-hidden="true"></li>
+              <li class="nav__item">
+                <a href="#projects">
+                  <svg width="20" height="20" fill="currentColor" id="laptop-code">
+                    <use href="../assets/img/sprite.svg#laptop-code" />
+                  </svg>
+                  Projects
+                </a>
+              </li>
+              <li class="nav__separator" aria-hidden="true"></li>
+              <li class="nav__item">
+                <a href="#contact">
+                  <svg width="20" height="20" fill="currentColor" id="envelope">
+                    <use href="../assets/img/sprite.svg#envelope" />
+                  </svg>
+                  Contact
+                </a>
+              </li>
+              <li class="nav__separator" aria-hidden="true"></li>
+              <li class="nav__item">
+                <nav class="lang-toggle" aria-label="Language">
+                  <a href="/en/" class="lang-toggle__link lang-toggle__link--active" lang="en" hreflang="en" aria-current="page">EN</a>
+                  <span class="lang-toggle__sep" aria-hidden="true">/</span>
+                  <a href="/es/" class="lang-toggle__link" lang="es" hreflang="es">ES</a>
+                </nav>
+              </li>
+          </ul>
+          <div class="nav-overlay" data-nav-overlay hidden></div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <canvas id="matrix-canvas" aria-hidden="true"></canvas>
+
+      <!-- Hero Section -->
+      <section id="hero" class="hero" aria-label="Hero section">
+        <div class="hero__grid">
+          <picture data-fullres="../assets/img/picture.jpg">
+            <source srcset="../assets/img/picture.avif" type="image/avif" />
+            <source srcset="../assets/img/picture.webp" type="image/webp" />
+            <img
+              src="../assets/img/picture.png"
+              alt="Miguel Payá Vañó"
+              width="288"
+              height="320"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </picture>
+
+          <div class="hero__content">
+            <h1 class="hero__title">
+              <span class="hero__greet">Hello, I'm</span>
+              <br class="hero__line-break" />
+              <span class="hero__name">Miguel Payá Vañó</span><span class="hero__dot">.</span>
+            </h1>
+
+            <h2 class="hero__subtitle">
+              <span>A </span><span class="hero__highlight">Full-Stack Developer</span
+              ><span> who loves</span>
+              <br class="hero__line-break--alt" />
+              building and improving web applications<span class="hero__dot--alt">.</span>
+            </h2>
+          </div>
+
+          <div class="hero__paragraph">
+            <p>
+              I focus on building fast, accessible, and dependable web applications using Vue, Node /
+              Express, MongoDB, TypeScript, Tailwind and React.
+            </p>
+            <br />
+            <p>
+              My work consistently earns perfect 
+                <a class="hero__paragraph-link" target="_blank" rel="noopener noreferrer" href="https://pagespeed.web.dev/analysis/https-miguelpv-dev-en/j48u2zc7bs?form_factor=mobile">Core Web Vitals<svg width="20" height="20" fill="currentColor" class="external-link__alt"><use href="../assets/img/sprite.svg#external-link" /></svg></a> scores across performance, accessibility,
+              SEO and best practices. I take pride in creating clean, efficient interfaces that feel
+              smooth and enjoyable to use.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Me Section -->
+      <div class="section-divider-container">
+        <!-- Section Divider -->
+        <div class="section-divider">
+          <div class="section-divider__tab">
+            <svg fill="currentColor" class="section-divider__icon" id="section-divider-user">
+              <use href="../assets/img/sprite.svg#user" />
+            </svg>
+            <h2 class="section-divider__label">About Me</h2>
+          </div>
+        </div>
+
+        <section id="about" class="about">
+          <div class="about__container">
+            <div class="about__paragraph">
+              <p>
+                I'm driven by curiosity—always exploring history, philosophy, politics, and the ideas that shape our world. I balance that analytical side with a love for nature, art, culture, and the creativity they inspire. I bring logic and imagination together to build clean structures, thoughtful designs, and experiences that feel real and meaningful.
+              </p>
+              <br />
+              <p>
+                I'm at my best when I'm learning something new, reading, listening to anything from rock to orchestral music, or enjoying calm moments with the people I care about. Whether I'm outdoors, discovering new ideas, or creating something from scratch, I bring that curiosity and appreciation for beauty into everything I do.
+              </p>
+            </div>
+
+            <div class="about__headlines">
+              <ul>
+                <li>Nature<br />Lover</li>
+                <li>Music<br />Addict</li>
+                <li>History<br />Nerd</li>
+                <li>Outdoor<br />Adventurer</li>
+                <li>Lifelong<br />Learner</li>
+                <li>Thoughtful<br />Observer</li>
+              </ul>
+            </div>
+
+            <!-- About Me Image Slider -->
+            <div class="about__slider">
+              <div data-slider>
+                <picture data-fullres="../assets/img/outdoors-and-family.png">
+                  <source type="image/avif"
+                    srcset="
+                      ../assets/img/outdoors-and-family-350w.avif 350w,
+                      ../assets/img/outdoors-and-family-700w.avif 700w,
+                      ../assets/img/outdoors-and-family-1050w.avif 1050w
+                    "
+                    sizes="(max-width: 500px) 350px, (max-width: 1200px) 500px, 40vw"
+                  />
+                  <source srcset="../assets/img/outdoors-and-family.webp" type="image/webp" />
+                  <img src="../assets/img/outdoors-and-family.png" alt="Outdoors & Family" data-slide class="slider-img active">
+                </picture>
+
+                <picture data-fullres="../assets/img/gym.png">
+                  <source type="image/avif"
+                    srcset="
+                      ../assets/img/gym-350w.avif 350w,
+                      ../assets/img/gym-700w.avif 700w,
+                      ../assets/img/gym-1050w.avif 1050w
+                    "
+                    sizes="(max-width: 500px) 350px, (max-width: 1200px) 500px, 40vw"
+                  />
+                  <source srcset="../assets/img/gym.webp" type="image/webp" />
+                  <img src="../assets/img/gym.png" alt="Gym" data-slide class="slider-img" loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/music.png">
+                  <source type="image/avif"
+                    srcset="
+                      ../assets/img/music-350w.avif 350w,
+                      ../assets/img/music-700w.avif 700w,
+                      ../assets/img/music-1050w.avif 1050w
+                    "
+                    sizes="(max-width: 500px) 350px, (max-width: 1200px) 500px, 40vw"
+                  />
+                  <source srcset="../assets/img/music.webp" type="image/webp" />
+                  <img src="../assets/img/music.png" alt="Music" data-slide class="slider-img" loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/books.png">
+                  <source type="image/avif"
+                    srcset="
+                      ../assets/img/books-350w.avif 350w,
+                      ../assets/img/books-700w.avif 700w,
+                      ../assets/img/books-1050w.avif 1050w
+                    "
+                    sizes="(max-width: 500px) 350px, (max-width: 1200px) 500px, 40vw"
+                  />
+                  <source srcset="../assets/img/books.webp" type="image/webp" />
+                  <img src="../assets/img/books.png" alt="Books" data-slide class="slider-img" loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/nature.png">
+                  <source type="image/avif"
+                    srcset="
+                      ../assets/img/nature-350w.avif 350w,
+                      ../assets/img/nature-700w.avif 700w,
+                      ../assets/img/nature-1050w.avif 1050w
+                    "
+                    sizes="(max-width: 500px) 350px, (max-width: 1200px) 500px, 40vw"
+                  />
+                  <source srcset="../assets/img/nature.webp" type="image/webp" />
+                  <img src="../assets/img/nature.png" alt="Nature" data-slide class="slider-img" loading="lazy">
+                </picture>
+                
+                <!-- Navigation Arrows -->
+                <button type="button" data-slide-prev class="slider-prev" aria-label="Previous slide">&#10094;</button>
+                <button type="button" data-slide-next class="slider-next" aria-label="Next slide">&#10095;</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Skills Section -->
+      <div class="section-divider-container">
+        <!-- Section Divider -->
+        <div class="section-divider">
+          <div class="section-divider__tab">
+            <svg fill="currentColor" class="section-divider__icon">
+              <use href="../assets/img/sprite.svg#lightbulb" />
+            </svg>
+            <h2 class="section-divider__label">Skills</h2>
+          </div>
+        </div>
+
+        <section id="skills" class="skills">
+          <div class="skills__container">
+            <ul class="skills__list">
+              <li class="skills__item">
+                <svg>
+                  <use href="../assets/img/sprite.svg#javascript" />
+                </svg>
+                JavaScript
+              </li>
+
+              <li class="skills__item">
+                <svg fill="currentColor">
+                  <use href="../assets/img/sprite.svg#typescript" />
+                </svg>
+                TypeScript
+              </li>
+
+              <li class="skills__item">
+                <svg fill="currentColor">
+                  <use href="../assets/img/sprite.svg#node" />
+                </svg>
+                Node
+              </li>
+
+              <li class="skills__item">
+                <svg fill="currentColor">
+                  <use href="../assets/img/sprite.svg#vue" />
+                </svg>
+                Vue
+              </li>
+
+              <li class="skills__item">
+                <svg fill="currentColor">
+                  <use href="../assets/img/sprite.svg#react" />
+                </svg>
+                React
+              </li>
+
+              <li class="skills__item">
+                <svg fill="currentColor">
+                  <use href="../assets/img/sprite.svg#mongodb" />
+                </svg>
+                MongoDB
+              </li>
+
+              <li class="skills__item">
+                <svg fill="currentColor">
+                  <use href="../assets/img/sprite.svg#tailwind" />
+                </svg>
+                Tailwind CSS
+              </li>
+
+              <li class="skills__item">
+                <svg fill="currentColor">
+                  <use href="../assets/img/sprite.svg#restful-api" />
+                </svg>
+                RESTful APIs
+              </li>
+
+              <li class="skills__item">
+                <svg fill="currentColor">
+                  <use href="../assets/img/sprite.svg#trello" />
+                </svg>
+                Agile Methodologies
+              </li>
+
+              <li class="skills__item">
+                <svg fill="currentColor">
+                  <use href="../assets/img/sprite.svg#jest" />
+                </svg>
+                Unit & Integration Testing
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- Projects Section -->
+      <div class="section-divider-container">
+        <!-- Section Divider -->
+        <div class="section-divider">
+          <div class="section-divider__tab">
+            <svg fill="currentColor" class="section-divider__icon">
+              <use href="../assets/img/sprite.svg#laptop-code" />
+            </svg>
+            <span class="section-divider__label">Projects</span>
+          </div>
+        </div>
+
+        <section id="projects" class="projects">
+          <div class="projects-header">
+            <h2>Selected Work</h2>
+            <p>A few things I've built recently.</p>
+          </div>
+
+          <!-- Projects Grid -->
+          <div class="projects-grid">
+            <!-- Project 1: Biglo -->
+            <div class="project-card biglo">
+              <div class="project-thumb" data-slider>
+                <picture data-fullres="../assets/img/biglo/landing-page.png">
+                  <source type="image/avif"
+                    srcset="
+                      ../assets/img/biglo/landing-page-320w.avif 320w,
+                      ../assets/img/biglo/landing-page-640w.avif 640w,
+                      ../assets/img/biglo/landing-page-960w.avif 960w
+                    "
+                    sizes="(max-width: 791px) calc(90vw - 64px), (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/biglo/landing-page.webp" type="image/webp" />
+                  <img src="../assets/img/biglo/landing-page.png" alt="Biglo Landing Page" data-slide class="active">
+                </picture>
+
+                <picture data-fullres="../assets/img/biglo/our-mission-section.png">
+                  <source type="image/avif"
+                    srcset="
+                      ../assets/img/biglo/our-mission-section-320w.avif 320w,
+                      ../assets/img/biglo/our-mission-section-640w.avif 640w,
+                      ../assets/img/biglo/our-mission-section-960w.avif 960w
+                    "
+                    sizes="(max-width: 791px) calc(90vw - 64px), (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/biglo/our-mission-section.webp" type="image/webp" />
+                  <img src="../assets/img/biglo/our-mission-section.png" alt="Biglo Mission Section" data-slide loading="lazy">
+                </picture>
+
+                <video src="../assets/img/biglo/logo-carousel.mp4" data-slide data-duration="6.9" loading="lazy" muted loop playsinline></video>
+                <video src="../assets/img/biglo/sign-up.mp4" data-slide data-duration="24.8" loading="lazy" muted loop playsinline></video>
+
+                <picture data-fullres="../assets/img/biglo/spaces-map-search-grid.png">
+                  <source type="image/avif"
+                    srcset="
+                      ../assets/img/biglo/spaces-map-search-grid-320w.avif 320w,
+                      ../assets/img/biglo/spaces-map-search-grid-640w.avif 640w,
+                      ../assets/img/biglo/spaces-map-search-grid-960w.avif 960w
+                    "
+                    sizes="(max-width: 791px) calc(90vw - 64px), (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/biglo/spaces-map-search-grid.webp" type="image/webp" />
+                  <img src="../assets/img/biglo/spaces-map-search-grid.png" alt="Biglo Spaces Grid" data-slide loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/biglo/spaces-map-search-list.png">
+                  <source type="image/avif"
+                    srcset="
+                      ../assets/img/biglo/spaces-map-search-list-320w.avif 320w,
+                      ../assets/img/biglo/spaces-map-search-list-640w.avif 640w,
+                      ../assets/img/biglo/spaces-map-search-list-960w.avif 960w
+                    "
+                    sizes="(max-width: 791px) calc(90vw - 64px), (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/biglo/spaces-map-search-list.webp" type="image/webp" />
+                  <img src="../assets/img/biglo/spaces-map-search-list.png" alt="Biglo Spaces List" data-slide loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/biglo/lighthouse-perfect-score.png">
+                  <source type="image/avif"
+                    srcset="
+                      ../assets/img/biglo/lighthouse-perfect-score-320w.avif 320w,
+                      ../assets/img/biglo/lighthouse-perfect-score-640w.avif 640w,
+                      ../assets/img/biglo/lighthouse-perfect-score-960w.avif 960w
+                    "
+                    sizes="(max-width: 791px) calc(90vw - 64px), (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/biglo/lighthouse-perfect-score.webp" type="image/webp" />
+                  <img src="../assets/img/biglo/lighthouse-perfect-score.png" alt="Perfect Core Web Vitals (CWV) Score" data-slide loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/biglo/axe-devtools-0-issues.png">
+                  <source type="image/avif"
+                    srcset="
+                      ../assets/img/biglo/axe-devtools-0-issues-320w.avif 320w,
+                      ../assets/img/biglo/axe-devtools-0-issues-640w.avif 640w,
+                      ../assets/img/biglo/axe-devtools-0-issues-960w.avif 960w
+                    "
+                    sizes="(max-width: 791px) calc(90vw - 64px), (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/biglo/axe-devtools-0-issues.webp" type="image/webp" />
+                  <img src="../assets/img/biglo/axe-devtools-0-issues.png" alt="Zero Accessibility Issues" data-slide loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/biglo/ai-overview.png">
+                  <source type="image/avif"
+                    srcset="
+                      ../assets/img/biglo/ai-overview-320w.avif 320w,
+                      ../assets/img/biglo/ai-overview-640w.avif 640w,
+                      ../assets/img/biglo/ai-overview-960w.avif 960w
+                    "
+                    sizes="(max-width: 791px) calc(90vw - 64px), (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/biglo/ai-overview.webp" type="image/webp" />
+                  <img src="../assets/img/biglo/ai-overview.png" alt="AI Overview" data-slide loading="lazy">
+                </picture>
+
+                <!-- Navigation Arrows -->
+                <button type="button" data-slide-prev class="slider-prev" aria-label="Previous slide">&#10094;</button>
+                <button type="button" data-slide-next class="slider-next" aria-label="Next slide">&#10095;</button>
+              </div>
+
+              <h3 class="project-title">Biglo</h3>
+              <p class="project-desc">Logistics B2B platform.</p>
+
+              <div class="project-tags">
+                <span class="tag">Vue</span>
+                <span class="tag">Node</span>
+                <span class="tag">TypeScript</span>
+                <span class="tag">MongoDB</span>
+                <span class="tag">Tailwind CSS</span>
+              </div>
+
+              <ul>
+                <li>· Perfect CWV metrics</li>
+                <li>· Perfect accessibility axe score</li>
+                <li>· All code developed by me</li>
+              </ul>
+
+              <div class="project-actions">
+                <a class="btn" title="May have varied since my departure" target="_blank" rel="noopener noreferrer" href="https://biglosolutions.com">
+                  Biglo*
+                  <svg width="18" height="18" fill="currentColor" class="external-link">
+                    <use href="../assets/img/sprite.svg#external-link" /></svg>
+                  </a>
+                <a class="btn" target="_blank" rel="noopener noreferrer" href="https://github.com/miguelpv26/Biglo" aria-label="GitHub repository for Biglo">
+                  GitHub
+                  <svg width="18" height="18" fill="currentColor" class="external-link">
+                  <use href="../assets/img/sprite.svg#external-link" /></svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Project 2: Digitalando -->
+            <div class="project-card">
+              <div class="project-thumb" data-slider>
+                <picture data-fullres="../assets/img/digitalando/landing.png">
+                  <source type="image/avif"
+                    srcset="
+                      ../assets/img/digitalando/landing-320w.avif 320w,
+                      ../assets/img/digitalando/landing-640w.avif 640w,
+                      ../assets/img/digitalando/landing-960w.avif 960w
+                    "
+                    sizes="(max-width: 791px) calc(90vw - 64px), (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/digitalando/landing.webp" type="image/webp" />
+                  <img src="../assets/img/digitalando/landing.png" alt="Digitalando Landing" data-slide class="active">
+                </picture>
+
+                <picture data-fullres="../assets/img/digitalando/digital-profile.png">
+                  <source type="image/avif"
+                    srcset="
+                      ../assets/img/digitalando/digital-profile-320w.avif 320w,
+                      ../assets/img/digitalando/digital-profile-640w.avif 640w,
+                      ../assets/img/digitalando/digital-profile-960w.avif 960w
+                    "
+                    sizes="(max-width: 791px) calc(90vw - 64px), (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/digitalando/digital-profile.webp" type="image/webp" />
+                  <img src="../assets/img/digitalando/digital-profile.png" alt="Digitalando Digital Profile" data-slide loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/digitalando/solutions.png">
+                  <source type="image/avif"
+                    srcset="
+                      ../assets/img/digitalando/solutions-320w.avif 320w,
+                      ../assets/img/digitalando/solutions-640w.avif 640w,
+                      ../assets/img/digitalando/solutions-960w.avif 960w
+                    "
+                    sizes="(max-width: 791px) calc(90vw - 64px), (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/digitalando/solutions.webp" type="image/webp" />
+                  <img src="../assets/img/digitalando/solutions.png" alt="Digitalando Solution Search" data-slide loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/digitalando/payment.png">
+                  <source type="image/avif"
+                    srcset="
+                      ../assets/img/digitalando/payment-320w.avif 320w,
+                      ../assets/img/digitalando/payment-640w.avif 640w,
+                      ../assets/img/digitalando/payment-960w.avif 960w
+                    "
+                    sizes="(max-width: 791px) calc(90vw - 64px), (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/digitalando/payment.webp" type="image/webp" />
+                  <img src="../assets/img/digitalando/payment.png" alt="Digitalando Payment" data-slide loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/digitalando/ai.png">
+                  <source type="image/avif"
+                    srcset="
+                      ../assets/img/digitalando/ai-320w.avif 320w,
+                      ../assets/img/digitalando/ai-640w.avif 640w,
+                      ../assets/img/digitalando/ai-960w.avif 960w
+                    "
+                    sizes="(max-width: 791px) calc(90vw - 64px), (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/digitalando/ai.webp" type="image/webp" />
+                  <img src="../assets/img/digitalando/ai.png" alt="Digitalando AI Integration" data-slide loading="lazy">
+                </picture>
+
+                <button type="button" data-slide-prev class="slider-prev" aria-label="Previous slide">&#10094;</button>
+                <button type="button" data-slide-next class="slider-next" aria-label="Next slide">&#10095;</button>
+              </div>
+
+              <h3 class="project-title">Digitalando</h3>
+              <p class="project-desc">Digital community for companies and software developers.</p>
+
+              <div class="project-tags">
+                <span class="tag">React</span>
+                <span class="tag">RESTful API</span>
+                <span class="tag">Agile Methodologies</span>
+                <span class="tag">Multilingual Support</span>
+              </div>
+
+              <ul>
+                <li>· Fast search engine</li>
+                <li>· Payment Gateway</li>
+                <li>· Team focused project</li>
+              </ul>
+
+              <div class="project-actions">
+                <a title="May have varied since my departure" class="btn" target="_blank" rel="noopener noreferrer" href="https://digitalando.org">
+                  Digitalando*
+                  <svg width="18" height="18" fill="currentColor" class="external-link">
+                    <use href="../assets/img/sprite.svg#external-link" />
+                  </svg>
+                </a>
+                <a class="btn" target="_blank" rel="noopener noreferrer" href="https://github.com/miguelpv26/digitalando" aria-label="GitHub repository for Digitalando">
+                  GitHub
+                  <svg width="18" height="18" fill="currentColor" class="external-link">
+                    <use href="../assets/img/sprite.svg#external-link" />
+                  </svg>
+                  </a>
+              </div>
+            </div>
+
+            <!-- Project 3: NPM Package -->
+            <div class="project-card">
+              <div class="project-thumb" data-slider>
+                <video src="../assets/img/input-color-feedback/behavior.mp4" data-slide data-duration="24.2" class="active" muted loop playsinline>
+                </video>
+
+                <picture data-fullres="../assets/img/input-color-feedback/readme.png">
+                  <source type="image/avif"
+                    srcset="
+                      ../assets/img/input-color-feedback/readme-320w.avif 320w,
+                      ../assets/img/input-color-feedback/readme-640w.avif 640w,
+                      ../assets/img/input-color-feedback/readme-960w.avif 960w
+                    "
+                    sizes="(max-width: 791px) calc(90vw - 64px), (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/input-color-feedback/readme.webp" type="image/webp" />
+                  <img src="../assets/img/input-color-feedback/readme.png" alt="input-color-feedback README.md" data-slide loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/input-color-feedback/mit-license.png">
+                  <source type="image/avif"
+                    srcset="
+                      ../assets/img/input-color-feedback/mit-license-320w.avif 320w,
+                      ../assets/img/input-color-feedback/mit-license-640w.avif 640w,
+                      ../assets/img/input-color-feedback/mit-license-960w.avif 960w
+                    "
+                    sizes="(max-width: 791px) calc(90vw - 64px), (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/input-color-feedback/mit-license.webp" type="image/webp" />
+                  <img src="../assets/img/input-color-feedback/mit-license.png" alt="input-color-feedback MIT licenses" data-slide loading="lazy">
+                </picture>
+
+                <picture data-fullres="../assets/img/input-color-feedback/code.png">
+                  <source type="image/avif"
+                    srcset="
+                      ../assets/img/input-color-feedback/code-320w.avif 320w,
+                      ../assets/img/input-color-feedback/code-640w.avif 640w,
+                      ../assets/img/input-color-feedback/code-960w.avif 960w
+                    "
+                    sizes="(max-width: 791px) calc(90vw - 64px), (max-width: 1039px) 45vw, 30vw"
+                  />
+                  <source srcset="../assets/img/input-color-feedback/code.webp" type="image/webp" />
+                  <img src="../assets/img/input-color-feedback/code.png" alt="input-color-feedback code" data-slide loading="lazy">
+                </picture>
+
+                <button type="button" data-slide-prev class="slider-prev" aria-label="Previous slide">&#10094;</button>
+                <button type="button" data-slide-next class="slider-next" aria-label="Next slide">&#10095;</button>
+              </div>
+
+              <h3 class="project-title">Input Color Feedback</h3>
+              <p class="project-desc">A lightweight utility library for web apps.</p>
+
+              <div class="project-tags">
+                <span class="tag">npm</span>
+                <span class="tag">CSS3</span>
+                <span class="tag">Open Source</span>
+                <span class="tag tag--block">Design</span>
+              </div>
+
+              <ul>
+                <li>· UI/UX enhancer</li>
+                <li>· Lightweight</li>
+                <li>· Built on open-source values</li>
+              </ul>
+
+              <div class="project-actions">
+                <a class="btn" target="_blank" rel="noopener noreferrer" href="https://www.npmjs.com/package/input-color-feedback">
+                  NPM
+                  <svg width="18" height="18" fill="currentColor" class="external-link">
+                    <use href="../assets/img/sprite.svg#external-link" />
+                  </svg>
+                </a>
+                <a class="btn" target="_blank" rel="noopener noreferrer" href="https://github.com/miguelpv26/input-color-feedback" aria-label="GitHub repository for Input Color Feedback">
+                  GitHub
+                  <svg width="18" height="18" fill="currentColor" class="external-link">
+                    <use href="../assets/img/sprite.svg#external-link" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="projects-cta">
+            <a class="btn" href="/en/projects">See all projects &#10095;</a>
+          </div>
+        </section>
+      </div>
+
+      <!-- Contact section -->
+      <div class="section-divider-container">
+        <!-- Section Divider -->
+        <div class="section-divider">
+          <div class="section-divider__tab">
+            <svg fill="currentColor" class="section-divider__icon">
+              <use href="../assets/img/sprite.svg#envelope" />
+            </svg>
+            <h2 class="section-divider__label">Contact</h2>
+          </div>
+        </div>
+
+        <section id="contact" class="contact">
+          <div class="contact__container">
+            <p>If you'd like to discuss a project or opportunity, feel free to reach out.</p>
+
+            <div class="contact__socials">
+              <a target="_blank" rel="noopener noreferrer" href="mailto:miguelpayav@gmail.com" aria-label="Email">
+                <svg>
+                  <use href="../assets/img/sprite.svg#email"/>
+                </svg>
+              </a>
+              <a target="_blank" rel="noopener noreferrer" href="https://linkedin.com/in/miguel-pay%C3%A1-va%C3%B1%C3%B3" aria-label="LinkedIn">
+                <svg>
+                  <use href="../assets/img/sprite.svg#linkedin"/>
+                </svg>
+              </a>
+              <a target="_blank" rel="noopener noreferrer" href="https://github.com/miguelpv26" aria-label="GitHub profile">
+                <svg>
+                  <use href="../assets/img/sprite.svg#github"/>
+                </svg>
+              </a>
+            </div>
+
+            <div class="contact__cv-wrapper">
+              <a target="_blank" rel="noopener noreferrer" href="../assets/pdf/CV-MiguelPV-English.pdf" class="contact__cv-link">
+                My CV
+                <svg>
+                  <use href="../assets/img/sprite.svg#pdf"/>
+                </svg>
+              </a>
+              <a href="../assets/pdf/CV-MiguelPV-English.pdf" class="contact__cv-btn" aria-label="Download CV" download>
+                <svg>
+                  <use href="../assets/img/sprite.svg#download"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </section>
+      </div>
+
+    </main>
+    <footer class="footer">
+      <p class="footer__privacy">
+        <span class="footer__privacy-item">No Cookies</span>
+        <span class="footer__privacy-sep" aria-hidden="true">·</span>
+        <span class="footer__privacy-item">No Tracking</span>
+        <span class="footer__privacy-sep" aria-hidden="true">·</span>
+        <span class="footer__privacy-item">No Analytics</span>
+      </p>
+      <hr class="footer__divider" />
+      <p class="footer__copyright">Miguel Payá Vañó © 2026</p>
+    </footer>
+    <script src="../assets/min/main.min.js" defer></script>
+  </body>
+</html>

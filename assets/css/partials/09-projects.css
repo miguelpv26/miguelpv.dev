@@ -1,0 +1,556 @@
+/*
+  ============================================================================
+  PROJECTS SECTION
+  ============================================================================
+*/
+
+.projects {
+  max-width: min(var(--max-content-width), var(--max-hero-width));
+  margin-right: auto;
+  margin-left: auto;
+  padding: 52px;
+  border-top: var(--border-width) solid var(--color-border-default);
+  border-radius: var(--border-radius-2xl);
+  color: var(--color-text-white);
+}
+
+.projects-header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.projects-header h2 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-medium);
+  margin: 0 0 var(--spacing-xs) 0;
+  color: var(--color-primary);
+}
+
+.projects-header p {
+  margin: 0;
+  color: var(--color-text-white);
+}
+
+.projects-grid {
+  align-items: start;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-md);
+}
+
+/* Project Card */
+.project-card {
+  background: var(--color-bg-dark);
+  border: var(--border-width) solid var(--color-border-default);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-xl);
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition-all);
+  min-height: 100%;
+}
+
+.project-card:hover,
+.project-card:focus-within {
+  transform: scale(1.033);
+  border-color: var(--color-primary);
+}
+
+.project-card .project-thumb {
+  max-width: 100%;
+  width: 100%;
+  aspect-ratio: 1.833 / 1;
+  position: relative;
+  overflow: hidden;
+  margin: auto auto var(--spacing-sm);
+  border-radius: var(--border-radius-lg);
+}
+
+.project-card [data-slide] {
+  object-fit: contain;
+  background-color: transparent;
+}
+
+.project-title {
+  font-size: var(--font-size-lg);
+  margin: var(--spacing-xs) 0;
+  color: var(--color-primary);
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  margin: var(--spacing-sm) 0;
+}
+
+.project-tags .tag {
+  background: var(--color-bg-card);
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--border-radius-sm);
+  font-size: 0.8rem;
+  border: var(--border-width) solid var(--color-text-black);
+}
+
+.project-tags .tag--block {
+  display: block;
+}
+
+.project-card ul {
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+.project-card ul li {
+  margin: 0.25rem 0;
+}
+
+.project-actions {
+  margin-top: auto;
+  display: flex;
+  gap: 0.7rem;
+}
+
+.project-actions .btn {
+  flex: 1;
+  text-align: center;
+  padding: 0.6rem 0;
+  border-radius: var(--border-radius-md);
+  border: var(--border-width) solid var(--color-primary);
+  background-color: var(--color-bg-black);
+  color: var(--color-text-white);
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  transition: var(--transition-color);
+}
+
+.project-actions .btn:hover,
+.project-actions .btn:focus-visible {
+  color: var(--color-primary);
+}
+
+/*
+  ============================================================================
+  DEDICATED PROJECTS PAGE (/en/projects, /es/proyectos)
+  ============================================================================
+  A standalone hub, NOT a relocated homepage section. The page opens on a
+  "proof" terminal — the site's own Lighthouse 100s, the bar every project is
+  built against — then lists projects as full-width editorial feature rows that
+  alternate the media/text sides. Rows never collapse to a lonely centred card
+  and give each screenshot room to actually be read.
+*/
+
+/* --- Page hero: breadcrumb + title + intro (left), proof terminal (right) --- */
+.page-header {
+  max-width: min(var(--max-content-width), var(--max-hero-width));
+  margin: var(--spacing-xl) auto var(--section-spacing);
+  padding: 0 52px;
+  display: grid;
+  grid-template-columns: 1fr minmax(280px, 360px);
+  align-items: center;
+  gap: var(--spacing-xl);
+}
+
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--font-size-sm);
+  color: color-mix(in srgb, var(--color-text-white) 65%, transparent);
+}
+
+.breadcrumb li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.breadcrumb li:not(:first-child)::before {
+  content: "/";
+  opacity: 0.5;
+}
+
+.breadcrumb a {
+  transition: var(--transition-color);
+}
+
+.breadcrumb a:hover,
+.breadcrumb a:focus-visible {
+  color: var(--color-primary);
+}
+
+.breadcrumb [aria-current="page"] {
+  color: var(--color-primary);
+}
+
+.page-header__title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.015em;
+  color: var(--color-primary);
+  margin: var(--spacing-sm) 0 var(--spacing-xs);
+}
+
+.page-header__intro {
+  max-width: 52ch;
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-relaxed);
+  color: color-mix(in srgb, var(--color-text-white) 82%, transparent);
+}
+
+/*
+  Signature element: a terminal window that "runs" Lighthouse against this very
+  site and prints four 100s. It ties the page to Miguel's CLI identity (echoing
+  the 404 terminal) and states his build standard before a single project.
+*/
+.proof {
+  overflow: hidden;
+  border: var(--border-width) solid color-mix(in srgb, var(--color-primary) 45%, transparent);
+  border-radius: var(--border-radius-lg);
+  background: var(--color-bg-black);
+  box-shadow: 0 0 26px -6px var(--color-primary);
+  font-size: var(--font-size-sm);
+}
+
+.proof__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--color-bg-card);
+  border-bottom: var(--border-width) solid color-mix(in srgb, var(--color-primary) 25%, transparent);
+}
+
+.proof__dots {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.proof__dot {
+  width: 11px;
+  height: 11px;
+  border-radius: var(--border-radius-full);
+  background: currentColor;
+}
+
+.proof__dot--r { color: #ff5f56; }
+.proof__dot--y { color: var(--color-standby); }
+.proof__dot--g { color: var(--color-primary); }
+
+.proof__file {
+  margin-left: auto;
+  font-size: 0.78rem;
+  color: color-mix(in srgb, var(--color-text-white) 55%, transparent);
+}
+
+.proof__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: var(--spacing-md);
+}
+
+.proof__cmd {
+  color: color-mix(in srgb, var(--color-text-white) 72%, transparent);
+  overflow-wrap: anywhere;
+}
+
+.proof__cmd::before {
+  content: "$ ";
+  color: var(--color-primary);
+}
+
+.proof__scores {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0;
+}
+
+.proof__score {
+  display: grid;
+  grid-template-columns: 3ch 1fr;
+  align-items: baseline;
+  gap: 0.8rem;
+}
+
+.proof__num {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  text-shadow: var(--shadow-glow-md);
+}
+
+.proof__metric {
+  color: color-mix(in srgb, var(--color-text-white) 80%, transparent);
+}
+
+.proof__note {
+  margin-top: 0.1rem;
+  font-size: 0.8rem;
+  line-height: var(--line-height-normal);
+  color: color-mix(in srgb, var(--color-text-white) 55%, transparent);
+}
+
+.proof__note::before {
+  content: "\203a  ";
+  color: var(--color-primary);
+}
+
+/* --- The collection and its labelled bands ------------------------------- */
+.project-collection {
+  max-width: min(var(--max-content-width), var(--max-hero-width));
+  margin: 0 auto;
+  padding: 0 52px 78px;
+}
+
+.project-group + .project-group {
+  margin-top: var(--section-spacing);
+}
+
+.project-group__label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-xs);
+  border-bottom: var(--border-width) solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+}
+
+/* Reads like a code/markdown section heading — quiet terminal seasoning. */
+.project-group__label::before {
+  content: "# ";
+  color: color-mix(in srgb, var(--color-primary) 55%, transparent);
+}
+
+/* Feature rows: a full-width vertical stack. Overrides the base auto-fit grid. */
+.project-collection .projects-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-lg);
+}
+
+.project-collection .project-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 46%) 1fr;
+  align-items: center;
+  gap: var(--spacing-lg) var(--spacing-xl);
+  min-height: 0;
+  padding: var(--spacing-lg);
+  background: var(--color-bg-dark);
+  border: var(--border-width) solid color-mix(in srgb, var(--color-text-white) 14%, transparent);
+  border-radius: var(--border-radius-xl);
+  transition: var(--transition-all);
+}
+
+/* Alternate the media side on every second row within a band. */
+.project-collection .project-card:nth-child(even) {
+  grid-template-columns: 1fr minmax(0, 46%);
+}
+
+.project-collection .project-card:nth-child(even) .project-thumb {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.project-collection .project-card:nth-child(even) .project-card__body {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+/* Quiet, deliberate hover — no scale on a big row; a green edge + soft glow. */
+.project-collection .project-card:hover,
+.project-collection .project-card:focus-within {
+  transform: none;
+  border-color: color-mix(in srgb, var(--color-primary) 70%, transparent);
+  box-shadow: 0 0 22px -8px var(--color-primary);
+}
+
+/*
+  Media panel. z-index:2 keeps it ABOVE the stretched whole-card link overlay
+  so its right-click "open full-resolution" handler and main.js's left-click
+  wiring both keep working.
+*/
+.project-collection .project-card .project-thumb {
+  z-index: 2;
+  cursor: pointer;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--border-radius-md);
+  background: var(--color-bg-black);
+  border: var(--border-width) solid color-mix(in srgb, var(--color-text-white) 10%, transparent);
+}
+
+.project-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  min-width: 0;
+}
+
+.project-collection .project-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--color-primary);
+}
+
+.project-collection .project-desc {
+  margin: var(--spacing-2xs) 0 0;
+  line-height: var(--line-height-relaxed);
+  color: color-mix(in srgb, var(--color-text-white) 82%, transparent);
+  max-width: 60ch;
+}
+
+.project-collection .project-tags {
+  margin: var(--spacing-xs) 0 0;
+}
+
+/* Visible "read the case study" affordance (the whole card is the link). */
+.project-card__cue {
+  margin-top: var(--spacing-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary);
+}
+
+.project-card__cue::after {
+  content: "\2192";
+  transition: transform var(--transition-fast);
+}
+
+.project-collection .project-card:hover .project-card__cue::after,
+.project-collection .project-card:focus-within .project-card__cue::after {
+  transform: translateX(4px);
+}
+
+/*
+  Whole-card link. The title carries the real <a>; its ::after stretches over
+  the card so a click anywhere in the body follows the link. The media panel is
+  layered above this overlay (z-index above) so its own handlers survive.
+  Discontinued projects get no link and stay inert.
+*/
+.project-card__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.project-collection .project-card--disabled .project-thumb {
+  cursor: default;
+}
+
+.project-collection .project-card--disabled {
+  cursor: default;
+}
+
+.project-collection .project-card--disabled:hover,
+.project-collection .project-card--disabled:focus-within {
+  transform: none;
+  border-color: color-mix(in srgb, var(--color-text-white) 14%, transparent);
+  box-shadow: none;
+}
+
+.project-collection .project-card--disabled .project-card__cue {
+  color: color-mix(in srgb, var(--color-text-white) 45%, transparent);
+}
+
+/* Richer metadata line the homepage teaser doesn't carry. */
+.project-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.55rem;
+  margin: var(--spacing-2xs) 0 var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in srgb, var(--color-text-white) 70%, transparent);
+}
+
+.project-meta__sep {
+  opacity: 0.45;
+}
+
+.project-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-white);
+}
+
+.project-status::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: var(--border-radius-full);
+  background: var(--color-primary);
+  box-shadow: var(--shadow-glow-md);
+}
+
+.project-status--standby {
+  color: color-mix(in srgb, var(--color-text-white) 80%, transparent);
+}
+
+.project-status--standby::before {
+  background: var(--color-standby);
+  box-shadow: none;
+}
+
+.project-status--archived {
+  color: color-mix(in srgb, var(--color-text-white) 70%, transparent);
+}
+
+.project-status--archived::before {
+  background: color-mix(in srgb, var(--color-text-white) 55%, transparent);
+  box-shadow: none;
+}
+
+/*
+  Two sibling actions that share one outline-button look:
+  - .projects-back: "back home" at the foot of the dedicated projects page.
+  - .projects-cta:  "see all projects" under the homepage's projects teaser.
+*/
+.projects-back,
+.projects-cta {
+  text-align: center;
+}
+
+.projects-back {
+  margin-top: var(--section-spacing);
+}
+
+.projects-cta {
+  margin-top: var(--spacing-xl);
+}
+
+.projects-back .btn,
+.projects-cta .btn {
+  display: inline-block;
+  padding: 0.6rem 1.4rem;
+  border-radius: var(--border-radius-md);
+  border: var(--border-width) solid var(--color-primary);
+  background-color: var(--color-bg-black);
+  color: var(--color-text-white);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  transition: var(--transition-color);
+}
+
+.projects-back .btn:hover,
+.projects-back .btn:focus-visible,
+.projects-cta .btn:hover,
+.projects-cta .btn:focus-visible {
+  color: var(--color-primary);
+}

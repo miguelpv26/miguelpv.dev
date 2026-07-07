@@ -1,0 +1,275 @@
+/*
+  ============================================================================
+  HERO SECTION
+  ============================================================================
+*/
+
+.hero {
+  min-height: calc(100dvh - 162px);
+  position: relative;
+  padding: 52px;
+}
+
+.hero__grid {
+  z-index: 2;
+  max-width: min(var(--max-content-width), var(--max-hero-width));
+  max-height: calc(100dvh - 4rem - var(--header-height));
+  margin-left: auto;
+  margin-right: auto;
+  display: grid;
+  grid-template-areas: "image heading" "image paragraph";
+  position: relative;
+}
+
+.hero__content {
+  grid-area: heading;
+  background-color: var(--color-primary);
+  padding: 1.25rem 2rem 2rem;
+  border-radius: var(--spacing-sm);
+  max-width: fit-content;
+  color: var(--color-text-black);
+  position: relative;
+}
+
+/* Speech Bubble Tail */
+.hero__content::after {
+  content: "";
+  position: absolute;
+  z-index: var(--z-behind);
+  left: -156px;
+  bottom: -12px;
+  border-width: 16px 88px 39px 88px;
+  rotate: -23.5deg;
+  border-style: solid;
+  border-color: transparent var(--color-primary) transparent transparent;
+}
+
+.hero__greet {
+  font-size: var(--font-size-xl);
+  color: var(--color-text-dark);
+  font-weight: var(--font-weight-medium);
+}
+
+.hero__name {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.hero__dot,
+.hero__dot--alt {
+  color: var(--color-text-dark);
+  font-weight: var(--font-weight-medium);
+}
+
+.hero__dot {
+  font-size: var(--font-size-xl);
+}
+
+.hero__dot--alt {
+  font-size: var(--font-size-lg);
+}
+
+.hero__subtitle {
+  color: var(--color-text-dark);
+  margin-top: 1.25rem;
+  max-width: 44ch;
+  font-size: 1.33rem;
+  line-height: var(--line-height-normal);
+  font-weight: var(--font-weight-medium);
+}
+
+.hero__highlight {
+  color: var(--color-text-black);
+  font-weight: var(--font-weight-semibold);
+}
+
+.hero__paragraph {
+  text-indent: 1.25rem;
+  margin-top: var(--spacing-xl);
+  text-align: justify;
+  font-size: var(--font-size-md);
+  line-height: 1.5rem;
+  grid-area: paragraph;
+  color: var(--color-text-white);
+  max-width: 595px;
+}
+
+.hero__paragraph-link {
+  text-decoration: underline;
+  transition: var(--transition-color);
+}
+
+.hero__paragraph-link:hover {
+  color: var(--color-primary);
+}
+
+.external-link {
+  margin-bottom: -2px;
+}
+
+.external-link__alt {
+  margin-bottom: -4px;
+}
+
+.hero picture {
+  margin-top: var(--spacing-sm);
+  height: 100%;
+  width: 100%;
+  max-height: 400px;
+  max-width: 360px;
+  min-width: 15rem;
+  align-self: start;
+  grid-area: image;
+  overflow: hidden;
+  filter: drop-shadow(var(--shadow-image));
+}
+
+.hero picture > img {
+  border-radius: var(--border-radius-full);
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/*
+  ============================================================================
+  SECTION DIVIDER
+  ============================================================================
+*/
+
+.section-divider {
+  max-width: min(var(--max-content-width), var(--max-hero-width));
+  position: relative;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.section-divider__tab {
+  color: var(--color-text-white);
+  bottom: 0;
+  margin-left: 56px;
+  border: var(--border-width) solid var(--color-border-default);
+  border-bottom: none;
+  border-radius: var(--border-radius-xl) var(--border-radius-xl) 0 0;
+  padding: var(--spacing-xs) var(--spacing-golden);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-xl);
+  transition: var(--transition-all);
+}
+
+.section-divider__icon {
+  width: 22px;
+  height: 22px;
+  transition: filter var(--transition-fast);
+}
+
+#section-divider-user {
+  width: 18px;
+  height: 18px;
+}
+
+.section-divider__label {
+  display: inline-block;
+}
+
+/* Hover & Focus States */
+.section-divider-container:hover .section-divider__tab,
+.section-divider-container:hover section,
+.section-divider-container:focus-within .section-divider__tab,
+.section-divider-container:focus-within section {
+  border-color: var(--color-primary);
+}
+
+.section-divider-container:hover .section-divider__tab,
+.section-divider-container:focus-within .section-divider__tab {
+  color: var(--color-primary);
+}
+
+.section-divider-container:hover .section-divider__icon,
+.section-divider-container:focus-within .section-divider__icon {
+  filter: drop-shadow(var(--shadow-glow-icon));
+}
+
+/*
+  ============================================================================
+  ABOUT SECTION
+  ============================================================================
+*/
+
+.about {
+  max-width: min(var(--max-content-width), var(--max-hero-width));
+  min-height: calc(100dvh - var(--header-height) - 2.5 * var(--section-spacing));
+  border-top: var(--border-width) solid var(--color-border-default);
+  border-radius: var(--border-radius-2xl);
+  margin-right: auto;
+  margin-left: auto;
+  color: var(--color-text-white);
+}
+
+.about__container {
+  display: flex;
+  flex-direction: row;
+  padding: 52px;
+  justify-content: space-between;
+}
+
+.about__paragraph {
+  text-indent: 1.25rem;
+  text-align: justify;
+  font-size: var(--font-size-md);
+  line-height: 1.5rem;
+  max-width: 35%;
+}
+
+.about__headlines {
+  max-width: 25%;
+}
+
+.about__headlines ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.about__headlines ul li {
+  color: var(--color-text-black);
+  background-color: var(--color-primary);
+  width: 12rem;
+  margin: auto;
+  border: var(--border-width) solid var(--color-text-black);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-xs) var(--spacing-golden);
+  font-size: 1.2rem;
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+}
+
+.about__headlines ul li:first-child {
+  margin-top: 0;
+}
+
+.about__headlines ul li:last-child {
+  margin-bottom: 0;
+}
+
+.about__slider {
+  max-width: 40%;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+}
+
+.about__slider img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+

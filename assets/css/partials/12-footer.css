@@ -1,0 +1,61 @@
+/*
+  ============================================================================
+  FOOTER
+  ============================================================================
+*/
+
+.footer {
+  position: relative;
+  width: 100%;
+  background-color: var(--color-bg-black);
+  border-top: var(--border-width) solid var(--color-primary);
+  padding: var(--spacing-lg) var(--spacing-sm) var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--color-text-white);
+  box-shadow: var(--shadow-glow-footer);
+  z-index: var(--z-footer);
+}
+
+.footer p {
+  margin: 0;
+}
+
+.footer__divider {
+  /* 30em on desktop, but never wider than the viewport on phones. */
+  width: min(30em, 80%);
+  border: 0;
+  border-top: var(--border-width) solid color-mix(in srgb, var(--color-text-white) 50%, transparent);
+  margin: var(--spacing-2xs) 0;
+}
+
+.footer__copyright {
+  font-size: 0.9rem;
+}
+
+.footer__privacy {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0 0.6em;
+  font-size: 1rem;
+  color: var(--color-primary-dim);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Keep each claim intact — wrap as whole units, never split mid-phrase. */
+.footer__privacy-item {
+  white-space: nowrap;
+}
+
+/* On phones, stack the three claims with the middots as centered separators. */
+@media (max-width: 480px) {
+  .footer__privacy {
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+}
+

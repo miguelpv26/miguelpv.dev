@@ -1,0 +1,106 @@
+/*
+  ============================================================================
+  CSS CUSTOM PROPERTIES (VARIABLES)
+  ============================================================================
+*/
+:root {
+  /* Spacing System */
+  --section-spacing: 3.5rem;
+  --spacing-2xs: 0.25rem;
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 2.5rem;
+  /* Layout */
+  --header-height: 86px;
+  --header-border: 1px;
+  --max-content-width: 90vw;
+  --max-hero-width: 1400px;
+  --scroll-offset: 150px;
+  
+  /* Colors - Primary */
+  --color-primary: #16c60c;
+  --color-primary-dim: rgba(21, 198, 12, 0.85);
+  --color-primary-faint: rgba(21, 198, 12, 0.172);
+  
+  /* Colors - Background */
+  --color-bg-dark: #0d0d0d;
+  --color-bg-black: #000000;
+  --color-bg-card: #1a1a1a;
+  
+  /* Colors - Text */
+  --color-text-white: #ffffff;
+  --color-text-dark: #0d0d0d;
+  --color-text-black: #000000;
+  
+  /* Colors - Functional */
+  --color-border-default: var(--color-text-white);
+  --color-overlay: rgba(0, 0, 0, 0.6);
+  --color-overlay-dark: rgba(0, 0, 0, 0.9);
+  --color-standby: #e0a82e; /* amber — "paused" project status dot */
+  
+  /* Typography */
+  --font-family-base: 'JetBrains Mono', monospace, sans-serif;
+  --font-size-base: 1rem;
+  --font-size-sm: 0.88rem;
+  --font-size-md: 1.1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+  --font-size-3xl: 2.4rem;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --line-height-tight: 1.3;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.6;
+  --letter-spacing-base: 0.025em;
+  --spacing-golden: 0.80901699437rem;
+
+  /* Borders & Radius */
+  --border-width: 1px;
+  --border-radius-sm: 4px;
+  --border-radius-md: 6px;
+  --border-radius-lg: 8px;
+  --border-radius-xl: 10px;
+  --border-radius-2xl: 24px;
+  --border-radius-full: 50%;
+  
+  /* Transitions */
+  --transition-fast: 0.2s ease-out;
+  --transition-medium: 0.5s ease-out;
+  --transition-all: all var(--transition-fast);
+  --transition-color: color var(--transition-fast);
+  
+  /* Shadows */
+  --shadow-glow-primary: 0 0 12px 0 var(--color-primary);
+  --shadow-glow-header: var(--color-primary) 0px -4px 16px 0px;
+  --shadow-glow-footer: var(--color-primary) 0px 0px 16px 0px;
+  --shadow-glow-md: 0 0 6px var(--color-primary);
+  --shadow-glow-icon: 0 0 5px rgba(21, 198, 12, 0.675);
+  --shadow-image: 0 0 10px var(--color-primary-dim);
+  
+  /* Z-index Scale */
+  --z-behind: -1;
+  --z-base: 1;
+  --z-dropdown: 10;
+  --z-indicators: 20;
+  --z-footer: 999;
+  --z-header: 1001;
+  
+  /* Slider */
+  --slider-button-size: 32px;
+  --slider-dot-size: 10px;
+  --slider-transition: opacity 0.5s ease-in-out;
+  
+  /* Breakpoints (reference only) */
+  --breakpoint-xs: 320px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 1008px;
+  --breakpoint-lg: 1040px;
+  --breakpoint-xl: 1100px;
+  --breakpoint-2xl: 1400px;
+}
+

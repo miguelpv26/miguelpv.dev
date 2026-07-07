@@ -1,0 +1,492 @@
+/*
+  ============================================================================
+  CASE STUDY (project detail page: /<lang>/projects/<slug>)
+  ============================================================================
+  Editorial long-form layout built from the existing tokens. The page reads
+  like Miguel opening the project's README in a terminal:
+    - a terminal hero that "runs" `$ cat <slug>.md` and prints the project
+      manifest (role / stack / status / outcome) as aligned frontmatter;
+    - a wide media slider (the universal [data-slider] system);
+    - numbered "## " sections (a real Overview -> ... -> Status arc);
+    - a closing "// still solving" note that keeps the candid, forward-looking
+      voice on every project.
+  Window controls sit on the RIGHT (the projects-index proof terminal keeps
+  them on the left) so the two terminals stay distinct — and it isn't macOS.
+*/
+
+.case-study {
+  max-width: min(var(--max-content-width), var(--max-hero-width));
+  margin: 0 auto;
+  padding: 0 52px 78px;
+  counter-reset: cs-section;
+}
+
+/*
+  The shared .page-header is a two-column grid built for the projects INDEX
+  (title-block left, proof terminal right). A case study is a single stacked
+  column instead — breadcrumb, title, thesis, terminal, actions — so opt this
+  header out of the grid. Scoped by :has() so the index header is untouched.
+*/
+.page-header:has(.case-study__terminal) {
+  display: block;
+}
+
+/*
+  ============================================================================
+  TERMINAL HERO  (the signature — the project's README, printed)
+  ============================================================================
+  Sits in the .page-header, right under the intro/thesis.
+*/
+.case-study__terminal {
+  margin: var(--spacing-lg) 0 0;
+  max-width: 720px;
+  border: var(--border-width) solid color-mix(in srgb, var(--color-primary) 50%, transparent);
+  border-radius: var(--border-radius-lg);
+  background: var(--color-bg-black);
+  box-shadow: 0 0 30px -6px var(--color-primary);
+  overflow: hidden;
+}
+
+/* Title bar: filename on the LEFT, window controls pushed to the RIGHT. */
+.case-study__terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: 0.55rem 0.8rem;
+  background: var(--color-bg-card);
+  border-bottom: var(--border-width) solid color-mix(in srgb, var(--color-primary) 25%, transparent);
+}
+
+.case-study__terminal-file {
+  font-size: var(--font-size-sm);
+  color: color-mix(in srgb, var(--color-text-white) 60%, transparent);
+}
+
+.case-study__terminal-dots {
+  margin-left: auto;
+  display: flex;
+  gap: 0.45rem;
+}
+
+.case-study__dot {
+  width: 11px;
+  height: 11px;
+  border-radius: var(--border-radius-full);
+  background: currentColor;
+}
+
+.case-study__dot--r { color: #ff5f56; }
+.case-study__dot--y { color: var(--color-standby); }
+.case-study__dot--g { color: var(--color-primary); }
+
+.case-study__terminal-body {
+  padding: var(--spacing-md) var(--spacing-md) var(--spacing-sm);
+}
+
+/* Prompt lines. The body font is already monospace, so a "$ " marker is all
+   it takes to read as a shell. */
+.case-study__cmd {
+  color: color-mix(in srgb, var(--color-text-white) 75%, transparent);
+  margin-bottom: var(--spacing-sm);
+}
+
+.case-study__cmd::before {
+  content: "$ ";
+  color: var(--color-primary);
+}
+
+.case-study__prompt {
+  margin-top: var(--spacing-sm);
+  color: var(--color-primary);
+}
+
+.case-study__prompt::before {
+  content: "$ ";
+}
+
+.case-study__caret {
+  display: inline-block;
+  width: 9px;
+  height: 1.05em;
+  vertical-align: text-bottom;
+  background: var(--color-primary);
+  box-shadow: var(--shadow-glow-md);
+  animation: cs-caret-blink 1.1s steps(1) infinite;
+}
+
+@keyframes cs-caret-blink {
+  50% { opacity: 0; }
+}
+
+/* Aligned key/value manifest — the whole point of committing to a mono face. */
+.case-study__fields {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.45rem 1.3rem;
+  margin: 0;
+  line-height: var(--line-height-normal);
+}
+
+.case-study__fields dt {
+  color: color-mix(in srgb, var(--color-primary) 80%, var(--color-text-white));
+}
+
+.case-study__fields dd {
+  color: color-mix(in srgb, var(--color-text-white) 90%, transparent);
+  overflow-wrap: anywhere;
+}
+
+/* Middle-dot separators inside a value (stack list, outcome list). */
+.case-study__fields .sep {
+  opacity: 0.4;
+  padding: 0 0.15rem;
+}
+
+/* Status reuses the projects vocabulary (coloured dot) but reads inline. */
+.case-study__fields .project-status {
+  margin-left: 0;
+}
+
+/* Outcome numbers glow — the measured proof, pulled out of the prose. */
+.case-study__metric {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  text-shadow: var(--shadow-glow-md);
+}
+
+.case-study__fields a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: var(--transition-color);
+}
+
+.case-study__fields a:hover,
+.case-study__fields a:focus-visible {
+  color: var(--color-text-white);
+}
+
+/* Live-demo / repository actions. */
+.case-study__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: var(--spacing-lg);
+}
+
+.case-study__actions .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 0.6rem 1.4rem;
+  border-radius: var(--border-radius-md);
+  border: var(--border-width) solid var(--color-primary);
+  background-color: var(--color-bg-black);
+  color: var(--color-text-white);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  transition: var(--transition-color);
+}
+
+.case-study__actions .btn svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.case-study__actions .btn:hover,
+.case-study__actions .btn:focus-visible {
+  color: var(--color-primary);
+}
+
+/* Wide media slider (reuses the universal [data-slider] system). */
+.case-study__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: var(--spacing-lg) 0 var(--section-spacing);
+  border: var(--border-width) solid var(--color-border-default);
+  border-radius: var(--border-radius-xl);
+  overflow: hidden;
+}
+
+.case-study__media [data-slide] {
+  object-fit: contain;
+  background-color: var(--color-bg-dark);
+}
+
+/*
+  ============================================================================
+  SECTIONS  (rendered as an ordered "## " outline)
+  ============================================================================
+  A quiet number gutter (col 1) + the prose (col 2). The number is a real
+  index into the Overview -> ... -> Status arc, so it earns its place; it is
+  not decoration. The "## " prefix rhymes with the projects-index "# " labels.
+*/
+.case-study__section + .case-study__section {
+  margin-top: var(--section-spacing);
+}
+
+.case-study__section {
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr);
+  column-gap: var(--spacing-md);
+  counter-increment: cs-section;
+}
+
+.case-study__section > * {
+  grid-column: 2;
+  min-width: 0;
+}
+
+.case-study__section::before {
+  content: counter(cs-section, decimal-leading-zero);
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+  padding-top: 0.5rem;
+  font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in srgb, var(--color-primary) 50%, transparent);
+}
+
+.case-study__section h2 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-xs);
+  border-bottom: var(--border-width) solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+}
+
+.case-study__section h2::before {
+  content: "## ";
+  color: color-mix(in srgb, var(--color-primary) 50%, transparent);
+}
+
+.case-study__section p {
+  max-width: 68ch;
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--spacing-sm);
+}
+
+.case-study__section ul {
+  max-width: 68ch;
+  margin: 0 0 var(--spacing-sm);
+  padding-left: var(--spacing-md);
+}
+
+.case-study__section li {
+  list-style: disc;
+  margin-bottom: var(--spacing-2xs);
+  line-height: var(--line-height-normal);
+}
+
+.case-study__section li::marker {
+  color: color-mix(in srgb, var(--color-primary) 70%, transparent);
+}
+
+/* Inline code: the body font is already monospace, so set it apart with a chip. */
+.case-study__section code {
+  padding: 0.1em 0.35em;
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-bg-card);
+  color: var(--color-primary);
+  font-size: 0.9em;
+  overflow-wrap: anywhere;
+}
+
+/* Inline links inside prose (the base reset strips colour/underline). */
+.case-study__section p a,
+.case-study__section li a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: var(--transition-color);
+}
+
+.case-study__section p a:hover,
+.case-study__section p a:focus-visible,
+.case-study__section li a:hover,
+.case-study__section li a:focus-visible {
+  color: var(--color-text-white);
+}
+
+/*
+  ============================================================================
+  "// still solving"  — the closing, forward-looking note
+  ============================================================================
+  Every study ends here, not on a boast: a code-comment aside, in the amber
+  "in-progress" accent, stating plainly what's left to solve and what's next.
+  Bakes the candid case-study voice into the template itself. Un-numbered — it
+  sits outside the build log as the open question.
+*/
+.case-study__section--todo {
+  display: block;
+  counter-increment: none;
+  border-left: 2px solid var(--color-standby);
+  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--color-standby) 8%, transparent), transparent 55%);
+  padding: var(--spacing-md) var(--spacing-lg);
+}
+
+.case-study__section--todo::before {
+  content: none;
+}
+
+.case-study__section--todo h2 {
+  color: var(--color-standby);
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: var(--spacing-sm);
+}
+
+.case-study__section--todo h2::before {
+  content: "// ";
+  color: color-mix(in srgb, var(--color-standby) 60%, transparent);
+}
+
+.case-study__section--todo p {
+  color: color-mix(in srgb, var(--color-text-white) 82%, transparent);
+}
+
+/* Forward-looking "-> what's next" line accent. */
+.case-study__next {
+  color: var(--color-standby);
+}
+
+/*
+  ============================================================================
+  LEGACY META  (still used by not-yet-migrated pages during rollout)
+  ============================================================================
+*/
+.case-study__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.6rem;
+  margin: var(--spacing-sm) 0;
+  font-size: var(--font-size-md);
+  color: color-mix(in srgb, var(--color-text-white) 75%, transparent);
+}
+
+.case-study__meta .project-status {
+  margin-left: 0;
+}
+
+.case-study__meta-sep {
+  opacity: 0.45;
+}
+
+/*
+  ============================================================================
+  PERFECT-SCORES PANEL
+  ============================================================================
+  Stands in for a screenshot on the miguelpv.dev project — the site's own
+  Lighthouse result rendered in pure CSS (four glowing "100" rings). Used as
+  the projects-page card thumbnail and as the case-study hero.
+*/
+.score-panel {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: center;
+  justify-items: center;
+  gap: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-sm);
+  background-color: var(--color-bg-dark);
+}
+
+/* The four-ring panel is portrait-ish content, so don't force it into the
+   landscape media box (whose overflow:hidden clipped the lower rings on
+   mobile). Let the thumbnail/hero grow to fit — all four scores stay visible. */
+.project-card .project-thumb:has(.score-panel),
+.case-study__media:has(.score-panel) {
+  aspect-ratio: auto;
+}
+
+.score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.score__ring {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border: 3px solid var(--color-primary);
+  border-radius: var(--border-radius-full);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-md);
+  box-shadow: var(--shadow-glow-md);
+}
+
+.score__label {
+  font-size: 0.7rem;
+  text-align: center;
+  color: color-mix(in srgb, var(--color-text-white) 75%, transparent);
+}
+
+/* The case-study hero has far more room, so scale the rings up and give the
+   panel some breathing room. */
+.case-study__media .score-panel {
+  gap: var(--spacing-md) var(--spacing-xl);
+  padding: var(--spacing-lg);
+}
+
+/* On wide screens the hero is roomy enough to line all four up in a single
+   dashboard row; below that they fall back to the symmetric 2×2. */
+@media (min-width: 700px) {
+  .case-study__media .score-panel {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.case-study__media .score__ring {
+  width: 84px;
+  height: 84px;
+  font-size: var(--font-size-xl);
+}
+
+.case-study__media .score__label {
+  font-size: var(--font-size-sm);
+}
+
+/* Static photo media (no slider) — fills the thumbnail/hero and crops to cover. */
+.media-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.media-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/*
+  ============================================================================
+  RESPONSIVE  (component-scoped; the shared breakpoints live in 14-responsive)
+  ============================================================================
+*/
+@media (max-width: 600px) {
+  .case-study__section {
+    grid-template-columns: 1.7rem minmax(0, 1fr);
+    column-gap: var(--spacing-sm);
+  }
+
+  .case-study__section--todo {
+    padding: var(--spacing-md);
+  }
+
+  .case-study__fields {
+    gap: 0.4rem 1rem;
+  }
+}

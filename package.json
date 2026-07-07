@@ -1,0 +1,14 @@
+{
+  "type": "module",
+  "scripts": {
+    "minify:js": "terser assets/js/main.js --compress drop_console=true --mangle --source-map \"filename=main.min.js.map,url=main.min.js.map\" -o assets/min/main.min.js",
+    "minify:css": "node scripts/build-css.js",
+    "minify": "npm run minify:js && npm run minify:css",
+    "deploy": "npm run minify && node scripts/deploy.js"
+  },
+  "devDependencies": {
+    "archiver": "^7.0.1",
+    "clean-css-cli": "^5.6.3",
+    "terser": "^5.46.0"
+  }
+}
