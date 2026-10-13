@@ -122,10 +122,30 @@
   filter: drop-shadow(var(--shadow-glow-icon));
 }
 
+/* Nav icons are inline SVGs, so they sit on the text baseline and ride too high.
+   Drop them onto the label's optical centre: half the icon (11px) minus half the
+   cap height (~6.5px at this 1.125rem JetBrains Mono). Retune if the icon size
+   or the nav font-size changes. */
 #laptop-code,
 #lightbulb,
-#envelope {
-  margin-bottom: -2.5px;
+#envelope,
+#newspaper {
+  margin-bottom: -4.5px;
+}
+
+/*
+  ============================================================================
+  YOU ARE HERE
+  ============================================================================
+  Every item stays a real link — colour is the only thing that changes. The page
+  you're on is aria-current="page"; a page UNDER a section (a case study, an
+  article) is aria-current="true", so "Projects" reads as current from a case
+  study while still taking you to the hub. Contact is never marked: it's an
+  anchor into a section, not a page you can be on.
+*/
+.nav__item > a[aria-current],
+.header__logo[aria-current] {
+  color: var(--color-primary);
 }
 
 

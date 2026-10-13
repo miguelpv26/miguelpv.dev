@@ -179,36 +179,47 @@
 /*
   Medium Devices (≤900px) - Projects hub stacks
   ----------------------------------------------------------------------------
-  Below this width the hero's proof terminal and the project feature rows have
-  too little room to sit side-by-side, so both collapse into a single column.
+  Below this width the project feature rows have too little room to sit media
+  beside text, so they collapse into a single column and stop alternating. The
+  toolbar's sort toggle drops its auto-margin so it wraps under the chips.
 */
 @media (max-width: 900px) {
-  .page-header {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-lg);
-    margin-bottom: var(--spacing-xl);
+  /* Stacked rows have nothing to equalise against — a short card next to no
+     card is just a short card, and 1fr would pad it with dead space. */
+  .project-collection .projects-grid {
+    grid-auto-rows: auto;
   }
 
   .project-collection .project-card,
-  .project-collection .project-card:nth-child(even) {
+  .project-collection .project-card--reverse {
     grid-template-columns: 1fr;
-    gap: var(--spacing-md);
+    gap: 0;
+  }
+
+  /* The media now sits above the copy rather than beside it, so the body has to
+     supply the vertical inset the row used to give it. */
+  .project-collection .project-card__body {
+    padding: var(--spacing-md) var(--spacing-lg);
   }
 
   .project-collection .project-card .project-thumb,
-  .project-collection .project-card:nth-child(even) .project-thumb {
+  .project-collection .project-card--reverse .project-thumb {
     grid-column: 1;
     grid-row: auto;
   }
 
   .project-collection .project-card__body,
-  .project-collection .project-card:nth-child(even) .project-card__body {
+  .project-collection .project-card--reverse .project-card__body {
     grid-column: 1;
     grid-row: auto;
   }
 
   .project-collection .project-title {
     font-size: var(--font-size-lg);
+  }
+
+  .filter-sort {
+    margin-left: 0;
   }
 }
 
@@ -357,7 +368,9 @@
   }
 
   .project-collection,
-  .case-study {
+  .post-collection,
+  .case-study,
+  .article {
     padding: 0 32px 78px;
   }
 
@@ -452,7 +465,9 @@
   }
 
   .project-collection,
-  .case-study {
+  .post-collection,
+  .case-study,
+  .article {
     padding: 0 16px 78px;
   }
 

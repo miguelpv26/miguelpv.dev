@@ -5,8 +5,15 @@
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
   Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), interest-cohort=()
   Cross-Origin-Opener-Policy: same-origin
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'sha256-TFzVGwO1IZHV29NVA6Zur3DrhagCiDYGtWTvhQT36C0='; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests; require-trusted-types-for 'script'; trusted-types default
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'sha256-J4L380Inhd2QeaEJ4WpSsPy8NJDwq7tPdjtJkqKqrvo='; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests; require-trusted-types-for 'script'; trusted-types default
   ! Access-Control-Allow-Origin
 
 /assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Everything here is either content-addressed (main.<hash>.min.js and its map,
+# named by scripts/fingerprint-js.js) or unreferenced (style.min.css, kept only
+# as a build artifact — the CSS is inlined into each page). New bytes always mean
+# a new URL, so these can never go stale. Never add a mutable, referenced file.
+/assets/min/*
   Cache-Control: public, max-age=31536000, immutable

@@ -5,7 +5,7 @@
 */
 
 @font-face {
-  font-display: block;
+  font-display: optional;
   font-family: 'JetBrains Mono';
   font-style: normal;
   font-weight: 400;
@@ -13,7 +13,7 @@
 }
 
 @font-face {
-  font-display: block;
+  font-display: optional;
   font-family: 'JetBrains Mono';
   font-style: normal;
   font-weight: 500;
@@ -21,7 +21,7 @@
 }
 
 @font-face {
-  font-display: block;
+  font-display: optional;
   font-family: 'JetBrains Mono';
   font-style: normal;
   font-weight: 600;

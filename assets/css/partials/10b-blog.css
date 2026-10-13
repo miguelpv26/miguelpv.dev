@@ -1,0 +1,263 @@
+/*
+  ============================================================================
+  BLOG  (hub: /<lang>/blog · article: /<lang>/blog/<slug>)
+  ============================================================================
+  Only the chrome the blog doesn't already inherit lives here. The article's
+  prose spine (numbered "## " sections, disc lists, inline-code chips) is the
+  SAME one the case studies use and is defined in 10-case-study.css against
+  .article__section — a case study and an article are the same kind of
+  document, so they must not drift apart. Tag pills reuse .project-tags .tag.
+
+  Filename note: sorts between 10-case-study.css and 11-contact.css, which is
+  where it belongs in the cascade (it extends the long-form layer).
+*/
+
+.post-collection {
+  max-width: min(var(--max-content-width), var(--max-hero-width));
+  margin: 0 auto;
+  padding: 0 52px 78px;
+}
+
+.post-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-lg);
+}
+
+/*
+  A post card is all copy — no thumbnail. Blog covers are decoration that costs
+  a request and says nothing; the title and the deck do the selling instead.
+*/
+.post-card {
+  position: relative;
+  padding: var(--spacing-lg);
+  background: var(--color-bg-dark);
+  border: var(--border-width) solid color-mix(in srgb, var(--color-text-white) 14%, transparent);
+  border-radius: var(--border-radius-xl);
+  transition: var(--transition-all);
+}
+
+.post-card:hover,
+.post-card:focus-within {
+  border-color: color-mix(in srgb, var(--color-primary) 70%, transparent);
+  box-shadow: 0 0 22px -8px var(--color-primary);
+}
+
+/* Stretched link: the whole card is the hit area, the <a> stays the only tab stop. */
+.post-card__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.post-card__title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.01em;
+  line-height: var(--line-height-tight);
+  color: var(--color-primary);
+  margin: var(--spacing-2xs) 0 0;
+}
+
+.post-card__meta,
+.article__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.55rem;
+  margin: 0;
+  font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in srgb, var(--color-text-white) 70%, transparent);
+}
+
+.post-card__meta-sep,
+.article__meta-sep {
+  opacity: 0.45;
+}
+
+.post-card__excerpt {
+  margin: var(--spacing-xs) 0 0;
+  max-width: var(--measure);
+  line-height: var(--line-height-relaxed);
+  color: color-mix(in srgb, var(--color-text-white) 82%, transparent);
+}
+
+/*
+  The code chip again, for the places that sit OUTSIDE the prose spine — a title
+  like "font-display: block, not swap" is half code, and it should look like it.
+  (Inside .article__section, 10-case-study.css already handles this.)
+*/
+.post-card code,
+.page-header__title code,
+.article__lede code {
+  padding: 0.1em 0.35em;
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-bg-card);
+  color: var(--color-primary);
+  font-size: 0.9em;
+  overflow-wrap: anywhere;
+}
+
+/* …except in headings, which are already the accent colour — a green chip on a
+   green heading is just noise. Keep the chip, drop the recolour. */
+.page-header__title code,
+.post-card__title code {
+  color: inherit;
+  font-size: 0.85em;
+}
+
+.post-card .project-tags {
+  margin: var(--spacing-sm) 0 0;
+}
+
+.post-card__cue {
+  margin-top: var(--spacing-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary);
+}
+
+.post-card__cue::after {
+  content: "\2192";
+  transition: transform var(--transition-fast);
+}
+
+.post-card:hover .post-card__cue::after,
+.post-card:focus-within .post-card__cue::after {
+  transform: translateX(4px);
+}
+
+/*
+  ============================================================================
+  ARTICLE
+  ============================================================================
+  A case study is wide because its media band is: full-bleed sliders, the
+  Lighthouse panel. An article has none of that — it is text and nothing else —
+  so the 1400px box would just be a 650px column of prose with 650px of void
+  beside it. Cap the page at the measure (+ the section gutter + the 52px inset)
+  and let `margin: 0 auto` centre it. Now the whole page IS the reading column.
+
+  .page-header--article does the same to the breadcrumb/title/deck above it, so
+  the header and the prose share one left edge instead of drifting apart.
+*/
+.article,
+.page-header--article {
+  max-width: min(var(--max-content-width), calc(var(--measure-with-gutter) + 104px));
+}
+
+/* The deck: one paragraph that has to earn the next scroll. Wider and lighter
+   than body copy so it reads as a lede, not as the first section. */
+.article__lede {
+  max-width: var(--measure);
+  margin: var(--spacing-sm) 0 var(--spacing-md);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-relaxed);
+  color: color-mix(in srgb, var(--color-text-white) 82%, transparent);
+}
+
+/*
+  Related reading. This is the whole point of the blog for SEO: every article
+  hands the reader (and the crawler) a route back into the case studies, and
+  every case study will hand them one forward into the articles.
+*/
+.article__related {
+  margin-top: var(--section-spacing);
+  padding-top: var(--spacing-lg);
+  border-top: var(--border-width) solid color-mix(in srgb, var(--color-text-white) 14%, transparent);
+}
+
+.article__related h2 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.article__related h2::before {
+  content: "-> ";
+  color: color-mix(in srgb, var(--color-primary) 50%, transparent);
+}
+
+.article__related ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  max-width: var(--measure);
+}
+
+.article__related a {
+  color: color-mix(in srgb, var(--color-text-white) 88%, transparent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: var(--transition-color);
+}
+
+.article__related a:hover,
+.article__related a:focus-visible {
+  color: var(--color-primary);
+}
+
+/* Deck subtitle: a short second line under the article title — lighter and
+   smaller than the H1, larger than body — for a "what this is" tagline that
+   sits above the lede. */
+.article__subtitle {
+  max-width: var(--measure);
+  margin: var(--spacing-2xs) 0 var(--spacing-sm);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-tight);
+  color: color-mix(in srgb, var(--color-text-white) 68%, transparent);
+}
+
+/*
+  Fun-fact aside: the case study's "// still solving" box (defined in
+  10-case-study.css as .case-study__section--todo), recoloured from amber to the
+  accent. Lifts a tangent — here the font-display detail — out of the numbered
+  spine without discarding it, so it reads as a sidebar, not step N.
+*/
+.article__section--aside {
+  display: block;
+  counter-increment: none;
+  border-left: 2px solid var(--color-primary);
+  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--color-primary) 8%, transparent), transparent 55%);
+  padding: var(--spacing-md) var(--spacing-lg);
+}
+
+.article__section--aside::before {
+  content: none;
+}
+
+.article__section--aside h2 {
+  color: var(--color-primary);
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: var(--spacing-sm);
+}
+
+.article__section--aside h2::before {
+  content: "// ";
+  color: color-mix(in srgb, var(--color-primary) 50%, transparent);
+}
+
+.article__section--aside p {
+  color: color-mix(in srgb, var(--color-text-white) 82%, transparent);
+}
+
+@media (max-width: 791px) {
+  .post-collection {
+    padding: 0 32px 78px;
+  }
+
+  .post-card {
+    padding: var(--spacing-md);
+  }
+
+  .post-card__title {
+    font-size: var(--font-size-lg);
+  }
+}

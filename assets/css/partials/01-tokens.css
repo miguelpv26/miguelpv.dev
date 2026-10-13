@@ -18,6 +18,11 @@
   --max-content-width: 90vw;
   --max-hero-width: 1400px;
   --scroll-offset: 150px;
+  /* Reading measure for long-form prose (case studies, blog articles). The
+     second token adds the numbered-section gutter, so a whole section — its
+     heading rule included — ends exactly where its text does. */
+  --measure: 68ch;
+  --measure-with-gutter: calc(var(--measure) + 2.6rem + var(--spacing-md));
   
   /* Colors - Primary */
   --color-primary: #16c60c;

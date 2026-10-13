@@ -12,23 +12,20 @@
       voice on every project.
   Window controls sit on the RIGHT (the projects-index proof terminal keeps
   them on the left) so the two terminals stay distinct — and it isn't macOS.
+
+  The numbered "## " SECTION SPINE further down is deliberately shared with the
+  blog (.article / .article__section, see 10b-blog.css): a case study and an
+  article are the same kind of document, and the house voice should read the
+  same in both. Everything ABOVE the spine (terminal hero, manifest, media) is
+  case-study-only.
 */
 
-.case-study {
+.case-study,
+.article {
   max-width: min(var(--max-content-width), var(--max-hero-width));
   margin: 0 auto;
   padding: 0 52px 78px;
   counter-reset: cs-section;
-}
-
-/*
-  The shared .page-header is a two-column grid built for the projects INDEX
-  (title-block left, proof terminal right). A case study is a single stacked
-  column instead — breadcrumb, title, thesis, terminal, actions — so opt this
-  header out of the grid. Scoped by :has() so the index header is untouched.
-*/
-.page-header:has(.case-study__terminal) {
-  display: block;
 }
 
 /*
@@ -206,7 +203,6 @@
   width: 100%;
   aspect-ratio: 16 / 9;
   margin: var(--spacing-lg) 0 var(--section-spacing);
-  border: var(--border-width) solid var(--color-border-default);
   border-radius: var(--border-radius-xl);
   overflow: hidden;
 }
@@ -223,24 +219,39 @@
   A quiet number gutter (col 1) + the prose (col 2). The number is a real
   index into the Overview -> ... -> Status arc, so it earns its place; it is
   not decoration. The "## " prefix rhymes with the projects-index "# " labels.
+
+  Shared with blog articles (.article__section) — see the note at the top.
 */
-.case-study__section + .case-study__section {
+.case-study__section + .case-study__section,
+.article__section + .article__section {
   margin-top: var(--section-spacing);
 }
 
-.case-study__section {
+/*
+  The section is capped at the reading measure, NOT at the container width. The
+  container is wide because the media band (sliders, score panel) needs to be;
+  the prose is 68ch because a 1300px line of monospace is unreadable. Without
+  this cap the h2's border-bottom stretched the full container while the
+  paragraph under it stopped at 68ch — a rule ruling off a column that no text
+  ever filled, which read as a bug rather than as whitespace.
+*/
+.case-study__section,
+.article__section {
   display: grid;
   grid-template-columns: 2.6rem minmax(0, 1fr);
   column-gap: var(--spacing-md);
+  max-width: var(--measure-with-gutter);
   counter-increment: cs-section;
 }
 
-.case-study__section > * {
+.case-study__section > *,
+.article__section > * {
   grid-column: 2;
   min-width: 0;
 }
 
-.case-study__section::before {
+.case-study__section::before,
+.article__section::before {
   content: counter(cs-section, decimal-leading-zero);
   grid-column: 1;
   grid-row: 1;
@@ -251,7 +262,8 @@
   color: color-mix(in srgb, var(--color-primary) 50%, transparent);
 }
 
-.case-study__section h2 {
+.case-study__section h2,
+.article__section h2 {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
   color: var(--color-primary);
@@ -260,35 +272,63 @@
   border-bottom: var(--border-width) solid color-mix(in srgb, var(--color-primary) 30%, transparent);
 }
 
-.case-study__section h2::before {
+.case-study__section h2::before,
+.article__section h2::before {
   content: "## ";
   color: color-mix(in srgb, var(--color-primary) 50%, transparent);
 }
 
-.case-study__section p {
-  max-width: 68ch;
+.case-study__section p,
+.article__section p {
+  max-width: var(--measure);
   line-height: var(--line-height-relaxed);
   margin-bottom: var(--spacing-sm);
 }
 
-.case-study__section ul {
-  max-width: 68ch;
+.case-study__section ul,
+.article__section ul {
+  max-width: var(--measure);
   margin: 0 0 var(--spacing-sm);
   padding-left: var(--spacing-md);
 }
 
-.case-study__section li {
+.case-study__section li,
+.article__section li {
   list-style: disc;
-  margin-bottom: var(--spacing-2xs);
+  margin-bottom: var(--spacing-xs);
   line-height: var(--line-height-normal);
 }
 
-.case-study__section li::marker {
+/*
+  The gap belongs *between* the bullets — the list already owns the space that
+  follows it, so a trailing margin here would just deepen that gap instead.
+*/
+.case-study__section li:last-child,
+.article__section li:last-child {
+  margin-bottom: 0;
+}
+
+/*
+  Bullet lead-ins ("Speed that reaches everyone:") run one step above the body
+  copy so the list stays skimmable — you can read just the bold openers and know
+  what the section covers. Only the opener grows; the sentence that follows it
+  stays at body size, as does mid-sentence <strong> emphasis, which is why this
+  needs an explicit class: `li > strong:first-child` would also catch
+  "Los <strong>seekers</strong>…", since :first-child ignores leading text.
+*/
+.case-study__section li > .lead-in,
+.article__section li > .lead-in {
+  font-size: var(--font-size-md);
+}
+
+.case-study__section li::marker,
+.article__section li::marker {
   color: color-mix(in srgb, var(--color-primary) 70%, transparent);
 }
 
 /* Inline code: the body font is already monospace, so set it apart with a chip. */
-.case-study__section code {
+.case-study__section code,
+.article__section code {
   padding: 0.1em 0.35em;
   border-radius: var(--border-radius-sm);
   background-color: var(--color-bg-card);
@@ -299,7 +339,9 @@
 
 /* Inline links inside prose (the base reset strips colour/underline). */
 .case-study__section p a,
-.case-study__section li a {
+.case-study__section li a,
+.article__section p a,
+.article__section li a {
   color: var(--color-primary);
   text-decoration: underline;
   text-underline-offset: 2px;
@@ -309,7 +351,11 @@
 .case-study__section p a:hover,
 .case-study__section p a:focus-visible,
 .case-study__section li a:hover,
-.case-study__section li a:focus-visible {
+.case-study__section li a:focus-visible,
+.article__section p a:hover,
+.article__section p a:focus-visible,
+.article__section li a:hover,
+.article__section li a:focus-visible {
   color: var(--color-text-white);
 }
 
@@ -401,8 +447,7 @@
 
 /* The four-ring panel is portrait-ish content, so don't force it into the
    landscape media box (whose overflow:hidden clipped the lower rings on
-   mobile). Let the thumbnail/hero grow to fit — all four scores stay visible. */
-.project-card .project-thumb:has(.score-panel),
+   mobile). Let the hero grow to fit — all four scores stay visible. */
 .case-study__media:has(.score-panel) {
   aspect-ratio: auto;
 }
@@ -477,7 +522,8 @@
   ============================================================================
 */
 @media (max-width: 600px) {
-  .case-study__section {
+  .case-study__section,
+  .article__section {
     grid-template-columns: 1.7rem minmax(0, 1fr);
     column-gap: var(--spacing-sm);
   }

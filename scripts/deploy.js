@@ -24,6 +24,9 @@ function buildSitemap() {
   const GROUPS = [
     { en: '/en/',               es: '/es/',                priority: '1.0' },
     { en: '/en/projects',       es: '/es/proyectos',       priority: '0.8' },
+    { en: '/en/blog',           es: '/es/blog',            priority: '0.8' },
+    { en: '/en/blog/web-font-strategy', es: '/es/blog/web-font-strategy', priority: '0.7' },
+
     { en: '/en/projects/biglo',       es: '/es/proyectos/biglo',       priority: '0.6' },
     { en: '/en/projects/digitalando', es: '/es/proyectos/digitalando', priority: '0.6' },
     { en: '/en/projects/portfolio',   es: '/es/proyectos/portfolio',   priority: '0.6' },
