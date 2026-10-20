@@ -1,0 +1,64 @@
+    <a class="skip-link" href="#main">{{t.skip}}</a>
+    <header class="header">
+      <div class="header__container">
+        <div class="header__content">
+          <a href="{{logoHref}}" class="header__logo"{{logoCurrent}} aria-label="{{t.logoLabel}}">
+            <img src="{{prefix}}assets/img/favicon.svg" alt="{{t.logoAlt}}" class="header__logo-image" width="44" height="44" loading="eager" fetchpriority="high" />
+            <span class="header__logo-name">Miguel PV</span>
+          </a>
+
+          <button
+            id="nav-toggle"
+            class="header__toggle-button"
+            type="button"
+            aria-controls="site-nav"
+            aria-expanded="false"
+            aria-label="{{t.toggle}}"
+          >
+            <svg width="28" height="28" fill="currentColor" aria-hidden="true">
+              <use href="{{prefix}}assets/img/sprite.svg#bars" />
+            </svg>
+          </button>
+
+          <nav class="nav" id="site-nav" aria-label="{{t.mainNav}}" data-nav>
+            <ul class="nav__list">
+              <li class="nav__item">
+                <a href="{{projectsHref}}"{{projectsCurrent}}>
+                  <svg width="22" height="22" fill="currentColor" aria-hidden="true" id="laptop-code">
+                    <use href="{{prefix}}assets/img/sprite.svg#laptop-code" />
+                  </svg>
+                  {{t.projects}}
+                </a>
+              </li>
+              <li class="nav__separator" aria-hidden="true"></li>
+              <li class="nav__item">
+                <a href="{{blogHref}}"{{blogCurrent}}>
+                  <svg width="22" height="22" fill="currentColor" aria-hidden="true" id="newspaper">
+                    <use href="{{prefix}}assets/img/sprite.svg#newspaper" />
+                  </svg>
+                  Blog
+                </a>
+              </li>
+              <li class="nav__separator" aria-hidden="true"></li>
+              <li class="nav__item">
+                <a href="{{contactHref}}">
+                  <svg width="22" height="22" fill="currentColor" aria-hidden="true" id="envelope">
+                    <use href="{{prefix}}assets/img/sprite.svg#envelope" />
+                  </svg>
+                  {{t.contact}}
+                </a>
+              </li>
+              <li class="nav__separator" aria-hidden="true"></li>
+              <li class="nav__item">
+                <nav class="lang-toggle" aria-label="{{t.language}}">
+                  <a href="{{enHref}}" class="lang-toggle__link{{enActive}}" lang="en" hreflang="en"{{enCurrent}}>EN</a>
+                  <span class="lang-toggle__sep" aria-hidden="true">/</span>
+                  <a href="{{esHref}}" class="lang-toggle__link{{esActive}}" lang="es" hreflang="es"{{esCurrent}}>ES</a>
+                </nav>
+              </li>
+            </ul>
+          </nav>
+          <div class="nav-overlay" data-nav-overlay hidden></div>
+        </div>
+      </div>
+    </header>

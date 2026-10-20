@@ -27,7 +27,7 @@ html {
 body {
   font-family: var(--font-family-base);
   letter-spacing: var(--letter-spacing-base);
-  color: var(--color-text-white);
+  color: var(--color-text);
   background: var(--color-bg-dark);
   display: flex;
   flex-direction: column;

@@ -14,7 +14,7 @@
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-sm);
-  color: var(--color-text-white);
+  color: var(--color-text);
   box-shadow: var(--shadow-glow-footer);
   z-index: var(--z-footer);
 }
@@ -42,13 +42,18 @@
   align-items: center;
   gap: 0 0.6em;
   font-size: 1rem;
-  color: var(--color-primary-dim);
+  color: var(--color-text-white);
   font-weight: var(--font-weight-medium);
 }
 
 /* Keep each claim intact — wrap as whole units, never split mid-phrase. */
 .footer__privacy-item {
   white-space: nowrap;
+}
+
+/* The claims are white; the middots between them drop to grey. */
+.footer__privacy-sep {
+  color: var(--color-text-muted);
 }
 
 /* On phones, stack the three claims with the middots as centered separators. */

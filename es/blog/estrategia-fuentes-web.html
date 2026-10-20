@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <!-- build:head -->
+    <!-- /build:head -->
+
+    <!-- build:seo -->
+    <!-- /build:seo -->
+
+    <!-- build:jsonld -->
+    <!-- /build:jsonld -->
+
+    <style id="inline-css"></style>
+  </head>
+
+  <body class="projects-page">
+    <!-- build:header -->
+    <!-- /build:header -->
+
+    <main id="main" tabindex="-1">
+      <canvas id="matrix-canvas" aria-hidden="true"></canvas>
+
+      <article>
+      <header class="page-header page-header--article">
+        <!-- build:breadcrumb -->
+        <!-- /build:breadcrumb -->
+        <div class="article__hero">
+          <div class="article__hero-text">
+            <h1 class="page-header__title">Estrategia de fuentes web:<br/>los cuatro pasos que siempre aplico</h1>
+            <p class="article__subtitle">Autoalojamiento, woff2, subconjunto y preload, medidos en esta web.</p>
+
+            <p class="article__lede">
+              Todo el texto de esta web está en JetBrains Mono, así que si la fuente va lenta, va lenta la
+              página entera. Los tres pesos que uso suman 825 KB en los TTF tal y como los publica JetBrains.
+              Lo que se sirve de verdad son 65 KB, desde mi propio servidor y pedidos antes de que el navegador
+              sepa siquiera que los va a necesitar. Así paso de una cifra a la otra, en el orden en que lo hago.
+            </p>
+
+            <p class="article__meta">
+              <time datetime="2026-07-13">13 jul 2026</time>
+              <span class="article__meta-sep" aria-hidden="true">·</span>
+              <span>Actualizado el <time datetime="2026-10-16">16 oct 2026</time></span>
+              <span class="article__meta-sep" aria-hidden="true">·</span>
+              <span>6 min de lectura</span>
+            </p>
+
+            <div class="project-tags">
+              <span class="tag">Fuentes</span>
+              <span class="tag">Rendimiento web</span>
+              <span class="tag">Core Web Vitals</span>
+              <span class="tag">WPO</span>
+            </div>
+          </div>
+          <img class="article__cover" src="../../assets/img/blog/web-font-strategy-cover.webp" alt="" width="680" height="680" fetchpriority="high" />
+        </div>
+      </header>
+
+      <div class="article">
+        <section class="article__section article__section--split">
+          <div class="article__text">
+            <h2>Autoaloja la fuente</h2>
+            <p>
+              Lo primero que hago siempre es sacar la fuente de cualquier servicio externo y servirla desde mi
+              propio dominio. Un enlace a Google Fonts obliga al navegador a hablar con dos servidores nuevos:
+              uno para la hoja de estilos, que bloquea el renderizado, y otro para el archivo de fuente al que
+              apunta esa hoja. Cada servidor nuevo cuesta una consulta DNS y un handshake TLS antes de que se
+              mueva un solo byte. Al autoalojarla, todo eso se queda en una única petición por una conexión que
+              la página ya tenía abierta.
+            </p>
+            <p>
+              Un <code>preconnect</code> puede adelantar esos handshakes, pero no se salta la hoja de estilos
+              de en medio. Y el viejo argumento de que el visitante ya tiene la copia de Google en caché dejó
+              de valer hacia 2020, cuando los navegadores empezaron a guardar una caché aparte para cada web.
+            </p>
+            <p>
+              Además, si el archivo es tuyo, las cabeceras de caché también. Un archivo de fuente nunca cambia
+              sin cambiar también de nombre, así que el navegador puede guardarlo un año entero sin volver a
+              preguntar:
+            </p>
+            <pre tabindex="0"><code>/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable</code></pre>
+            <p>
+              Lo hago por la velocidad, pero sale ganando por partida doble: una dependencia externa menos y
+              ningún servidor ajeno enterándose de quién entra. Y eso último no es teórico: en 2022, un
+              tribunal alemán condenó al dueño de una web a indemnizar a un visitante por usar Google Fonts,
+              porque enviaba su IP a Google sin su consentimiento.
+            </p>
+          </div>
+
+          <div class="article__visual">
+            <figure class="article__figure">
+              <div class="article__figure-panel chain chain--7">
+                <div class="chain__lane">
+                  <p class="chain__label">Google Fonts</p>
+                  <ol class="chain__track">
+                    <li class="chain__step chain__step--neutral">HTML</li>
+                    <li class="chain__step chain__step--overhead">DNS</li>
+                    <li class="chain__step chain__step--overhead">TLS</li>
+                    <li class="chain__step chain__step--overhead">CSS</li>
+                    <li class="chain__step chain__step--overhead">DNS</li>
+                    <li class="chain__step chain__step--overhead">TLS</li>
+                    <li class="chain__step chain__step--font">woff2</li>
+                  </ol>
+                  <p class="chain__host">fonts.googleapis.com -&gt; fonts.gstatic.com</p>
+                </div>
+                <div class="chain__lane">
+                  <p class="chain__label">Autoalojada</p>
+                  <ol class="chain__track">
+                    <li class="chain__step chain__step--neutral">HTML</li>
+                    <li class="chain__step chain__step--font">woff2</li>
+                  </ol>
+                  <p class="chain__host">miguelpv.dev — conexión ya abierta</p>
+                </div>
+              </div>
+              <figcaption>
+                Lo que tiene que esperar el navegador hasta que llega el primer byte de la fuente. Cada caja
+                es un paso que no se puede saltar, no una duración medida: la ruta de terceros añade dos
+                consultas DNS, dos handshakes y una hoja de estilos antes de que la fuente empiece siquiera a
+                descargarse.
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="article__section article__section--split">
+          <div class="article__text">
+            <h2>Sírvela en <code>woff2</code></h2>
+            <p>
+              El formato es la mejora que sale gratis. <code>woff2</code> es el formato de fuente web más
+              comprimido que hay, y todos los navegadores para los que desarrollo lo entienden desde hace
+              años. Los mismos glifos con un tercio de los bytes: JetBrains Mono Regular pesa 274 KB en TTF y
+              92 KB en woff2.
+            </p>
+            <p>
+              Así que sirvo woff2 y nada más: un <code>@font-face</code> por peso, cada uno apuntando a un
+              único archivo. Sin formatos de reserva ni una lista de <code>src</code> que el navegador tenga
+              que ir probando.
+            </p>
+          </div>
+
+          <div class="article__visual">
+            <figure class="article__figure">
+              <pre tabindex="0"><code>@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/assets/fonts/jetbrains-mono-v24-latin-regular.woff2')
+       format('woff2');
+}</code></pre>
+              <figcaption>
+                El peso regular, tal y como lo declara esta web. Medium y semibold son la misma regla con otro
+                peso y otro archivo.
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="article__section article__section--split">
+          <div class="article__text">
+            <h2>Haz un subconjunto y quita los pesos que no uses</h2>
+            <p>
+              En proporción, aquí está el mayor recorte: el woff2 ya dejaba los archivos en un tercio, y el
+              subconjunto vuelve a dividirlos entre más de cuatro. Un archivo de fuente completo trae cirílico,
+              griego, vietnamita y cientos de símbolos que esta web no usa nunca, así que sólo sirvo el
+              subconjunto latino. Cubre también la versión en español, porque la á, la é, la ñ, el ¿ y el ¡
+              están todos en él, así que un mismo archivo sirve para los dos idiomas. El woff2 completo pesa
+              92 KB; el latino, 21 KB.
+            </p>
+            <p>
+              Después recorto los pesos a los que el diseño usa de verdad. Aquí son tres (regular, medium y
+              semibold) y ninguna cursiva: cada peso o estilo de más es otro archivo que descargar.
+            </p>
+          </div>
+
+          <div class="article__visual">
+            <figure class="article__figure">
+              <div class="article__figure-panel">
+                <ul class="bytes">
+                  <li class="bytes__row">
+                    <span class="bytes__label">TTF, completa</span>
+                    <span class="bytes__bar"><span class="bytes__fill bytes__fill--ttf"></span></span>
+                    <span class="bytes__value">825 KB</span>
+                  </li>
+                  <li class="bytes__row">
+                    <span class="bytes__label">woff2, completa</span>
+                    <span class="bytes__bar"><span class="bytes__fill bytes__fill--woff2"></span></span>
+                    <span class="bytes__value">280 KB</span>
+                  </li>
+                  <li class="bytes__row bytes__row--win">
+                    <span class="bytes__label">woff2, latino</span>
+                    <span class="bytes__bar"><span class="bytes__fill bytes__fill--subset"></span></span>
+                    <span class="bytes__value">65 KB</span>
+                  </li>
+                </ul>
+              </div>
+              <figcaption>
+                Los tres pesos que usa esta web (400, 500 y 600), sumados. El TTF y el woff2 completos son de
+                la versión oficial 2.304 de JetBrains Mono; el subconjunto latino son los archivos que sirve
+                esta web de verdad. Casi 13 veces más ligero, sin perder nada visible.
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="article__section article__section--split">
+          <div class="article__text">
+            <h2>Precarga las que importan</h2>
+            <p>
+              El navegador no pide una fuente cuando lee el <code>@font-face</code>. Espera a haber analizado
+              la página, aplicado los estilos y encontrado algún texto que use esa fuente. Eso es tarde,
+              incluso con el CSS en línea, como aquí. Un preload en el <code>&lt;head&gt;</code> lanza la
+              descarga en el acto, en paralelo con todo lo demás:
+            </p>
+            <pre tabindex="0"><code>&lt;link rel="preload" href="/assets/fonts/jetbrains-mono-v24-latin-regular.woff2"
+      as="font" type="font/woff2" crossorigin /&gt;</code></pre>
+            <p>
+              Aquí hay dos detalles importantes. <code>crossorigin</code> no es opcional, ni siquiera en tu
+              propio dominio: los navegadores siempre piden las fuentes en modo CORS, así que un preload sin ese
+              atributo no coincide con la petición real y la fuente se descarga dos veces. Y precargo justo las
+              fuentes que usa la primera pantalla (aquí, las tres), ni una más. Si lo precargas todo, tus
+              fuentes acaban peleándose con tus propios recursos críticos por el ancho de banda.
+            </p>
+          </div>
+
+          <div class="article__visual">
+            <figure class="article__figure">
+              <div class="article__figure-panel chain chain--6">
+                <div class="chain__lane">
+                  <p class="chain__label">Sin preload</p>
+                  <ol class="chain__track">
+                    <li class="chain__step chain__step--neutral">HTML</li>
+                    <li class="chain__step chain__step--neutral chain__step--span2">parseo</li>
+                    <li class="chain__step chain__step--font chain__step--span2">woff2</li>
+                    <li class="chain__step chain__step--paint">texto</li>
+                  </ol>
+                </div>
+                <div class="chain__lane">
+                  <p class="chain__label">Con preload</p>
+                  <ol class="chain__track">
+                    <li class="chain__step chain__step--neutral">HTML</li>
+                    <li class="chain__step chain__step--neutral chain__step--span2">parseo</li>
+                    <li class="chain__step chain__step--paint">texto</li>
+                  </ol>
+                  <ol class="chain__track">
+                    <li class="chain__step chain__step--font chain__step--from2">woff2</li>
+                  </ol>
+                </div>
+              </div>
+              <figcaption>
+                Sin preload, la petición de la fuente espera a que termine el parseo. Con él, la petición sale
+                mientras el <code>&lt;head&gt;</code> todavía se está leyendo, así que la fuente ya está ahí
+                cuando el texto la necesita. Ilustrativo, no a escala.
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="article__section article__section--split article__section--coda">
+          <div class="article__text">
+            <h2>Cuándo lo haría de otra forma</h2>
+            <p>
+              Estos cuatro pasos son mi punto de partida, no una ley: son lo que necesitaba esta web. Hay
+              cosas que me harían cambiar de idea:
+            </p>
+            <ul>
+              <li>
+                Más fuentes: cuantas más familias y pesos necesite un diseño, más importa recortar caracteres
+                y pesos, y más difícil es precargarlo todo sin atascar la ruta crítica. A partir de cierto
+                punto, la solución de verdad es usar menos fuentes, no cargarlas con más maña.
+              </li>
+              <li>
+                Un idioma fuera del alfabeto latino: si algún día añado uno, serviría sus glifos como un
+                subconjunto aparte con <code>unicode-range</code>, para que quien lee en inglés o en español no
+                tenga que descargarlos nunca.
+              </li>
+              <li>
+                Navegadores antiguos de verdad: sólo sirvo woff2 porque todos los navegadores para los que
+                desarrollo lo entienden. Si tuviera que llegar a navegadores mucho más viejos, añadiría un
+                <code>woff</code> de reserva a la lista <code>src</code>, y esos bytes de más sólo se los
+                descargarían ellos.
+              </li>
+              <li>
+                Una fuente que no consigo hacer rápida: si una tipografía corporativa tuviera que aparecer sí o
+                sí y no lograra hacerla pequeña, recortarla ni precargarla, lo honesto sería cambiar de fuente,
+                no servir una lenta.
+              </li>
+            </ul>
+            <p>
+              Y la mejora no es exclusiva de mi web. En una web que revisé hace poco con un amigo, arreglar
+              sólo las fuentes (autoalojarlas, woff2, subconjuntos, menos familias y precargar las adecuadas)
+              redujo su peso unas 10 veces. La página pasó de un 47 en PageSpeed, con el FCP y el LCP en torno
+              a los 10 segundos, a un 92–96, con ambas métricas entre 2,0 y 2,7 s. Mismo contenido, mismo
+              diseño. Las fuentes simplemente dejaron de ser el cuello de botella.
+            </p>
+            <p>
+              Esa es toda la estrategia: haz que la fuente pese poco y sírvela pronto. Abre la pestaña Red de
+              las DevTools, busca tus archivos de fuente y mira cuánto pesan y cuándo empiezan a descargarse.
+              Esas dos cifras te dicen por qué paso empezar.
+            </p>
+          </div>
+
+          <div class="article__visual">
+            <aside class="article__section article__section--aside">
+              <h2>dato curioso: la línea font-display</h2>
+              <p>
+                La parte friki. <code>font-display</code> decide qué muestra el navegador mientras carga la
+                fuente, y todas las guías dicen que uses <code>swap</code>. Lo probé, y vi cómo la fuente de
+                reserva saltaba a JetBrains Mono en cada carga. Nunca llegó a afectar a mi CLS, pero el
+                parpadeo quedaba fatal. Como los pasos de arriba consiguen que la fuente pinte en unos 39 ms
+                (PageSpeed Insights, móvil, 4G), me quedé con <code>optional</code>: su margen de ~100 ms deja
+                holgura de sobra frente a esos 39 ms, y si alguna vez la fuente tardara más, el navegador se
+                quedaría con la de reserva, sin cambio y sin salto. Cuando las fuentes cargan así de rápido,
+                la elección es casi estética, y de eso se trata.
+              </p>
+            </aside>
+          </div>
+        </section>
+
+        <div class="article__related">
+          <h2>Lecturas relacionadas</h2>
+          <ul>
+            <li><a href="/es/proyectos/portfolio">miguelpv.dev — caso práctico</a>: la web de la que salen estas cifras, y todo lo demás que hace por la velocidad.</li>
+            <li><a href="/es/proyectos/biglo">Biglo — caso práctico</a>: la misma disciplina de rendimiento aplicada a un producto real.</li>
+          </ul>
+        </div>
+
+        <div class="projects-back">
+          <a class="btn" href="/es/blog">&lt; Volver al blog</a>
+        </div>
+      </div>
+      </article>
+    </main>
+    <!-- build:footer -->
+    <!-- /build:footer -->
+    <script src="../../assets/min/main.min.js" defer></script>
+  </body>
+</html>

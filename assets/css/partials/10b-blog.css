@@ -32,7 +32,7 @@
   position: relative;
   padding: var(--spacing-lg);
   background: var(--color-bg-dark);
-  border: var(--border-width) solid color-mix(in srgb, var(--color-text-white) 14%, transparent);
+  border: var(--border-width) solid var(--color-line);
   border-radius: var(--border-radius-xl);
   transition: var(--transition-all);
 }
@@ -55,7 +55,7 @@
   font-weight: var(--font-weight-semibold);
   letter-spacing: -0.01em;
   line-height: var(--line-height-tight);
-  color: var(--color-primary);
+  color: var(--color-text-white);
   margin: var(--spacing-2xs) 0 0;
 }
 
@@ -68,7 +68,7 @@
   margin: 0;
   font-size: var(--font-size-sm);
   font-variant-numeric: tabular-nums;
-  color: color-mix(in srgb, var(--color-text-white) 70%, transparent);
+  color: var(--color-text-muted);
 }
 
 .post-card__meta-sep,
@@ -80,12 +80,12 @@
   margin: var(--spacing-xs) 0 0;
   max-width: var(--measure);
   line-height: var(--line-height-relaxed);
-  color: color-mix(in srgb, var(--color-text-white) 82%, transparent);
+  color: var(--color-text-soft);
 }
 
 /*
   The code chip again, for the places that sit OUTSIDE the prose spine — a title
-  like "font-display: block, not swap" is half code, and it should look like it.
+  that names a CSS property or a file format is half code, and it should look like it.
   (Inside .article__section, 10-case-study.css already handles this.)
 */
 .post-card code,
@@ -94,16 +94,14 @@
   padding: 0.1em 0.35em;
   border-radius: var(--border-radius-sm);
   background-color: var(--color-bg-card);
-  color: var(--color-primary);
+  color: var(--color-code);
   font-size: 0.9em;
   overflow-wrap: anywhere;
 }
 
-/* …except in headings, which are already the accent colour — a green chip on a
-   green heading is just noise. Keep the chip, drop the recolour. */
+/* A touch smaller inside headings, where the chip's padding already adds bulk. */
 .page-header__title code,
 .post-card__title code {
-  color: inherit;
   font-size: 0.85em;
 }
 
@@ -122,7 +120,7 @@
 }
 
 .post-card__cue::after {
-  content: "\2192";
+  content: "->";
   transition: transform var(--transition-fast);
 }
 
@@ -135,19 +133,10 @@
   ============================================================================
   ARTICLE
   ============================================================================
-  A case study is wide because its media band is: full-bleed sliders, the
-  Lighthouse panel. An article has none of that — it is text and nothing else —
-  so the 1400px box would just be a 650px column of prose with 650px of void
-  beside it. Cap the page at the measure (+ the section gutter + the 52px inset)
-  and let `margin: 0 auto` centre it. Now the whole page IS the reading column.
-
-  .page-header--article does the same to the breadcrumb/title/deck above it, so
-  the header and the prose share one left edge instead of drifting apart.
+  The article keeps the case study's full-width box. A section that has a
+  visual (diagram, chart, code) uses the SPLIT layout further down: prose at
+  the measure on the left, the visual on the right, in every section.
 */
-.article,
-.page-header--article {
-  max-width: min(var(--max-content-width), calc(var(--measure-with-gutter) + 104px));
-}
 
 /* The deck: one paragraph that has to earn the next scroll. Wider and lighter
    than body copy so it reads as a lede, not as the first section. */
@@ -156,7 +145,33 @@
   margin: var(--spacing-sm) 0 var(--spacing-md);
   font-size: var(--font-size-md);
   line-height: var(--line-height-relaxed);
-  color: color-mix(in srgb, var(--color-text-white) 82%, transparent);
+  color: var(--color-text-soft);
+}
+
+/*
+  Hero: the title block on the left, the cover image in a fixed column on the
+  right. The cover only illustrates what the lede already says, so it ships
+  with alt="" and screen readers skip it.
+*/
+.article__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
+  align-items: center;
+  gap: var(--spacing-xl);
+}
+
+.article__hero-text .project-tags {
+  margin-bottom: 0;
+}
+
+.article__cover {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  background: var(--color-bg-black);
+  border: var(--border-width) solid color-mix(in srgb, var(--color-primary) 40%, transparent);
+  border-radius: var(--border-radius-xl);
 }
 
 /*
@@ -167,13 +182,13 @@
 .article__related {
   margin-top: var(--section-spacing);
   padding-top: var(--spacing-lg);
-  border-top: var(--border-width) solid color-mix(in srgb, var(--color-text-white) 14%, transparent);
+  border-top: var(--border-width) solid var(--color-line);
 }
 
 .article__related h2 {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--color-primary);
+  color: var(--color-text-white);
   margin-bottom: var(--spacing-sm);
 }
 
@@ -186,11 +201,23 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xs);
-  max-width: var(--measure);
+}
+
+/* A prompt-style marker per link, so two short lines read as a list of pages
+   rather than one wrapped paragraph. The hanging indent keeps a wrapped line
+   aligned with the text, not with the marker. */
+.article__related li {
+  padding-left: 2ch;
+  text-indent: -2ch;
+}
+
+.article__related li::before {
+  content: "> ";
+  color: color-mix(in srgb, var(--color-primary) 50%, transparent);
 }
 
 .article__related a {
-  color: color-mix(in srgb, var(--color-text-white) 88%, transparent);
+  color: var(--color-text);
   text-decoration: underline;
   text-underline-offset: 2px;
   transition: var(--transition-color);
@@ -210,21 +237,22 @@
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-medium);
   line-height: var(--line-height-tight);
-  color: color-mix(in srgb, var(--color-text-white) 68%, transparent);
+  color: var(--color-text-soft);
 }
 
 /*
   Fun-fact aside: the case study's "// still solving" box (defined in
   10-case-study.css as .case-study__section--todo), recoloured from amber to the
-  accent. Lifts a tangent — here the font-display detail — out of the numbered
-  spine without discarding it, so it reads as a sidebar, not step N.
+  code violet — a technical tangent, not an open problem. Lifts it — here the
+  font-display detail — out of the numbered spine without discarding it, so it
+  reads as a sidebar, not step N.
 */
 .article__section--aside {
   display: block;
   counter-increment: none;
-  border-left: 2px solid var(--color-primary);
+  border-left: 2px solid var(--color-code);
   border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--color-primary) 8%, transparent), transparent 55%);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--color-code) 8%, transparent), transparent 55%);
   padding: var(--spacing-md) var(--spacing-lg);
 }
 
@@ -232,8 +260,21 @@
   content: none;
 }
 
+/*
+  Coda: the closing section that wraps the steps up rather than adding one.
+  It drops out of the count, so a "four steps" title numbers 01–04 and the
+  coda reads as the ending, not as step 05.
+*/
+.article__section--coda {
+  counter-increment: none;
+}
+
+.article__section--coda::before {
+  content: none;
+}
+
 .article__section--aside h2 {
-  color: var(--color-primary);
+  color: var(--color-code);
   border-bottom: none;
   padding-bottom: 0;
   margin-bottom: var(--spacing-sm);
@@ -241,11 +282,290 @@
 
 .article__section--aside h2::before {
   content: "// ";
-  color: color-mix(in srgb, var(--color-primary) 50%, transparent);
+  color: color-mix(in srgb, var(--color-code) 60%, transparent);
 }
 
 .article__section--aside p {
-  color: color-mix(in srgb, var(--color-text-white) 82%, transparent);
+  color: var(--color-text-soft);
+}
+
+/*
+  ============================================================================
+  SPLIT SECTIONS
+  ============================================================================
+  Prose on the left, its visual on the right: [number | prose | visual]. The
+  prose keeps the same left edge in every section, so the page reads straight
+  down. The DOM order is prose first, so the stacked layout and screen readers
+  read the text before the figure. Prose and visual split roughly 7:6; the
+  paragraphs keep their own 68ch cap, so the prose never outgrows the measure
+  on a very wide screen.
+*/
+.article__section--split {
+  max-width: none;
+  grid-template-columns: 2.6rem minmax(0, 7fr) minmax(0, 6fr);
+  align-items: start;
+}
+
+.article__section--split > .article__text {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.article__section--split > .article__visual {
+  grid-column: 3;
+  grid-row: 1;
+  align-self: center;
+  margin-left: var(--spacing-xl);
+}
+
+.article__text > :last-child,
+.article__visual > :last-child {
+  margin-bottom: 0;
+}
+
+.article__visual .article__figure {
+  max-width: none;
+  margin: 0;
+}
+
+/* The fun-fact aside, when it sits in a visual column instead of the spine. */
+.article__visual .article__section--aside {
+  max-width: none;
+  border-radius: var(--border-radius-md);
+  border: var(--border-width) solid color-mix(in srgb, var(--color-code) 30%, transparent);
+  border-left: 2px solid var(--color-code);
+}
+
+/* Too narrow for two columns: back to the single spine, visual under the text. */
+@media (max-width: 1100px) {
+  .article__hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--spacing-md);
+  }
+
+  .article__cover {
+    max-width: 280px;
+  }
+
+  .article__section--split {
+    max-width: var(--measure-with-gutter);
+    grid-template-columns: 2.6rem minmax(0, 1fr);
+  }
+
+  .article__section--split > .article__text,
+  .article__section--split > .article__visual {
+    grid-column: 2;
+    grid-row: auto;
+    margin: 0;
+  }
+
+  .article__section--split > .article__visual {
+    margin-top: var(--spacing-md);
+  }
+}
+
+/*
+  ============================================================================
+  CODE BLOCKS
+  ============================================================================
+  The real snippet, copied from this site's own source. The inline-code chip
+  (10-case-study.css) is undone inside a block — a chip around every line is
+  noise. font-family is restated because the UA's `pre { font-family:
+  monospace }` would otherwise drop JetBrains Mono for the system mono.
+*/
+/* No max-width of its own: 68ch at the smaller code size would stop short of
+   the prose, and the section column already caps it at the measure. */
+.article__section pre {
+  margin: 0 0 var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-bg-black);
+  border: var(--border-width) solid color-mix(in srgb, var(--color-code) 30%, transparent);
+  border-radius: var(--border-radius-md);
+  overflow-x: auto;
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+}
+
+.article__section pre code {
+  padding: 0;
+  background: none;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: inherit;
+  overflow-wrap: normal;
+}
+
+.article__section pre:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/*
+  ============================================================================
+  FIGURES
+  ============================================================================
+  Diagrams and charts are built in HTML/CSS, not exported as images: the text
+  stays real text (translatable, selectable, readable by a screen reader), it
+  inherits the site font, and it costs no request. Every bar and box carries a
+  text label, so nothing is encoded by colour alone.
+*/
+.article__figure {
+  max-width: var(--measure);
+  margin: var(--spacing-xs) 0 var(--spacing-md);
+}
+
+.article__figure-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--color-bg-black);
+  border: var(--border-width) solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+  border-radius: var(--border-radius-lg);
+}
+
+.article__figure figcaption {
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-muted);
+}
+
+/* Base resets win over the prose spine's disc lists (same specificity, later). */
+.article__figure p,
+.article__figure ol,
+.article__figure ul,
+.article__figure li {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/*
+  Chain: one lane per scenario, each a row of equal-width "hops" on a shared
+  grid, so a shorter lane literally ends earlier. The widths are illustrative —
+  a hop is a step the browser has to wait for, not a measured duration.
+*/
+.chain__lane {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xs);
+}
+
+.chain__label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+.chain__host {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.chain__track {
+  display: grid;
+  gap: 3px;
+}
+
+.chain--6 .chain__track { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.chain--7 .chain__track { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+
+.article__figure .chain__step {
+  padding: 0.35rem 0.1rem;
+  border-radius: var(--border-radius-sm);
+  border: var(--border-width) solid transparent;
+  font-size: 0.72rem;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chain__step--span2 { grid-column: span 2; }
+.chain__step--from2 { grid-column: 2 / span 2; }
+
+.chain__step--neutral {
+  background: var(--color-bg-card);
+  color: var(--color-text-soft);
+}
+
+.chain__step--overhead {
+  border-color: color-mix(in srgb, var(--color-standby) 60%, transparent);
+  background: color-mix(in srgb, var(--color-standby) 14%, transparent);
+  color: var(--color-standby);
+}
+
+.chain__step--font {
+  background: color-mix(in srgb, var(--color-primary) 22%, transparent);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.chain__step--paint {
+  background: var(--color-text-white);
+  color: var(--color-text-black);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Bytes: a horizontal bar chart of real file sizes, scaled to the largest. */
+.bytes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.article__figure .bytes__row {
+  display: grid;
+  grid-template-columns: 16ch minmax(0, 1fr) 7ch;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+.bytes__label {
+  color: var(--color-text-soft);
+}
+
+.bytes__bar {
+  height: 0.9rem;
+  border-radius: var(--border-radius-sm);
+  background: var(--color-bg-card);
+  overflow: hidden;
+}
+
+.bytes__fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--border-radius-sm);
+  background: color-mix(in srgb, var(--color-text-white) 45%, transparent);
+}
+
+/* 825 KB is the 100% mark; 280 KB ≈ 34%; 65 KB ≈ 7.9%. */
+.bytes__fill--ttf { width: 100%; }
+.bytes__fill--woff2 { width: 34%; }
+
+.bytes__fill--subset {
+  width: 7.9%;
+  background: var(--color-primary);
+  box-shadow: var(--shadow-glow-md);
+}
+
+.bytes__value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-soft);
+}
+
+.bytes__row--win .bytes__label,
+.bytes__row--win .bytes__value {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
 }
 
 @media (max-width: 791px) {
@@ -259,5 +579,36 @@
 
   .post-card__title {
     font-size: var(--font-size-lg);
+  }
+
+  /* Figures reclaim the section-number gutter on phones: the diagrams need the
+     width more than the prose's left edge needs to line up. */
+  .article__section--split > .article__visual {
+    grid-column: 1 / -1;
+  }
+
+  .article__figure-panel {
+    padding: var(--spacing-sm) 0.75rem;
+  }
+
+  .chain__track {
+    gap: 2px;
+  }
+
+  /* A 7-hop lane leaves ~38px per box on a phone: just enough for "woff2". */
+  .article__figure .chain__step {
+    padding: 0.3rem 0;
+    font-size: 0.62rem;
+    letter-spacing: 0;
+  }
+
+  .article__figure .bytes__row {
+    grid-template-columns: minmax(0, 1fr) 7ch;
+    gap: var(--spacing-2xs) var(--spacing-sm);
+  }
+
+  /* Label on its own line above the bar, so the bar keeps a usable width. */
+  .bytes__label {
+    grid-column: 1 / -1;
   }
 }

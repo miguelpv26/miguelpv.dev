@@ -11,7 +11,7 @@
   padding: 52px;
   border-top: var(--border-width) solid var(--color-border-default);
   border-radius: var(--border-radius-2xl);
-  color: var(--color-text-white);
+  color: var(--color-text);
 }
 
 .projects-header {
@@ -19,16 +19,18 @@
   margin-bottom: var(--spacing-xl);
 }
 
-.projects-header h2 {
+/* Styled like a heading, but a paragraph: the section's heading is its
+   divider tab ("Projects"), like every other homepage section. */
+.projects-header__title {
   font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-medium);
   margin: 0 0 var(--spacing-xs) 0;
-  color: var(--color-primary);
+  color: var(--color-text-white);
 }
 
-.projects-header p {
+.projects-header__intro {
   margin: 0;
-  color: var(--color-text-white);
+  color: var(--color-text-soft);
 }
 
 .projects-grid {
@@ -56,13 +58,23 @@
   border-color: var(--color-primary);
 }
 
+/*
+  A fixed, visible frame: every card's media box is the same black rectangle,
+  whatever the shape of the slide inside it. Slides are object-fit: contain, so
+  without the fill a narrow screenshot looked smaller than its neighbours and
+  left the arrows floating at the box's invisible edges. No auto margin: in a
+  card stretched to the row height, `margin-top: auto` pushed the media down by
+  however much shorter that card's copy was, so the titles stopped lining up.
+*/
 .project-card .project-thumb {
   max-width: 100%;
   width: 100%;
   aspect-ratio: 1.833 / 1;
   position: relative;
   overflow: hidden;
-  margin: auto auto var(--spacing-sm);
+  margin: 0 0 var(--spacing-sm);
+  background: var(--color-bg-black);
+  border: var(--border-width) solid var(--color-line);
   border-radius: var(--border-radius-lg);
 }
 
@@ -74,7 +86,7 @@
 .project-title {
   font-size: var(--font-size-lg);
   margin: var(--spacing-xs) 0;
-  color: var(--color-primary);
+  color: var(--color-text-white);
 }
 
 .project-tags {
@@ -89,11 +101,8 @@
   padding: 0.3rem 0.6rem;
   border-radius: var(--border-radius-sm);
   font-size: 0.8rem;
-  border: var(--border-width) solid var(--color-text-black);
-}
-
-.project-tags .tag--block {
-  display: block;
+  border: var(--border-width) solid var(--color-line-strong);
+  color: var(--color-text-soft);
 }
 
 .project-card ul {
@@ -107,13 +116,24 @@
 .project-actions {
   margin-top: auto;
   display: flex;
+  flex-wrap: wrap;
   gap: 0.7rem;
 }
 
+/* The label and its icon never break apart: a wrapped "Digitalando* ↗" made
+   one button taller than its neighbour and knocked the card's cue out of line.
+   Equal halves while both labels fit; past that a button keeps its label's
+   width and the row wraps rather than squeezing it. */
 .project-actions .btn {
-  flex: 1;
+  flex: 1 1 0;
+  min-width: max-content;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  white-space: nowrap;
   text-align: center;
-  padding: 0.6rem 0;
+  padding: 0.6rem 0.9rem;
   border-radius: var(--border-radius-md);
   border: var(--border-width) solid var(--color-primary);
   background-color: var(--color-bg-black);
@@ -144,6 +164,16 @@
 .projects .project-card .project-actions {
   position: relative;
   z-index: 2;
+}
+
+/* The cue and the buttons travel together at the foot of the card, so every
+   card's "Case study ->" sits at the same height above the same button row. */
+.projects .project-card .project-card__cue {
+  margin-top: auto;
+}
+
+.projects .project-card .project-actions {
+  margin-top: var(--spacing-sm);
 }
 
 /* initProjectCardLinks() gives the media panel the card's href on left-click. */
@@ -195,7 +225,7 @@
   align-items: center;
   gap: 0.5rem;
   font-size: var(--font-size-sm);
-  color: color-mix(in srgb, var(--color-text-white) 65%, transparent);
+  color: var(--color-text-muted);
 }
 
 .breadcrumb li {
@@ -226,15 +256,22 @@
   font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-semibold);
   letter-spacing: -0.015em;
-  color: var(--color-primary);
+  color: var(--color-text-white);
   margin: var(--spacing-sm) 0 var(--spacing-xs);
+}
+
+/* Markdown level one: the page title's "# " sits one level above the
+   sections' "## " (10-case-study.css), in the same half-strength green. */
+.page-header__title::before {
+  content: "# ";
+  color: color-mix(in srgb, var(--color-primary) 50%, transparent);
 }
 
 .page-header__intro {
   max-width: 52ch;
   font-size: var(--font-size-md);
   line-height: var(--line-height-relaxed);
-  color: color-mix(in srgb, var(--color-text-white) 82%, transparent);
+  color: var(--color-text-soft);
 }
 
 /* --- The collection ------------------------------------------------------ */
@@ -269,7 +306,7 @@
   min-width: 0;
   padding: 0.5rem 0.75rem;
   background: var(--color-bg-black);
-  border: var(--border-width) solid color-mix(in srgb, var(--color-text-white) 18%, transparent);
+  border: var(--border-width) solid var(--color-line-strong);
   border-radius: var(--border-radius-md);
   transition: var(--transition-all);
 }
@@ -297,7 +334,7 @@
 }
 
 .filter-search__input::placeholder {
-  color: color-mix(in srgb, var(--color-text-white) 40%, transparent);
+  color: var(--color-text-muted);
 }
 
 /* The native affordance is a light-mode "x" that clashes; we ship our own. */
@@ -311,7 +348,7 @@
   width: 20px;
   height: 20px;
   border-radius: var(--border-radius-full);
-  color: color-mix(in srgb, var(--color-text-white) 60%, transparent);
+  color: var(--color-text-muted);
   line-height: 1;
   transition: var(--transition-all);
 }
@@ -340,10 +377,10 @@
 .filter-chip,
 .filter-sort {
   padding: 0.45rem 0.75rem;
-  border: var(--border-width) solid color-mix(in srgb, var(--color-text-white) 18%, transparent);
+  border: var(--border-width) solid var(--color-line-strong);
   border-radius: var(--border-radius-md);
   background: var(--color-bg-card);
-  color: color-mix(in srgb, var(--color-text-white) 78%, transparent);
+  color: var(--color-text-soft);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   transition: var(--transition-all);
@@ -385,7 +422,7 @@
 .projects-status {
   margin-bottom: var(--spacing-md);
   font-size: var(--font-size-sm);
-  color: color-mix(in srgb, var(--color-text-white) 55%, transparent);
+  color: var(--color-text-muted);
 }
 
 .projects-status[hidden] {
@@ -408,7 +445,7 @@
 
 .projects-empty p {
   margin-bottom: var(--spacing-md);
-  color: color-mix(in srgb, var(--color-text-white) 75%, transparent);
+  color: var(--color-text-soft);
 }
 
 /*
@@ -439,7 +476,7 @@
   padding: 0;
   overflow: hidden;
   background: var(--color-bg-dark);
-  border: var(--border-width) solid color-mix(in srgb, var(--color-text-white) 14%, transparent);
+  border: var(--border-width) solid var(--color-line);
   border-radius: var(--border-radius-xl);
   transition: var(--transition-all);
 }
@@ -536,13 +573,13 @@
   font-weight: var(--font-weight-semibold);
   letter-spacing: -0.01em;
   margin: 0;
-  color: var(--color-primary);
+  color: var(--color-text-white);
 }
 
 .project-collection .project-desc {
   margin: var(--spacing-2xs) 0 0;
   line-height: var(--line-height-relaxed);
-  color: color-mix(in srgb, var(--color-text-white) 82%, transparent);
+  color: var(--color-text-soft);
   max-width: 60ch;
 }
 
@@ -563,7 +600,7 @@
 }
 
 .project-tags button.tag {
-  color: inherit;
+  color: var(--color-text-soft);
   font: inherit;
   font-size: 0.8rem;
 }
@@ -599,6 +636,23 @@
   background: var(--color-primary-faint);
 }
 
+/*
+  Hovering a filter that's already on inverts it — black fill, green text — so
+  it still reads as "on" and hints that a click turns it off. Covers all three
+  toggles, and sits after their hover rules so the faint hover tint above can't
+  leak onto an active one.
+*/
+.filter-chip[aria-pressed="true"]:hover,
+.filter-chip[aria-pressed="true"]:focus-visible,
+.project-tags button.tag[aria-pressed="true"]:hover,
+.project-tags button.tag[aria-pressed="true"]:focus-visible,
+.project-type[aria-pressed="true"]:hover,
+.project-type[aria-pressed="true"]:focus-visible {
+  background: var(--color-bg-black);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
 /* Visible "read the case study" affordance (the whole card is the link). */
 .project-card__cue {
   margin-top: var(--spacing-sm);
@@ -611,7 +665,7 @@
 }
 
 .project-card__cue::after {
-  content: "\2192";
+  content: "->";
   transition: transform var(--transition-fast);
 }
 
@@ -641,7 +695,7 @@
   margin: var(--spacing-2xs) 0 var(--spacing-sm);
   font-size: var(--font-size-sm);
   font-variant-numeric: tabular-nums;
-  color: color-mix(in srgb, var(--color-text-white) 70%, transparent);
+  color: var(--color-text-muted);
 }
 
 .project-meta__sep {
@@ -667,7 +721,7 @@
 }
 
 .project-status--standby {
-  color: color-mix(in srgb, var(--color-text-white) 80%, transparent);
+  color: var(--color-text-soft);
 }
 
 .project-status--standby::before {
@@ -676,11 +730,11 @@
 }
 
 .project-status--archived {
-  color: color-mix(in srgb, var(--color-text-white) 70%, transparent);
+  color: var(--color-text-muted);
 }
 
 .project-status--archived::before {
-  background: color-mix(in srgb, var(--color-text-white) 55%, transparent);
+  background: var(--color-text-muted);
   box-shadow: none;
 }
 

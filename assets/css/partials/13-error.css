@@ -2,8 +2,8 @@
   ============================================================================
   ERROR PAGE (404)
   ============================================================================
-  Self-contained styles (no inline CSS) so the standalone /404.html stays
-  within the `style-src 'self'` CSP. Linked via /assets/min/style.min.css.
+  Part of the shared stylesheet that build-css.js inlines into every page,
+  404.html included, so the page needs no CSS of its own.
 */
 
 /*
@@ -137,11 +137,7 @@
 .error-page__text {
   margin: 0;
   font-size: var(--font-size-md);
-  color: var(--color-text-white);
-}
-
-.error-page__text[lang="es"] {
-  color: var(--color-primary-dim);
+  color: var(--color-text);
 }
 
 .error-page__actions {

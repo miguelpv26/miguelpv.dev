@@ -24,26 +24,46 @@
   --measure: 68ch;
   --measure-with-gutter: calc(var(--measure) + 2.6rem + var(--spacing-md));
   
+  /*
+    Colors — one job per hue. Green words mean "you can click this" or "you are
+    here" (links, buttons, active nav, breadcrumb); green on glyphs, borders and
+    glows (##, $, the matrix) is brand chrome. Violet is literal code and the
+    technical "// fun fact" aside. Amber is unfinished or paused. Everything
+    else is a grey, and hierarchy comes from the grey step, size and weight:
+    only headings and metrics are pure white; <strong> stays in the body grey
+    and stands out by weight alone.
+  */
+
   /* Colors - Primary */
   --color-primary: #16c60c;
   --color-primary-dim: rgba(21, 198, 12, 0.85);
   --color-primary-faint: rgba(21, 198, 12, 0.172);
-  
+
+  /* Colors - Code (literal code, code-block frames, the fun-fact aside) */
+  --color-code: #b48cff;
+
   /* Colors - Background */
   --color-bg-dark: #0d0d0d;
   --color-bg-black: #000000;
   --color-bg-card: #1a1a1a;
-  
-  /* Colors - Text */
-  --color-text-white: #ffffff;
+
+  /* Colors - Text: four steps, brightest = most important */
+  --color-text-white: #ffffff;   /* headings, metrics, buttons and nav links */
+  --color-text: #dedede;         /* body copy, and <strong> at semibold */
+  --color-text-soft: #b0b0b0;    /* decks, intros, excerpts, tag labels */
+  --color-text-muted: #8a8a8a;   /* meta, captions, placeholders */
   --color-text-dark: #0d0d0d;
   --color-text-black: #000000;
-  
+
+  /* Colors - Lines */
+  --color-line: #2b2b2b;         /* hairlines: heading rules, dividers */
+  --color-line-strong: #3a3a3a;  /* card, chip and input borders */
+
   /* Colors - Functional */
   --color-border-default: var(--color-text-white);
   --color-overlay: rgba(0, 0, 0, 0.6);
   --color-overlay-dark: rgba(0, 0, 0, 0.9);
-  --color-standby: #e0a82e; /* amber — "paused" project status dot */
+  --color-standby: #e0a82e; /* amber — unfinished or paused: status dot, "// still solving" */
   
   /* Typography */
   --font-family-base: 'JetBrains Mono', monospace, sans-serif;

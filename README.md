@@ -1,7 +1,7 @@
 # miguelpv.dev
 
 **The personal portfolio of Miguel Payá Vañó — a Full-Stack Developer.**
-Built by hand with plain **HTML, vanilla CSS and vanilla JavaScript**. No framework, no bundler, no runtime dependencies, no tracking. The only tooling is a minifier and a small Node deploy script.
+Built by hand with plain **HTML, vanilla CSS and vanilla JavaScript**. No framework, no bundler, no runtime dependencies, no tracking. The only tooling is a minifier and a few small Node build scripts.
 
 `Handcrafted` · `No framework` · `0 runtime deps` · `Lighthouse 100 × 4` · `EN · ES` · `Cloudflare Pages` · `MIT licensed`
 
@@ -36,7 +36,7 @@ The interesting parts, at a glance:
 | Build | `terser` (JS) + `clean-css` (CSS) + `archiver` (deploy zip) — that's the whole dependency list |
 | Hosting | Cloudflare Pages (`_headers`) + one Cloudflare Worker for language routing |
 
-There is **no dev server, no linter and no test runner** — that's a deliberate constraint, not a gap.
+There is **no framework dev server, no linter and no test runner** — that's a deliberate constraint, not a gap. A ~60-line preview server and a pre-deploy check script (`npm run check`) cover what those would.
 
 ---
 
@@ -46,22 +46,36 @@ There is **no dev server, no linter and no test runner** — that's a deliberate
 The site has no real "root" page. `cloudflare/worker.js` is the only thing that lives at `/`: it reads `Accept-Language`, looks **only at the highest-priority entry**, and `302`-redirects to `/es/` for Spanish and the regional languages of Spain (`es`, `ca`, `eu`, `gl`) or `/en/` otherwise. It redirects **bots and humans identically** (no User-Agent cloaking), marks the endpoint `X-Robots-Tag: noindex, nofollow`, sets `Vary: Accept-Language`, and repeats the core security headers because this is often the first response at the origin. Everything except `/` falls through to the static assets.
 
 ### Pages
-`en/` and `es/` are **independent, hand-maintained translations** — not generated from a shared template at runtime. Each page carries its own `<head>` (title/description/canonical/hreflang/OG/Twitter) and its own JSON-LD `@graph`. The current page set, per locale:
+`en/` and `es/` are **independent, hand-maintained translations** — not generated from a shared template at runtime. Each page carries its own content; the parts every page repeats — including its JSON-LD — are filled in at build time (below). The current page set, per locale:
 
 - the homepage (`index.html`)
 - a projects index (`projects.html` / `proyectos.html`)
 - one case study per project (`biglo`, `digitalando`, `portfolio`, `abogada-de-la-tierra`, `input-color-feedback`)
+- a blog index (`blog.html`) and one page per article (`blog/web-font-strategy.html` / `blog/estrategia-fuentes-web.html`)
 
-Any user-facing copy, metadata or structured-data change is made in **both** locales in lock-step.
+Every page pair is listed once in `scripts/site.js`, which both the HTML build and the sitemap read. Any user-facing copy, metadata or structured-data change is made in **both** locales in lock-step.
+
+### Shared header, footer and `<head>`
+The parts every page repeats — the common `<head>` block (charset, viewport, font preloads, favicons, manifest), the SEO block (title, description, canonical, hreflang, Open Graph, Twitter), the skip link + header + nav, and the footer — live once in `templates/`. `scripts/build-html.js` stamps them into each page between build markers:
+
+```html
+<!-- build:header -->  …generated, never hand-edited…  <!-- /build:header -->
+```
+
+It fills in what varies per page from `site.js`: the asset path depth, the locale's copy, the page's title, description and social card, its canonical and hreflang URLs, the EN/ES toggle pointing at the page's twin, and the "you are here" state (`aria-current="page"` on a section's own page, `"true"` under it). So a title or description is changed in one place — `site.js` — and every tag that repeats it follows. Everything outside the markers — JSON-LD and content — stays hand-written. The markers stay empty in the source pages; only the built copies in `dist/` carry what goes between them. `404.html` is standalone and isn't templated.
+
+### Project facts
+A project's role, years, category, status and tags used to be typed out on the projects hub, the homepage and its case study, in both locales — and drifted. They live in `scripts/projects.js` now (with per-locale labels for tags, categories and statuses), and the build renders them into `<!-- build:project-… SLUG -->` regions: a hub card's opening tag with the filter data the hub's JS reads, its meta line, the tag chips (filter buttons on the hub, plain labels elsewhere) and a case study's role · years · status line. Descriptions, media and the case studies' detailed stack lists stay hand-written.
 
 ### Client JS (`assets/js/main.js`)
 A single file. `initApp()` runs each feature inside a `safeInit(name, fn)` wrapper, so one broken feature can't abort the rest — errors are reported via the standard `reportError` API with the feature name attached as `Error.cause`. Every feature **degrades silently** if its root elements are absent. The features:
 
-- **Mobile menu** — a button-driven drawer below `1276px` that manages `aria-expanded`/`aria-hidden`/`inert`, locks scroll on the real scroll container (`html`), traps and restores focus, and closes on ESC / overlay click / link activation.
+- **Mobile menu** — a button-driven drawer below `1276px` that manages `aria-expanded`/`aria-hidden`/`inert`, locks scroll on the real scroll container (`html`), keeps focus inside the header while open (everything else on the page goes `inert`), restores focus on close, and closes on ESC / overlay click / link activation.
 - **Matrix background** — a canvas effect that **early-returns under `prefers-reduced-motion`**, clamps DPR to 2, and resets its timing on `visibilitychange`.
 - **The carousel** — see the deep dive below.
 - **Right-click → full-resolution** — see the deep dive below.
 - **Project-card links** — makes each project card fully clickable while keeping the media's right-click behaviour intact (this is the clever bit that makes the two features coexist).
+- **Project filters** — search, tag chips and a last-activity sort on the projects hub. The toolbar ships `hidden` and only JS reveals it, so a no-JS visitor gets the full list rather than dead controls; the active tag and query are mirrored into `?tag=` / `?q=` so a filtered view can be shared, and `/` focuses the search.
 
 ### Styles
 Authored as ordered partials in `assets/css/partials/` (`01-tokens.css` … `14-responsive.css`) — **filename order is the cascade order**. Design tokens (spacing, colours, typography, radii, shadows, z-index scale) live in `:root` in `01-tokens.css`. BEM-ish class names. The mobile breakpoint (`1276px`) is duplicated in CSS and in `MOBILE_BREAKPOINT_PX` in the JS, and the two must change together.
@@ -74,15 +88,15 @@ Every project/gallery uses one generic slider: any `[data-slider]` block with `[
 
 **What it does**
 - **Lazy initialisation** via `IntersectionObserver` (`rootMargin: 50px`) — a slider costs nothing until it's about to enter the viewport.
-- **Mixed media** — image *and* `<video>` slides in the same track. Video slides auto-advance the moment they fire `ended`, so a clip plays fully before the next slide, rather than being cut off by a fixed timer.
+- **Mixed media** — image *and* `<video>` slides in the same track. Videos loop, so a video slide's `data-duration` is set to the clip's length and it plays once through before the next slide. They ship `preload="none"` with a `poster`, so a clip downloads only when its slide is actually shown.
 - **Per-slide timing** — `data-duration` (seconds, validated and clamped to 1–60; default 5s).
-- **Auto-built dot indicators** with `aria-current`, roving `tabindex`, and `aria-controls` pointing at each slide's id.
+- **Auto-built dot indicators** with `aria-current`, roving `tabindex`, and `aria-controls` pointing at each slide's id (namespaced per slider, so several sliders on one page never share an id).
 - **Full keyboard support** — `←` / `→` / `Home` / `End`.
 - **Screen-reader announcements** — a `role="status"` `aria-live="polite"` region announces *"Slide 2 of 5: <alt text>"*, **localised** from `<html lang>` (English on `/en/`, Spanish on `/es/`).
 - **Pauses when it should** — on hover, on focus-within, and when the tab is hidden (`visibilitychange`), resuming only if the slider itself caused the pause.
 - **Respects motion preferences** — under `prefers-reduced-motion` it never auto-advances; it becomes a purely manual, keyboard/click-driven gallery.
 
-**Why not a slider library?** A third-party carousel would drag in its own CSS and JavaScript (often tens of KB), rarely gets ARIA and reduced-motion right out of the box, and almost never handles *"advance when this particular video finishes."* Rolling it by hand keeps the bundle tiny, keeps the accessibility behaviour under my control, and keeps the zero-dependency promise intact.
+**Why not a slider library?** A third-party carousel would drag in its own CSS and JavaScript (often tens of KB), rarely gets ARIA and reduced-motion right out of the box, and almost never handles mixed image and video slides with their own timings. Rolling it by hand keeps the bundle tiny, keeps the accessibility behaviour under my control, and keeps the zero-dependency promise intact.
 
 ---
 
@@ -135,8 +149,9 @@ Highlights:
 - `X-Frame-Options: DENY`
 - `Referrer-Policy: strict-origin-when-cross-origin`
 - `Cross-Origin-Opener-Policy: same-origin`
-- `Permissions-Policy` denies accelerometer, camera, geolocation, gyroscope, magnetometer, microphone, payment, usb — and `interest-cohort=()` to opt out of FLoC
-- Fonts are served `Cache-Control: public, max-age=31536000, immutable`
+- `Permissions-Policy` denies accelerometer, camera, geolocation, gyroscope, magnetometer, microphone, payment and usb
+- `/.well-known/security.txt` (RFC 9116) says where to report a vulnerability; `npm run check` warns 30 days before its yearly `Expires` and fails once it has passed
+- Fonts and the hashed JS bundle are served `Cache-Control: public, max-age=31536000, immutable`; images (stable names, so not immutable) are fresh for a week and revalidated in the background for up to 30 days more
 
 The Worker re-emits HSTS / `nosniff` / `Referrer-Policy` on the root redirect so the very first response at the origin is already hardened.
 
@@ -146,9 +161,11 @@ The Worker re-emits HSTS / `nosniff` / `Referrer-Policy` on the root redirect so
 
 - Per-locale unique `<title>` and `<meta name="description">`.
 - `canonical` + `hreflang` alternates for `en`, `es` and `x-default`, mutually consistent and matching the sitemap. The language-negotiation root is `noindex` and never a canonical target.
-- **Open Graph** and **Twitter Card** tags, including dedicated **1200×630 social cards** per locale (`assets/img/og-image.png`, `assets/img/og-image.es.png`).
-- **JSON-LD `@graph`** per page — `WebSite`, `WebPage`, `ImageObject`, `Person`, and `SoftwareApplication` / `SoftwareSourceCode` entities for the projects — kept consistent with the visible copy.
-- `sitemap.xml` is **generated at deploy time** by `scripts/deploy.js` (one `<url>` per locale per page, with reciprocal `hreflang` alternates), and `robots.txt` allows crawling and points to it.
+- Meta descriptions kept under ~155 characters, so search results show them whole. Titles, descriptions and social cards live in `scripts/site.js` and are generated into each page, so the `<title>`, Open Graph and Twitter tags can't disagree.
+- **Open Graph** and **Twitter Card** tags with a **1200×630 social card for every page in both locales** — `assets/img/og-image.png` / `og-image.es.png` for the homepages, `assets/img/og/<page>-<locale>.png` for the rest, rendered from `templates/og-card.html` by `npm run og-cards` in the site's own fonts. Articles carry the same image in their `BlogPosting` JSON-LD.
+- **JSON-LD `@graph`** per page, **generated** by `scripts/jsonld.js` from `site.js` and `projects.js`: the same `WebSite` and `Person` everywhere, the page's own node (`WebPage`, `CollectionPage` + `ItemList`, `Blog` or `BlogPosting`), a `BreadcrumbList` built from the same trail as the visible breadcrumb, and a `SoftwareApplication` / `SoftwareSourceCode` / `WebSite` entity for each project the page shows. Entities that share an `@id` across pages can't disagree, because there's only one source.
+- `sitemap.xml` is **generated at deploy time** by `scripts/deploy.js` from `scripts/site.js` (one `<url>` per locale per page, with reciprocal `hreflang` alternates). It lists only canonical, indexable URLs — not the `noindex` root redirect — and each `<lastmod>` is the date of the last commit that touched that page (today, if it has uncommitted changes), so Google can trust the field. `robots.txt` allows crawling and points to it.
+- Renamed URLs keep working through 301s in `_redirects`.
 
 ---
 
@@ -156,20 +173,22 @@ The Worker re-emits HSTS / `nosniff` / `Referrer-Policy` on the root redirect so
 
 Target: **WCAG 2.1 AA, zero axe issues.**
 
-- Semantic landmarks, exactly one `<h1>` per page, no skipped heading levels.
+- Semantic landmarks — including a labelled main `<nav>`, so screen-reader users can jump straight to it — exactly one `<h1>` per page, no skipped heading levels.
 - `:focus-visible` outlines on every interactive control; full keyboard operability (menu, carousel, dot indicators).
 - Correct ARIA: `aria-expanded`/`aria-controls` on toggles, `aria-hidden` + `inert` on off-screen UI, `aria-current` on active nav/dots, `role="status"` + `aria-live="polite"` for carousel announcements, `aria-label` on icon-only controls, `aria-hidden` on decorative SVGs.
 - **`prefers-reduced-motion`** neutralises the matrix canvas and the carousel's auto-advance.
-- The mobile drawer implements scroll-lock, focus-trap and focus-restore.
+- The mobile drawer implements scroll-lock, focus containment (the page behind it goes `inert`) and focus-restore.
+- Carousel videos carry an `aria-label`, which the slide announcements read out too.
 - A `.sr-only` helper carries screen-reader-only text; text contrast meets AA.
 
 ---
 
 ## ⚡ Performance
 
-- **Responsive images** via `<picture>`: AVIF → WebP → raster with `srcset` + `sizes` and multiple rendered widths. Every image/video has explicit dimensions → **CLS stays 0**. The LCP image is eager + `fetchpriority="high"`; everything below the fold is lazy.
+- **Responsive images** via `<picture>`: AVIF → WebP → raster with `srcset` + `sizes` and multiple rendered widths. Every slider reserves its box with `aspect-ratio` and positions its slides inside it, so nothing shifts as media loads → **CLS stays 0**. The LCP image is eager + `fetchpriority="high"`; everything below the fold is lazy.
+- **Videos** are H.264 screen recordings encoded for the job (no audio track, `+faststart`): the three clips total ~730 KB. They ship `preload="none"` behind a ~20 KB WebP poster. The exact ffmpeg settings are in `CLAUDE.md`; ffmpeg itself isn't a dependency, since it's only needed when a clip is added.
 - **Self-hosted fonts**, subset to latin, versioned filenames, cached `immutable` — no font CDN.
-- **CSS is inlined into every page**, so there is **no render-blocking stylesheet request** at all (and the matching preload is dropped by the build). The external `style.min.css` ships only as an unreferenced fallback artifact.
+- **CSS is inlined into every page** at build time, so there is **no render-blocking stylesheet request** at all.
 - **`main.js` is deferred**; sliders and other expensive work are lazy-initialised via `IntersectionObserver`.
 
 ---
@@ -181,7 +200,7 @@ This site does not watch you.
 - **No analytics, no cookies, no trackers, no consent banners** — because there is nothing to consent to.
 - **Zero third-party network requests.** The strict CSP (`default-src 'self'`) forbids them, and the site is built so it never needs one — fonts, images, styles and scripts are all first-party.
 - Self-hosting the fonts means **no request to a font CDN**, so no visitor IP addresses leak to a third party just for typography.
-- `Referrer-Policy: strict-origin-when-cross-origin` and `interest-cohort=()` (FLoC opt-out) round out the posture.
+- `Referrer-Policy: strict-origin-when-cross-origin` rounds out the posture.
 
 ---
 
@@ -199,35 +218,34 @@ Each locale links its own manifest — `site.webmanifest` (English, `start_url: 
 
 ## Build & deploy
 
-Only two commands matter.
+The repository holds **sources only**. The build assembles the deployable site into `dist/` (gitignored, rebuilt from scratch every time), so a CSS or template change never touches a source page and git diffs show only real edits.
 
 ```bash
-# JS: assets/js/main.js → assets/min/main.min.js (terser: drop_console, mangle, source map)
-# CSS: concat partials → minify → INLINE into every page → sync the CSP style-src hash
-npm run minify
-
-# minify, then generate sitemap.xml and zip the deployable whitelist → miguelpv_dev.zip
-npm run deploy
+npm run build     # assemble dist/: pages with their build regions filled, hashed JS, inlined CSS, CSP hash, static files
+npm run preview   # serve dist/ at http://localhost:8080/en/, the way Cloudflare Pages does
+npm run check     # static checks on dist/ (and on the sources); any error exits 1
+npm run deploy    # build + check (an error stops here) + sitemap.xml → miguelpv_dev.zip
 ```
 
-Single steps are available too: `npm run minify:js` and `npm run minify:css`.
+Social cards are rendered separately, only when their copy changes: `npm run og-cards` (needs a local Chrome or Edge).
 
-**How the CSS build works** (`scripts/build-css.js`): it concatenates the partials in filename order, rewrites `@font-face` URLs to root-absolute (pages live at several depths), minifies with clean-css, writes `assets/min/style.min.css` as a fallback artifact, **inlines the result into the `<style id="inline-css">` block of every HTML page**, and then **recomputes the `sha256` in the CSP `style-src` in `_headers`** so the hash always matches the exact bytes the browser sees. It's idempotent and re-runnable.
+**The three build steps:**
+1. **HTML** (`scripts/build-html.js`, `npm run build:html`): empties `dist/`, then writes every page listed in `scripts/site.js` into it with its build regions filled — the shared templates (`head`, `seo`, `header`, `footer`) and the project facts from `scripts/projects.js` — copies the 404s (`en/404.html`, `es/404.html` and the root fallback), and copies the static files that ship. Its `STATIC` list is the deploy whitelist: `assets/img`, `assets/fonts`, `assets/pdf`, both webmanifests, `robots.txt`, `_headers`, `_redirects`. A new top-level asset directory must be added there. It fails if a page in `en/` or `es/` isn't listed in `site.js` or is missing a marker pair.
+2. **JS** (`npm run build:js`): terser (drop_console, mangle, source map) into `dist/assets/min/`, then `scripts/fingerprint-js.js` renames the bundle `main.<hash>.min.js` and points every built page at it.
+3. **CSS** (`scripts/build-css.js`, `npm run build:css`): concatenates the partials in filename order, rewrites `@font-face` URLs to root-absolute (pages live at several depths), minifies with clean-css, writes a plain fallback before every `color-mix()` and `dvh` declaration (computed from the `:root` tokens, so browsers older than Chrome 111 / Firefox 113 / Safari 16.2 get the same colours instead of dropping them), **inlines the result into every built page**, and **writes the CSP `style-src` `sha256` into `dist/_headers`** so the hash always matches the exact bytes the browser sees.
 
-**What ships** (`scripts/deploy.js` is the single source of truth): `en/`, `es/`, `assets/min/`, `assets/img/`, `assets/fonts/`, `assets/pdf/`, `site.webmanifest`, `site.es.webmanifest`, `robots.txt`, `_headers`, `404.html`, and the generated `sitemap.xml`. The unminified `assets/js/` and `assets/css/` sources are intentionally **not** shipped. If you add a new top-level asset directory or a new locale, add it to `deploy.js` or it won't reach production.
+In the sources, the build regions, the `<style id="inline-css">` block and the CSP hash are empty placeholders, and the script tag names the unhashed `main.min.js`.
+
+**The checks** (`scripts/check.js`, run by every `npm run deploy` before anything is packaged): each built page is compared with its `site.js` entry — title, description, canonical, hreflang, Open Graph image and article dates (site.js, JSON-LD and the visible `<time>` must agree) — and scanned for broken local links, duplicate ids, heading jumps, images without alt, videos without poster/`preload="none"`/label, `_blank` links without `noopener`, invalid JSON-LD and stray microdata. `_redirects` must point at real pages, every page must carry the same inlined CSS and a hashed bundle, the CSP hash must match the CSS, and the source pages must stay free of generated content. Any error stops the deploy.
 
 ### First-time setup after cloning
-`assets/min/*` and `sitemap.xml` are gitignored build artifacts. The inlined CSS is committed inside the HTML, so pages render styled straight from a clone — but you must build the JS once or the pages will 404 on their script:
-
 ```bash
 npm install
-npm run minify        # builds main.min.js and refreshes the inlined CSS
+npm run build
+npm run preview
 ```
 
-> ⚠️ Changes to `assets/js/main.js` or the CSS partials are **not visible until you re-run `npm run minify`** (which rebuilds the JS and re-inlines the CSS into every page). Never hand-edit `assets/min/*` or the inlined `<style id="inline-css">` blocks — they are generated.
-
-### Preview locally
-There is no dev server. Open `en/index.html` / `es/index.html` directly, or serve the project root with any static file server.
+> ⚠️ The source pages don't render styled on their own — their CSS and shared regions only exist in `dist/`. Never edit `dist/`; change the sources and rebuild.
 
 ---
 
@@ -235,37 +253,53 @@ There is no dev server. Open `en/index.html` / `es/index.html` directly, or serv
 
 ```
 miguelpv.dev/
-├── en/                              # English pages (hand-maintained)
+├── en/                              # English pages (source; hand-maintained)
 │   ├── index.html
 │   ├── projects.html
-│   └── projects/                    # one case study per project
-│       ├── biglo.html  digitalando.html  portfolio.html
-│       ├── abogada-de-la-tierra.html  input-color-feedback.html
+│   ├── projects/                    # one case study per project
+│   │   ├── biglo.html  digitalando.html  portfolio.html
+│   │   └── abogada-de-la-tierra.html  input-color-feedback.html
+│   ├── blog.html
+│   ├── blog/                        # one page per article
+│   └── 404.html                     # served for unknown URLs under /en/
 ├── es/                              # Spanish pages (independent translations)
 │   ├── index.html
 │   ├── proyectos.html
-│   └── proyectos/                   # same set, localised slugs
+│   ├── proyectos/                   # same set, localised slugs
+│   ├── blog.html
+│   ├── blog/
+│   └── 404.html                     # served for unknown URLs under /es/
+├── templates/                       # shared head block, SEO block, header, footer, social card
 ├── assets/
-│   ├── css/partials/                # 01-tokens.css … 14-responsive.css  (source)
-│   ├── js/main.js                   # single vanilla JS file             (source)
-│   ├── min/                         # build output — gitignored
-│   ├── img/                         # avif/webp/png, favicons, sprite, OG cards
+│   ├── css/partials/                # 01-tokens.css … 14-responsive.css
+│   ├── js/main.js                   # single vanilla JS file
+│   ├── img/                         # avif/webp/png, favicons, sprite; og/ holds the social cards
 │   ├── fonts/                       # self-hosted JetBrains Mono woff2
-│   └── pdf/                         # downloadable CV
+│   └── pdf/                         # downloadable CVs (English, Castellano); each locale links its own and the other
 ├── cloudflare/worker.js             # root Accept-Language negotiation
 ├── scripts/
-│   ├── build-css.js                 # concat → minify → inline CSS → sync CSP hash
-│   └── deploy.js                    # generate sitemap + zip the deployable set
-├── _headers                         # security + cache headers (Cloudflare Pages)
+│   ├── site.js                      # every EN/ES page pair + its title, description, card, dates
+│   ├── projects.js                  # each project's role, years, category, status, tags, schema
+│   ├── jsonld.js                    # each page's JSON-LD graph, from site.js + projects.js
+│   ├── build-html.js                # build step 1: assemble dist/ (pages + static files)
+│   ├── fingerprint-js.js            # build step 2: content-hash the JS bundle, point every page at it
+│   ├── build-css.js                 # build step 3: concat → minify → fallbacks → inline CSS → CSP hash
+│   ├── check.js                     # pre-deploy checks
+│   ├── preview.js                   # local server for dist/
+│   ├── og-cards.js                  # render the 1200×630 social cards (run by hand)
+│   └── deploy.js                    # generate sitemap + zip dist/
+├── dist/                            # build output — gitignored, rebuilt from scratch
+├── _headers                         # security + cache headers (Cloudflare Pages); CSP hash filled in by the build
+├── _redirects                       # 301s for renamed URLs
+├── .well-known/security.txt         # where to report vulnerabilities (renew Expires yearly)
 ├── robots.txt
 ├── site.webmanifest                 # PWA manifest (English)
 ├── site.es.webmanifest              # PWA manifest (Spanish)
-├── 404.html
+├── 404.html                         # English fallback for unknown URLs outside /en/ and /es/
 └── package.json
 ```
 
 ---
-
 ## Author
 
 **Miguel Payá Vañó** — Full-Stack Developer (Alcoy, Spain)

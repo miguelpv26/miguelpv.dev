@@ -64,7 +64,9 @@
   right: 10px;
 }
 
-/* Slider Indicators (Dots) - Styled by JS */
+/* Slider Indicators (Dots) - Styled by JS. They sit on top of the slide, so
+   they ride on a dark pill: without it the white outlines vanished on a white
+   screenshot and only the active dot was left showing. */
 .slider-indicators {
   position: absolute;
   bottom: 10px;
@@ -72,6 +74,9 @@
   transform: translateX(-50%);
   display: flex;
   gap: var(--spacing-xs);
+  padding: 5px 8px;
+  border-radius: 999px;
+  background-color: var(--color-overlay);
   z-index: var(--z-indicators);
 }
 

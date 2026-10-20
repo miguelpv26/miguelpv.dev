@@ -83,18 +83,21 @@
   font-weight: var(--font-weight-semibold);
 }
 
+/* Ragged-right on purpose: in a monospace face every glyph is the same width,
+   so justification can only stretch the word gaps — it opens visible rivers,
+   worst on narrow screens. A terminal is ragged-right anyway. */
 .hero__paragraph {
-  text-indent: 1.25rem;
   margin-top: var(--spacing-xl);
-  text-align: justify;
   font-size: var(--font-size-md);
   line-height: 1.5rem;
   grid-area: paragraph;
-  color: var(--color-text-white);
+  color: var(--color-text);
   max-width: 595px;
 }
 
+/* Links inside body copy are white, a step above the #dedede around them. */
 .hero__paragraph-link {
+  color: var(--color-text-white);
   text-decoration: underline;
   transition: var(--transition-color);
 }
@@ -202,74 +205,92 @@
 
 .about {
   max-width: min(var(--max-content-width), var(--max-hero-width));
-  min-height: calc(100dvh - var(--header-height) - 2.5 * var(--section-spacing));
   border-top: var(--border-width) solid var(--color-border-default);
   border-radius: var(--border-radius-2xl);
   margin-right: auto;
   margin-left: auto;
-  color: var(--color-text-white);
+  color: var(--color-text);
 }
 
+/* Two columns: the words (paragraph + interests) and the photos, centred on
+   each other so the section has one horizontal axis instead of three. */
 .about__container {
   display: flex;
-  flex-direction: row;
-  padding: 52px;
+  align-items: center;
   justify-content: space-between;
+  gap: calc(2 * var(--spacing-xl));
+  padding: 52px;
+}
+
+.about__text {
+  flex: 1 1 0;
+  max-width: 62ch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
 }
 
 .about__paragraph {
-  text-indent: 1.25rem;
-  text-align: justify;
   font-size: var(--font-size-md);
-  line-height: 1.5rem;
-  max-width: 35%;
+  line-height: 1.6;
 }
 
-.about__headlines {
-  max-width: 25%;
+/* The interests read as terminal output — a prompt, then one line per item —
+   so nothing about them says "button": no fill, no border, no hover. The `$`
+   and `>` markers are decoration; the `/ ""` alt text keeps screen readers
+   from announcing them (browsers without alt-text support use the plain
+   declaration before it). */
+.about__whoami {
+  white-space: nowrap;
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-md);
+  color: var(--color-text-white);
+  opacity: 0.75;
 }
 
-.about__headlines ul {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
+.about__whoami::before {
+  content: "$ ";
+  content: "$ " / "";
+  color: var(--color-primary);
 }
 
-.about__headlines ul li {
-  color: var(--color-text-black);
-  background-color: var(--color-primary);
-  width: 12rem;
-  margin: auto;
-  border: var(--border-width) solid var(--color-text-black);
-  border-radius: var(--border-radius-md);
-  padding: var(--spacing-xs) var(--spacing-golden);
-  font-size: 1.2rem;
-  font-weight: var(--font-weight-semibold);
-  text-align: center;
+/* Flows into as many columns as fit: two beside the photo, three when the
+   section stacks and the text gets the full width, one on a phone. */
+.about__interests {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+  gap: var(--spacing-xs) var(--spacing-lg);
 }
 
-.about__headlines ul li:first-child {
-  margin-top: 0;
+.about__interests li {
+  /* Hanging indent: a wrapped item lines up with its text, not its marker. */
+  padding-left: 2ch;
+  text-indent: -2ch;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
 }
 
-.about__headlines ul li:last-child {
-  margin-bottom: 0;
+.about__interests li::before {
+  content: "> ";
+  content: "> " / "";
+  color: var(--color-primary);
 }
 
 .about__slider {
-  max-width: 40%;
-  width: 100%;
+  flex: 0 1 460px;
   aspect-ratio: 1 / 1;
   position: relative;
   overflow: hidden;
   margin: 0;
+  border-radius: var(--border-radius-lg);
 }
 
+/* Four of the five photos are square; `cover` fills the box with the fifth
+   (4:3) too, trimming its sides rather than letterboxing it. */
 .about__slider img {
   height: 100%;
   width: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
 }
 

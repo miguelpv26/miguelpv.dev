@@ -11,7 +11,7 @@
   padding: 52px 52px 78px;
   border-top: var(--border-width) solid var(--color-border-default);
   border-radius: var(--border-radius-2xl);
-  color: var(--color-text-white);
+  color: var(--color-text);
 }
 
 .contact__container {
@@ -116,5 +116,23 @@
 .contact__cv-btn:hover svg,
 .contact__cv-btn:focus-visible svg {
   filter: drop-shadow(var(--shadow-glow-icon));
+}
+
+/* The other language's CV: a quiet secondary link under the main button. */
+.contact__cv-alt {
+  margin: calc(-1 * var(--spacing-sm)) 0 0;
+  font-size: var(--font-size-sm);
+}
+
+.contact__cv-alt a {
+  color: var(--color-text-white);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: var(--transition-color);
+}
+
+.contact__cv-alt a:hover,
+.contact__cv-alt a:focus-visible {
+  color: var(--color-primary);
 }
 

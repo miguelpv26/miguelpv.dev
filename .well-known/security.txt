@@ -1,0 +1,4 @@
+Contact: mailto:miguelpayav@gmail.com
+Expires: 2027-10-16T00:00:00.000Z
+Preferred-Languages: en, es
+Canonical: https://miguelpv.dev/.well-known/security.txt

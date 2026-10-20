@@ -1,10 +1,14 @@
 {
   "type": "module",
   "scripts": {
-    "minify:js": "terser assets/js/main.js --compress drop_console=true --mangle --source-map \"filename=main.min.js.map,url=main.min.js.map\" -o assets/min/main.min.js && node scripts/fingerprint-js.js",
-    "minify:css": "node scripts/build-css.js",
-    "minify": "npm run minify:js && npm run minify:css",
-    "deploy": "npm run minify && node scripts/deploy.js"
+    "build:html": "node scripts/build-html.js",
+    "build:js": "terser assets/js/main.js --compress drop_console=true --mangle --source-map \"filename=main.min.js.map,url=main.min.js.map\" -o dist/assets/min/main.min.js && node scripts/fingerprint-js.js",
+    "build:css": "node scripts/build-css.js",
+    "build": "npm run build:html && npm run build:js && npm run build:css",
+    "preview": "node scripts/preview.js",
+    "check": "node scripts/check.js",
+    "og-cards": "node scripts/og-cards.js",
+    "deploy": "npm run build && npm run check && node scripts/deploy.js"
   },
   "devDependencies": {
     "archiver": "^7.0.1",

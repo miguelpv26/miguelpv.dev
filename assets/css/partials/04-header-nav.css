@@ -76,16 +76,17 @@
   ============================================================================
 */
 
+/* <nav> is the landmark and the box that moves (a drawer on mobile); the list
+   inside it does the laying out. */
 .nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   flex-grow: 1;
   max-width: max(60%, 760px);
 }
 
-.nav:last-child {
-  margin-right: var(--spacing-lg);
+.nav__list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .nav__item a {

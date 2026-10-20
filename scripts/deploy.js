@@ -1,65 +1,60 @@
 import archiver from 'archiver';
-import { createWriteStream } from 'fs';
+import { execFileSync } from 'child_process';
+import { createWriteStream, existsSync } from 'fs';
+import { SITE_ORIGIN, PAGES, DIST, fileFor } from './site.js';
 
-const SITE_ORIGIN = 'https://miguelpv.dev';
+if (!existsSync(DIST)) {
+  console.error(`ERROR: ${DIST}/ not found — run npm run deploy (it builds first)`);
+  process.exit(1);
+}
 
-/**
- * Today's date (YYYY-MM-DD, local time) for the sitemap <lastmod>.
- * This project isn't tracked in git, so every deploy simply stamps "now".
- */
+/** Today's date (YYYY-MM-DD, local time). */
 function today() {
   const d = new Date();
   const pad = n => String(n).padStart(2, '0');
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
+/**
+ * The date a page last changed, for its sitemap <lastmod>. Google only trusts
+ * lastmod when it's consistently accurate, so stamping every URL with the deploy
+ * date teaches it to ignore the field. Instead: a page with uncommitted changes
+ * is being shipped right now, so it gets today; otherwise it gets the date of
+ * the last commit that touched it. The source page is what's dated, and it only
+ * changes when its content does — CSS and template edits land in dist/ alone.
+ */
+function lastModified(file) {
+  const git = args => execFileSync('git', args, { encoding: 'utf8' }).trim();
+  try {
+    if (git(['status', '--porcelain', '--', file])) return today();
+    return git(['log', '-1', '--format=%cs', '--', file]) || today();
+  } catch {
+    return today(); // no git available — fall back to the deploy date
+  }
+}
+
 function buildSitemap() {
-  // No git history to consult — stamp the current deploy date on every URL.
-  const lastMod = today();
-
-  // Each group is one page available in both locales (an English URL and its
-  // Spanish twin). x-default resolves to the English URL. To publish a new
-  // case study, just add a line here — both <url> entries and their reciprocal
-  // hreflang alternates are generated automatically.
-  const GROUPS = [
-    { en: '/en/',               es: '/es/',                priority: '1.0' },
-    { en: '/en/projects',       es: '/es/proyectos',       priority: '0.8' },
-    { en: '/en/blog',           es: '/es/blog',            priority: '0.8' },
-    { en: '/en/blog/web-font-strategy', es: '/es/blog/web-font-strategy', priority: '0.7' },
-
-    { en: '/en/projects/biglo',       es: '/es/proyectos/biglo',       priority: '0.6' },
-    { en: '/en/projects/digitalando', es: '/es/proyectos/digitalando', priority: '0.6' },
-    { en: '/en/projects/portfolio',   es: '/es/proyectos/portfolio',   priority: '0.6' },
-    { en: '/en/projects/abogada-de-la-tierra', es: '/es/proyectos/abogada-de-la-tierra', priority: '0.6' },
-    { en: '/en/projects/input-color-feedback', es: '/es/proyectos/input-color-feedback', priority: '0.6' },
-  ];
-
-  const altLinksFor = group =>
+  // x-default resolves to the English URL. The root path is deliberately not
+  // listed: it's a noindex 302 to /en/ or /es/ (cloudflare/worker.js), and a
+  // sitemap should only list canonical, indexable URLs.
+  const altLinksFor = page =>
     [
-      ['en', group.en],
-      ['es', group.es],
-      ['x-default', group.en],
+      ['en', page.en],
+      ['es', page.es],
+      ['x-default', page.en],
     ]
       .map(([lang, path]) => `      <xhtml:link rel="alternate" hreflang="${lang}" href="${SITE_ORIGIN}${path}" />`)
       .join('\n');
 
-  const urlBlock = (loc, group) => `  <url>
+  const urlBlock = (loc, page) => `  <url>
     <loc>${SITE_ORIGIN}${loc}</loc>
-    <lastmod>${lastMod}</lastmod>
+    <lastmod>${lastModified(fileFor(loc))}</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>${group.priority}</priority>
-${altLinksFor(group)}
+    <priority>${page.priority}</priority>
+${altLinksFor(page)}
   </url>`;
 
-  const blocks = [
-    // Root language-negotiation endpoint shares the homepage's alternates.
-    urlBlock('/', GROUPS[0]),
-  ];
-
-  for (const group of GROUPS) {
-    blocks.push(urlBlock(group.en, group));
-    blocks.push(urlBlock(group.es, group));
-  }
+  const blocks = PAGES.flatMap(page => [urlBlock(page.en, page), urlBlock(page.es, page)]);
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -83,20 +78,11 @@ archive.on('error', err => { throw err; });
 
 archive.pipe(output);
 
-// Pages content (referenced by HTML)
-archive.directory('en/', 'en');
-archive.directory('es/', 'es');
-archive.directory('assets/min/', 'assets/min');
-archive.directory('assets/img/', 'assets/img');
-archive.directory('assets/fonts/', 'assets/fonts');
-archive.directory('assets/pdf/', 'assets/pdf');
-archive.file('site.webmanifest', { name: 'site.webmanifest' });
-archive.file('site.es.webmanifest', { name: 'site.es.webmanifest' });
-archive.file('robots.txt', { name: 'robots.txt' });
-archive.file('_headers', { name: '_headers' });
-archive.file('404.html', { name: '404.html' });
+// The whole built site, exactly as `npm run build` assembled it (the list of
+// what ships lives in build-html.js), at the root of the zip.
+archive.directory(`${DIST}/`, false);
 
-// Sitemap is generated at deploy time so lastmod reflects actual git history.
+// Generated at deploy time from scripts/site.js, dated from git (see lastModified).
 archive.append(buildSitemap(), { name: 'sitemap.xml' });
 
 archive.finalize();

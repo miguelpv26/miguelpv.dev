@@ -3,7 +3,8 @@
  ************************************************************/
 
 // Viewport width at which the mobile nav drawer kicks in.
-// MUST stay in sync with the @media (max-width: 1276px) block in style.css.
+// MUST stay in sync with the @media (max-width: 1276px) block in
+// assets/css/partials/14-responsive.css.
 const MOBILE_BREAKPOINT_PX = 1276;
 
 // Active locale (from <html lang>), used for screen-reader announcement strings
@@ -113,15 +114,27 @@ function initMobileMenu() {
 
   let lastFocusedElement = null;
 
+  // Everything on the page except the header (skip link, main, footer…). While
+  // the drawer is open these go inert, so Tab cycles through the header — the
+  // logo, the toggle and the drawer's links — instead of wandering into the
+  // page hidden behind the overlay.
+  const header = toggleButton.closest('header') || nav.closest('header');
+  const outsideHeader = () => Array.from(document.body.children).filter(el => el !== header && el.tagName !== 'SCRIPT');
+
   function isOpen() {
     return document.body.classList.contains('nav-open');
   }
 
   function lockScroll(lock) {
-    // html is the scroll container here (style.css sets overflow-x: hidden on
+    // html is the scroll container here (03-base.css sets overflow-x: hidden on
     // html, which makes the viewport scroll from html, not body), so lock html.
     document.documentElement.style.overflow = lock ? 'hidden' : '';
     document.body.style.overflow = lock ? 'hidden' : '';
+  }
+
+  function trapFocus(trap) {
+    if (!header) return;
+    outsideHeader().forEach(el => { el.inert = trap; });
   }
 
   function openMenu() {
@@ -131,6 +144,7 @@ function initMobileMenu() {
 
     document.body.classList.add('nav-open');
     lockScroll(true);
+    trapFocus(true);
 
     toggleButton.setAttribute('aria-expanded', 'true');
     nav.setAttribute('aria-hidden', 'false');
@@ -146,6 +160,7 @@ function initMobileMenu() {
 
     document.body.classList.remove('nav-open');
     lockScroll(false);
+    trapFocus(false);
 
     toggleButton.setAttribute('aria-expanded', 'false');
     nav.setAttribute('aria-hidden', mq.matches ? 'true' : 'false');
@@ -332,6 +347,10 @@ function initMatrixEffect() {
  * UNIVERSAL SLIDER SYSTEM
  ************************************************************/
 
+// Pages carry several sliders (the projects hub has five), so slide ids are
+// namespaced per slider: slider-2-slide-0, not a page-wide duplicate slide-0.
+let sliderCount = 0;
+
 /**
  * Creates an accessible, feature-rich slider
  * @param {HTMLElement} rootEl - Container element with [data-slider]
@@ -358,6 +377,10 @@ function createSlider(rootEl) {
     pauseOnFocus: true,
     keyboardNav: true
   };
+
+  const sliderId = `slider-${++sliderCount}`;
+  // Keep an id the markup already gave a slide; otherwise mint a unique one.
+  const slideIds = Array.from(slides, (slide, i) => slide.id || `${sliderId}-slide-${i}`);
 
   // State
   let state = {
@@ -400,7 +423,7 @@ function createSlider(rootEl) {
       const dot = document.createElement('button');
       dot.className = 'slider-dot';
       dot.setAttribute('aria-label', STR.goToSlide(i + 1, slides.length));
-      dot.setAttribute('aria-controls', `slide-${i}`);
+      dot.setAttribute('aria-controls', slideIds[i]);
 
       dot.addEventListener('click', () => {
         show(i);
@@ -460,24 +483,16 @@ function createSlider(rootEl) {
   }
 
   /**
-   * Handle video playback
+   * Handle video playback. Video slides loop, so they never fire `ended`: how
+   * long one stays up is its data-duration, like any other slide. They ship
+   * preload="none" with a poster, so a clip only downloads once it's shown.
    */
   function handleVideo(slide, shouldPlay) {
     if (!isVideo(slide)) return;
 
     if (shouldPlay) {
       slide.currentTime = 0;
-      
-      // Handle video end event
-      const onEnded = () => {
-        if (!state.isPaused) {
-          next();
-          startAutoTimer();
-        }
-      };
-      
-      slide.addEventListener('ended', onEnded, { once: true });
-      
+
       // Attempt to play
       const playPromise = slide.play();
       if (playPromise !== undefined) {
@@ -655,7 +670,7 @@ function createSlider(rootEl) {
 
   // Initialize
   slides.forEach((slide, i) => {
-    slide.setAttribute('id', `slide-${i}`);
+    slide.id = slideIds[i];
   });
 
   show(state.currentIndex);

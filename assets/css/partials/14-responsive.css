@@ -5,16 +5,6 @@
 */
 
 /*
-  Extra Large Devices (≤1400px)
-  ----------------------------------------------------------------------------
-*/
-@media (max-width: 1400px) {
-  .nav:last-child {
-    margin-right: var(--spacing-md);
-  }
-}
-
-/*
   Large Devices (≤1276px) - Mobile Menu Breakpoint
   ----------------------------------------------------------------------------
   NOTE: 1276px must stay in sync with MOBILE_BREAKPOINT_PX in assets/js/main.js.
@@ -24,10 +14,6 @@
 @media (max-width: 1276px) {
   .header__logo {
     margin-right: 24px;
-  }
-
-  .nav:last-child {
-    margin-right: 0;
   }
 
   .header__toggle-button {
@@ -41,15 +27,18 @@
     height: calc(100dvh - var(--header-height) - var(--header-border));
     top: calc(var(--header-height) + var(--header-border));
     right: -100%;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
     background-color: var(--color-bg-black);
     transition: right var(--transition-medium);
+    z-index: var(--z-dropdown);
+  }
+
+  .nav__list {
+    height: 100%;
+    text-align: center;
+    flex-direction: column;
     justify-content: space-evenly;
     padding: var(--spacing-sm) 0;
     gap: var(--spacing-sm);
-    z-index: var(--z-dropdown);
   }
 
   /* Button-driven menu (JS toggles aria-hidden) */
@@ -88,32 +77,22 @@
   ----------------------------------------------------------------------------
 */
 @media (max-width: 1200px) {
+  /* Stacked: words first, photos under them, sharing one left edge. */
   .about__container {
     flex-direction: column;
+    align-items: flex-start;
     gap: var(--spacing-xl);
   }
 
-  .about__paragraph,
-  .about__headlines {
-    max-width: 100%;
-  }
-
-  .about__headlines ul {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--spacing-sm);
-  }
-
-  .about__headlines ul li {
-    margin: 0;
-    flex: 0 1 calc(33.333% - var(--spacing-sm));
-    min-width: 140px;
+  .about__text {
+    flex: none;
+    width: 100%;
   }
 
   .about__slider {
+    flex: none;
+    width: 100%;
     max-width: 500px;
-    margin: 0 auto;
   }
 }
 
@@ -305,10 +284,6 @@
   }
 
   /* About Section */
-  .about {
-    min-height: auto;
-  }
-
   .about__container {
     padding: 32px;
     gap: var(--spacing-lg);
@@ -319,10 +294,8 @@
     line-height: 1.4rem;
   }
 
-  .about__headlines ul li {
+  .about__interests li {
     font-size: var(--font-size-base);
-    padding: 0.4rem 0.7rem;
-    flex: 0 1 calc(50% - var(--spacing-xs));
   }
 
   /* Skills Section */
@@ -349,11 +322,11 @@
     padding: 32px;
   }
 
-  .projects-header h2 {
+  .projects-header__title {
     font-size: var(--font-size-2xl);
   }
 
-  .projects-header p {
+  .projects-header__intro {
     font-size: 0.95rem;
   }
 
@@ -472,29 +445,19 @@
   }
 
   .about__container {
-    flex-direction: column-reverse;
     padding: 20px;
   }
 
   .about__paragraph {
     font-size: 0.9rem;
-    line-height: var(--line-height-tight);
-    text-indent: var(--spacing-sm);
-  }
-
-  .about__headlines ul li {
-    font-size: var(--font-size-base);
-    flex: 0 1 100%;
-    width: 100%;
-    max-width: 200px;
-    margin: 0 auto;
+    line-height: var(--line-height-relaxed);
   }
 
   .projects-header {
     margin-bottom: var(--spacing-lg);
   }
 
-  .projects-header h2 {
+  .projects-header__title {
     font-size: 1.75rem;
   }
 

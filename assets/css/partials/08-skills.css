@@ -12,7 +12,7 @@
   padding: 52px;
   border-top: var(--border-width) solid var(--color-border-default);
   border-radius: var(--border-radius-2xl);
-  color: var(--color-text-white);
+  color: var(--color-text);
 }
 
 .skills__list {

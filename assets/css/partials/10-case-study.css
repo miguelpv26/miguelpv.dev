@@ -56,7 +56,7 @@
 
 .case-study__terminal-file {
   font-size: var(--font-size-sm);
-  color: color-mix(in srgb, var(--color-text-white) 60%, transparent);
+  color: var(--color-text-muted);
 }
 
 .case-study__terminal-dots {
@@ -83,7 +83,7 @@
 /* Prompt lines. The body font is already monospace, so a "$ " marker is all
    it takes to read as a shell. */
 .case-study__cmd {
-  color: color-mix(in srgb, var(--color-text-white) 75%, transparent);
+  color: var(--color-text-soft);
   margin-bottom: var(--spacing-sm);
 }
 
@@ -129,7 +129,7 @@
 }
 
 .case-study__fields dd {
-  color: color-mix(in srgb, var(--color-text-white) 90%, transparent);
+  color: var(--color-text);
   overflow-wrap: anywhere;
 }
 
@@ -144,12 +144,12 @@
   margin-left: 0;
 }
 
-/* Outcome numbers glow — the measured proof, pulled out of the prose. */
+/* Outcome numbers — the measured proof, pulled out of the prose. White, like
+   a heading: green words are for things you can click. */
 .case-study__metric {
-  color: var(--color-primary);
+  color: var(--color-text-white);
   font-weight: var(--font-weight-semibold);
   font-variant-numeric: tabular-nums;
-  text-shadow: var(--shadow-glow-md);
 }
 
 .case-study__fields a {
@@ -266,10 +266,10 @@
 .article__section h2 {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
-  color: var(--color-primary);
+  color: var(--color-text-white);
   margin-bottom: var(--spacing-md);
   padding-bottom: var(--spacing-xs);
-  border-bottom: var(--border-width) solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+  border-bottom: var(--border-width) solid var(--color-line);
 }
 
 .case-study__section h2::before,
@@ -326,13 +326,14 @@
   color: color-mix(in srgb, var(--color-primary) 70%, transparent);
 }
 
-/* Inline code: the body font is already monospace, so set it apart with a chip. */
+/* Inline code: the body font is already monospace, so set it apart with a chip
+   in the code violet — never green, which would read as a link. */
 .case-study__section code,
 .article__section code {
   padding: 0.1em 0.35em;
   border-radius: var(--border-radius-sm);
   background-color: var(--color-bg-card);
-  color: var(--color-primary);
+  color: var(--color-code);
   font-size: 0.9em;
   overflow-wrap: anywhere;
 }
@@ -394,7 +395,7 @@
 }
 
 .case-study__section--todo p {
-  color: color-mix(in srgb, var(--color-text-white) 82%, transparent);
+  color: var(--color-text-soft);
 }
 
 /* Forward-looking "-> what's next" line accent. */
@@ -414,7 +415,7 @@
   gap: 0.35rem 0.6rem;
   margin: var(--spacing-sm) 0;
   font-size: var(--font-size-md);
-  color: color-mix(in srgb, var(--color-text-white) 75%, transparent);
+  color: var(--color-text-soft);
 }
 
 .case-study__meta .project-status {
@@ -475,7 +476,7 @@
 .score__label {
   font-size: 0.7rem;
   text-align: center;
-  color: color-mix(in srgb, var(--color-text-white) 75%, transparent);
+  color: var(--color-text-soft);
 }
 
 /* The case-study hero has far more room, so scale the rings up and give the
