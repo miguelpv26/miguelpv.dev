@@ -12,6 +12,30 @@
   "theme_color": "#16c60c",
   "icons": [
     {
+      "src": "/assets/img/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/img/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/img/favicon-maskable-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/assets/img/favicon-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
       "src": "/assets/img/favicon-manifest.svg",
       "sizes": "any",
       "type": "image/svg+xml",
@@ -32,6 +56,12 @@
       "url": "/en/projects",
       "icons": [
         {
+          "src": "/assets/img/laptop-code-96x96.png",
+          "sizes": "96x96",
+          "type": "image/png",
+          "purpose": "any"
+        },
+        {
           "src": "/assets/img/laptop-code.svg",
           "sizes": "any",
           "type": "image/svg+xml",
@@ -45,6 +75,12 @@
       "description": "Get in touch",
       "url": "/en/#contact",
       "icons": [
+        {
+          "src": "/assets/img/envelope-96x96.png",
+          "sizes": "96x96",
+          "type": "image/png",
+          "purpose": "any"
+        },
         {
           "src": "/assets/img/envelope.svg",
           "sizes": "any",

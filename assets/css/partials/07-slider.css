@@ -26,6 +26,14 @@
   pointer-events: auto;
 }
 
+/* Hidden slides stay out of layout until their slider starts (main.js marks it
+   data-slider-initialized once it nears the viewport). Stacked under the shown
+   slide, they'd otherwise count as "near the viewport" and every lazy one would
+   download with the page, competing with the hero. */
+[data-slider]:not([data-slider-initialized]) [data-slide]:not(.active) {
+  display: none;
+}
+
 /* Slider Navigation Buttons */
 .slider-prev,
 .slider-next {

@@ -87,7 +87,7 @@ Authored as ordered partials in `assets/css/partials/` (`01-tokens.css` … `14-
 Every project/gallery uses one generic slider: any `[data-slider]` block with `[data-slide]` children and `[data-slide-prev]` / `[data-slide-next]` controls. It is **written from scratch, in ~300 lines, with no library**.
 
 **What it does**
-- **Lazy initialisation** via `IntersectionObserver` (`rootMargin: 50px`) — a slider costs nothing until it's about to enter the viewport.
+- **Lazy initialisation** via `IntersectionObserver` (`rootMargin: 50px`) — a slider costs nothing until it's about to enter the viewport. Until then its hidden slides are `display: none`, so their lazy images don't download with the page (stacked under the shown slide, they'd otherwise count as "near the viewport"), and a hidden video slide carries its poster as `data-poster`, which the slider turns into a `poster` when it starts.
 - **Mixed media** — image *and* `<video>` slides in the same track. Videos loop, so a video slide's `data-duration` is set to the clip's length and it plays once through before the next slide. They ship `preload="none"` with a `poster`, so a clip downloads only when its slide is actually shown.
 - **Per-slide timing** — `data-duration` (seconds, validated and clamped to 1–60; default 5s).
 - **Auto-built dot indicators** with `aria-current`, roving `tabindex`, and `aria-controls` pointing at each slide's id (namespaced per slider, so several sliders on one page never share an id).
@@ -185,7 +185,7 @@ Target: **WCAG 2.1 AA, zero axe issues.**
 
 ## ⚡ Performance
 
-- **Responsive images** via `<picture>`: AVIF → WebP → raster with `srcset` + `sizes` and multiple rendered widths. Every slider reserves its box with `aspect-ratio` and positions its slides inside it, so nothing shifts as media loads → **CLS stays 0**. The LCP image is eager + `fetchpriority="high"`; everything below the fold is lazy.
+- **Responsive images** via `<picture>`: AVIF → WebP → raster with `srcset` + `sizes` and multiple rendered widths. The `sizes` aren't hand-typed: the build derives each one from a table of the CSS layouts and the image's own shape (a portrait screenshot letterboxed in a 16:9 box needs far fewer pixels than the box is wide), rounding up, and `npm run audit-sizes` measures every image in a real browser from 320px to 2560px to prove no `sizes` ever undershoots. Every slider reserves its box with `aspect-ratio` and positions its slides inside it, so nothing shifts as media loads → **CLS stays 0**. The LCP image (the hero portrait) is eager + `fetchpriority="high"` and preloaded with the same `imagesrcset`/`imagesizes` as its `<picture>`, so the preload is always the file the page uses (`npm run check` enforces it); everything below the fold is lazy, and a slider's hidden slides wait until the slider starts, so on a phone the homepage loads ~140 KB of images instead of ~420 KB and nothing competes with the hero.
 - **Videos** are H.264 screen recordings encoded for the job (no audio track, `+faststart`): the three clips total ~730 KB. They ship `preload="none"` behind a ~20 KB WebP poster. The exact ffmpeg settings are in `CLAUDE.md`; ffmpeg itself isn't a dependency, since it's only needed when a clip is added.
 - **Self-hosted fonts**, subset to latin, versioned filenames, cached `immutable` — no font CDN.
 - **CSS is inlined into every page** at build time, so there is **no render-blocking stylesheet request** at all.
@@ -212,7 +212,7 @@ A terminal / "matrix" aesthetic: near-black canvas (`#0d0d0d` / `#000`), a singl
 
 ## 📱 PWA
 
-Each locale links its own manifest — `site.webmanifest` (English, `start_url: /en/`) and `site.es.webmanifest` (Spanish, `start_url: /es/`), both `scope: /` with distinct `id`s and localised app `shortcuts` (Projects, Contact). `display: standalone`, `theme_color: #16c60c`, and both `any` + `maskable` SVG icons.
+Each locale links its own manifest — `site.webmanifest` (English, `start_url: /en/`) and `site.es.webmanifest` (Spanish, `start_url: /es/`), both `scope: /` with distinct `id`s and localised app `shortcuts` (Projects, Contact). `display: standalone`, `theme_color: #16c60c`, and `any` + `maskable` icons as 192/512 PNGs (what install prompts rely on) plus SVGs for browsers that take them; the shortcuts carry 96px PNGs too. Every raster icon is rendered from its SVG master, so all of them draw the same mark at the same scale.
 
 ---
 
@@ -227,16 +227,16 @@ npm run check     # static checks on dist/ (and on the sources); any error exits
 npm run deploy    # build + check (an error stops here) + sitemap.xml → miguelpv_dev.zip
 ```
 
-Social cards are rendered separately, only when their copy changes: `npm run og-cards` (needs a local Chrome or Edge).
+Social cards are rendered separately, only when their copy changes: `npm run og-cards` (needs a local Chrome or Edge). After a CSS change around images, `npm run audit-sizes` (also Chrome/Edge, ~2 minutes) checks every responsive image's `sizes` against the layout the browser actually draws.
 
 **The three build steps:**
-1. **HTML** (`scripts/build-html.js`, `npm run build:html`): empties `dist/`, then writes every page listed in `scripts/site.js` into it with its build regions filled — the shared templates (`head`, `seo`, `header`, `footer`) and the project facts from `scripts/projects.js` — copies the 404s (`en/404.html`, `es/404.html` and the root fallback), and copies the static files that ship. Its `STATIC` list is the deploy whitelist: `assets/img`, `assets/fonts`, `assets/pdf`, both webmanifests, `robots.txt`, `_headers`, `_redirects`. A new top-level asset directory must be added there. It fails if a page in `en/` or `es/` isn't listed in `site.js` or is missing a marker pair.
+1. **HTML** (`scripts/build-html.js`, `npm run build:html`): empties `dist/`, then writes every page listed in `scripts/site.js` into it with its build regions filled — the shared templates (`head`, `seo`, `header`, `footer`) and the project facts from `scripts/projects.js` — generates each responsive image's `sizes` from its `data-sizes` layout (`scripts/images.js`), copies the 404s (`en/404.html`, `es/404.html` and the root fallback), and copies the static files that ship. Its `STATIC` list is the deploy whitelist: `assets/img`, `assets/fonts`, `assets/pdf`, both webmanifests, `robots.txt`, `_headers`, `_redirects`. A new top-level asset directory must be added there. It fails if a page in `en/` or `es/` isn't listed in `site.js` or is missing a marker pair.
 2. **JS** (`npm run build:js`): terser (drop_console, mangle, source map) into `dist/assets/min/`, then `scripts/fingerprint-js.js` renames the bundle `main.<hash>.min.js` and points every built page at it.
 3. **CSS** (`scripts/build-css.js`, `npm run build:css`): concatenates the partials in filename order, rewrites `@font-face` URLs to root-absolute (pages live at several depths), minifies with clean-css, writes a plain fallback before every `color-mix()` and `dvh` declaration (computed from the `:root` tokens, so browsers older than Chrome 111 / Firefox 113 / Safari 16.2 get the same colours instead of dropping them), **inlines the result into every built page**, and **writes the CSP `style-src` `sha256` into `dist/_headers`** so the hash always matches the exact bytes the browser sees.
 
 In the sources, the build regions, the `<style id="inline-css">` block and the CSP hash are empty placeholders, and the script tag names the unhashed `main.min.js`.
 
-**The checks** (`scripts/check.js`, run by every `npm run deploy` before anything is packaged): each built page is compared with its `site.js` entry — title, description, canonical, hreflang, Open Graph image and article dates (site.js, JSON-LD and the visible `<time>` must agree) — and scanned for broken local links, duplicate ids, heading jumps, images without alt, videos without poster/`preload="none"`/label, `_blank` links without `noopener`, invalid JSON-LD and stray microdata. `_redirects` must point at real pages, every page must carry the same inlined CSS and a hashed bundle, the CSP hash must match the CSS, and the source pages must stay free of generated content. Any error stops the deploy.
+**The checks** (`scripts/check.js`, run by every `npm run deploy` before anything is packaged): each built page is compared with its `site.js` entry — title, description, canonical, hreflang, Open Graph image and article dates (site.js, JSON-LD and the visible `<time>` must agree) — and scanned for broken local links, duplicate ids, heading jumps, images without alt, videos without poster/`preload="none"`/label, a slider's hidden slides that would download with the page, `_blank` links without `noopener`, invalid JSON-LD, stray microdata, and `srcset` width descriptors that don't match their files. `_redirects` must point at real pages, every page must carry the same inlined CSS and a hashed bundle, the CSP hash must match the CSS, and the source pages must stay free of generated content. Any error stops the deploy.
 
 ### First-time setup after cloning
 ```bash
@@ -281,12 +281,15 @@ miguelpv.dev/
 │   ├── site.js                      # every EN/ES page pair + its title, description, card, dates
 │   ├── projects.js                  # each project's role, years, category, status, tags, schema
 │   ├── jsonld.js                    # each page's JSON-LD graph, from site.js + projects.js
+│   ├── images.js                    # image layouts → generated `sizes`; image dimension reader
 │   ├── build-html.js                # build step 1: assemble dist/ (pages + static files)
 │   ├── fingerprint-js.js            # build step 2: content-hash the JS bundle, point every page at it
 │   ├── build-css.js                 # build step 3: concat → minify → fallbacks → inline CSS → CSP hash
 │   ├── check.js                     # pre-deploy checks
-│   ├── preview.js                   # local server for dist/
+│   ├── preview.js                   # local server for dist/ (serve-dist.js does the serving)
 │   ├── og-cards.js                  # render the 1200×630 social cards (run by hand)
+│   ├── audit-sizes.js               # measure every image's sizes in a headless browser (run by hand)
+│   ├── browser.js                   # find a local Chrome/Edge for the two scripts above
 │   └── deploy.js                    # generate sitemap + zip dist/
 ├── dist/                            # build output — gitignored, rebuilt from scratch
 ├── _headers                         # security + cache headers (Cloudflare Pages); CSP hash filled in by the build

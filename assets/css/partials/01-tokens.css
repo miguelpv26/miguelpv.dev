@@ -76,8 +76,9 @@
   --font-size-3xl: 2.4rem;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
+  /* 600 is the heaviest face shipped (02-fonts.css): a 700 would only ever
+     render as the 600 face, so there is deliberately no bold token. */
   --font-weight-semibold: 600;
-  --font-weight-bold: 700;
   --line-height-tight: 1.3;
   --line-height-normal: 1.5;
   --line-height-relaxed: 1.6;

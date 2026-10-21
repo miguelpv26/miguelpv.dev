@@ -485,7 +485,8 @@ function createSlider(rootEl) {
   /**
    * Handle video playback. Video slides loop, so they never fire `ended`: how
    * long one stays up is its data-duration, like any other slide. They ship
-   * preload="none" with a poster, so a clip only downloads once it's shown.
+   * preload="none" with a poster (a hidden one as data-poster, set when the
+   * slider starts), so a clip only downloads once it's shown.
    */
   function handleVideo(slide, shouldPlay) {
     if (!isVideo(slide)) return;
@@ -671,6 +672,9 @@ function createSlider(rootEl) {
   // Initialize
   slides.forEach((slide, i) => {
     slide.id = slideIds[i];
+    // A hidden video slide ships its poster as data-poster so it doesn't
+    // download with the page; the slider is starting, so it's needed now.
+    if (slide.dataset.poster) slide.setAttribute('poster', slide.dataset.poster);
   });
 
   show(state.currentIndex);

@@ -27,7 +27,7 @@
         <div class="article__hero">
           <div class="article__hero-text">
             <h1 class="page-header__title">Web Font Strategy:<br/>the four steps I always run</h1>
-            <p class="article__subtitle">Self-host, woff2, subset, preload — measured on this site.</p>
+            <p class="article__subtitle">Self-host, WOFF2, subset, preload — measured on this site.</p>
 
             <p class="article__lede">
               Every character on this site is set in JetBrains Mono, so if the font is slow, the whole page
@@ -97,7 +97,7 @@
                     <li class="chain__step chain__step--overhead">CSS</li>
                     <li class="chain__step chain__step--overhead">DNS</li>
                     <li class="chain__step chain__step--overhead">TLS</li>
-                    <li class="chain__step chain__step--font">woff2</li>
+                    <li class="chain__step chain__step--font">WOFF2</li>
                   </ol>
                   <p class="chain__host">fonts.googleapis.com -&gt; fonts.gstatic.com</p>
                 </div>
@@ -105,7 +105,7 @@
                   <p class="chain__label">Self-hosted</p>
                   <ol class="chain__track">
                     <li class="chain__step chain__step--neutral">HTML</li>
-                    <li class="chain__step chain__step--font">woff2</li>
+                    <li class="chain__step chain__step--font">WOFF2</li>
                   </ol>
                   <p class="chain__host">miguelpv.dev — connection already open</p>
                 </div>
@@ -125,10 +125,10 @@
             <p>
               Format is the free win. <code>woff2</code> is the most compressed web-font format there is, and
               every browser I support has read it for years. Same glyphs, a third of the bytes: JetBrains Mono
-              Regular is 274 KB as a TTF and 92 KB as woff2.
+              Regular is 274 KB as a TTF and 92 KB as WOFF2.
             </p>
             <p>
-              So I serve woff2 and nothing else, one <code>@font-face</code> per weight, each pointing at a
+              So I serve WOFF2 and nothing else, one <code>@font-face</code> per weight, each pointing at a
               single file. No format fallbacks, no list of sources for the browser to work through.
             </p>
           </div>
@@ -154,11 +154,11 @@
           <div class="article__text">
             <h2>Subset, and cut the weights you don't use</h2>
             <p>
-              In proportion, this is the biggest cut: woff2 already took the files down to a third, and the
+              In proportion, this is the biggest cut: WOFF2 already took the files down to a third, and the
               subset divides them by more than four again. A full font file carries Cyrillic, Greek, Vietnamese and
               hundreds of symbols this site never renders, so I serve the Latin subset only. It covers the
               Spanish half of the site too, because á, é, ñ, ¿ and ¡ all live in Latin, so one file serves
-              both languages. The full woff2 is 92 KB; the Latin one is 21 KB.
+              both languages. The full WOFF2 is 92 KB; the Latin one is 21 KB.
             </p>
             <p>
               Then I cut the weights down to the ones the design really uses. Here that's three, regular,
@@ -176,19 +176,19 @@
                     <span class="bytes__value">825 KB</span>
                   </li>
                   <li class="bytes__row">
-                    <span class="bytes__label">woff2, full</span>
+                    <span class="bytes__label">WOFF2, full</span>
                     <span class="bytes__bar"><span class="bytes__fill bytes__fill--woff2"></span></span>
                     <span class="bytes__value">280 KB</span>
                   </li>
                   <li class="bytes__row bytes__row--win">
-                    <span class="bytes__label">woff2, Latin</span>
+                    <span class="bytes__label">WOFF2, Latin</span>
                     <span class="bytes__bar"><span class="bytes__fill bytes__fill--subset"></span></span>
                     <span class="bytes__value">65 KB</span>
                   </li>
                 </ul>
               </div>
               <figcaption>
-                The three weights this site uses (400, 500, 600), added together. TTF and full woff2 are from
+                The three weights this site uses (400, 500, 600), added together. TTF and full WOFF2 are from
                 the official JetBrains Mono 2.304 release; the Latin subset is the files this site actually
                 serves. Almost 13× lighter, with nothing visible lost.
               </figcaption>
@@ -224,7 +224,7 @@
                   <ol class="chain__track">
                     <li class="chain__step chain__step--neutral">HTML</li>
                     <li class="chain__step chain__step--neutral chain__step--span2">parse</li>
-                    <li class="chain__step chain__step--font chain__step--span2">woff2</li>
+                    <li class="chain__step chain__step--font chain__step--span2">WOFF2</li>
                     <li class="chain__step chain__step--paint">text</li>
                   </ol>
                 </div>
@@ -236,7 +236,7 @@
                     <li class="chain__step chain__step--paint">text</li>
                   </ol>
                   <ol class="chain__track">
-                    <li class="chain__step chain__step--font chain__step--from2">woff2</li>
+                    <li class="chain__step chain__step--font chain__step--from2">WOFF2</li>
                   </ol>
                 </div>
               </div>
@@ -267,7 +267,7 @@
                 <code>unicode-range</code>, so English and Spanish readers never download them.
               </li>
               <li>
-                Genuinely old browsers: I ship woff2 only because every browser I build for can read it. If I
+                Genuinely old browsers: I ship WOFF2 only because every browser I build for can read it. If I
                 had to reach much older ones, I'd add a <code>woff</code> fallback to the <code>src</code> list,
                 and only those browsers would download the extra bytes.
               </li>
@@ -278,7 +278,7 @@
             </ul>
             <p>
               And the payoff isn't special to my site. On a site a friend and I recently reviewed, fixing the
-              fonts alone (self-hosting, woff2, subsetting, fewer families and preloading the right ones) cut
+              fonts alone (self-hosting, WOFF2, subsetting, fewer families and preloading the right ones) cut
               the font payload by roughly 10×. It took the page from a PageSpeed score of 47, with FCP and LCP
               around 10 seconds, to 92–96, with both between 2.0 and 2.7s. Same content, same design. The
               fonts just stopped being the bottleneck.

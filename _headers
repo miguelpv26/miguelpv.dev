@@ -20,6 +20,16 @@
 /assets/img/*
   Cache-Control: public, max-age=604800, stale-while-revalidate=2592000
 
+# Pages has no MIME type for .ico and serves it as "Content-Type: null", which
+# Cloudflare then won't compress. The root copy (made by build-html.js) is for
+# clients that ask for /favicon.ico without reading the page's <link> tags.
+/assets/img/favicon.ico
+  Content-Type: image/x-icon
+
+/favicon.ico
+  Content-Type: image/x-icon
+  Cache-Control: public, max-age=604800, stale-while-revalidate=2592000
+
 # Everything here is content-addressed (main.<hash>.min.js and its map, named by
 # scripts/fingerprint-js.js). New bytes always mean a new URL, so these can never
 # go stale. Never add a mutable, referenced file.

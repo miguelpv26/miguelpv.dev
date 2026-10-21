@@ -8,6 +8,7 @@
     "preview": "node scripts/preview.js",
     "check": "node scripts/check.js",
     "og-cards": "node scripts/og-cards.js",
+    "audit-sizes": "node scripts/audit-sizes.js",
     "deploy": "npm run build && npm run check && node scripts/deploy.js"
   },
   "devDependencies": {

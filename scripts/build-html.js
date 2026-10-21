@@ -23,15 +23,18 @@
    The SEO block comes entirely from the page's entry in site.js: edit a title
    or description there, never in the HTML. Everything outside the markers
    (JSON-LD, the page's content) stays hand-written. In the source the markers
-   stay empty; only dist/ ever holds what goes between them. The 404s
+   stay empty; only dist/ ever holds what goes between them. Likewise each
+   responsive image's `sizes`: the source names its layout (data-sizes="…")
+   and scripts/images.js works out the value. The 404s
    (NOT_FOUND_PAGES) are standalone (no header, no footer) and are copied over
    as they are. */
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { PAGES, LOCALES, NOT_FOUND_PAGES, SITE_ORIGIN, SITE_NAME, DIST, fileFor, imageFor } from './site.js';
+import { PAGES, LOCALES, NOT_FOUND_PAGES, SITE_ORIGIN, SITE_NAME, DIST, fileFor, imageFor, dateTimeFor } from './site.js';
 import { PROJECTS, TAGS, CATEGORIES, STATUSES } from './projects.js';
 import { graphFor } from './jsonld.js';
+import { imageSize, sizesFor } from './images.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -108,11 +111,12 @@ function varsFor(page, locale) {
   const seo = page.seo[locale];
   const image = imageFor(page, locale);
   const isArticleType = !isHome && url !== links.projects && url !== links.blog;
+  // article:author is a profile URL, not a name: the homepage is the ProfilePage.
   const articleMeta = page.published
     ? [
-        '<meta property="article:author" content="Miguel Payá Vañó" />',
-        `<meta property="article:published_time" content="${esc(page.published)}" />`,
-        `<meta property="article:modified_time" content="${esc(page.modified)}" />`,
+        `<meta property="article:author" content="${SITE_ORIGIN + links.home}" />`,
+        `<meta property="article:published_time" content="${esc(dateTimeFor(page.published))}" />`,
+        `<meta property="article:modified_time" content="${esc(dateTimeFor(page.modified))}" />`,
       ].map(line => `    ${line}\n`).join('')
     : '';
 
@@ -270,6 +274,25 @@ function breadcrumbLines(trail, locale) {
   ];
 }
 
+/* Responsive images — every <source data-sizes="LAYOUT"> gets the `sizes`
+   that scripts/images.js derives from its layout and its image's shape, and a
+   <link rel="preload" imagesrcset data-sizes> the same value as `imagesizes`,
+   so the preload asks for exactly the file the <picture> will. The widest
+   candidate is the image at full size, so its aspect is the image's. */
+function renderImageSizes(html, rel) {
+  return html.replace(/<(source|link)\b[^>]*>/g, (tag, name) => {
+    const layout = (tag.match(/\sdata-sizes="([^"]+)"/) || [])[1];
+    if (!layout) return tag;
+    const [srcsetAttr, sizesAttr] = name === 'link' ? ['imagesrcset', 'imagesizes'] : ['srcset', 'sizes'];
+    const srcset = (tag.match(new RegExp(`\\s${srcsetAttr}="([^"]+)"`)) || [])[1];
+    if (!srcset) throw new Error(`${rel}: data-sizes on a <${name}> without ${srcsetAttr}`);
+    const candidates = srcset.trim().split(/\s*,\s*/).map(candidate => candidate.split(/\s+/));
+    const [widest] = candidates.sort((a, b) => parseInt(b[1], 10) - parseInt(a[1], 10));
+    const { width, height } = imageSize(path.join(root, path.dirname(rel), widest[0]));
+    return tag.replace(/data-sizes="[^"]+"/, `${sizesAttr}="${sizesFor(layout, width / height)}"`);
+  });
+}
+
 function jsonldLines(graph) {
   // "</" can't appear inside a <script>; JSON lets it be written "<\/".
   const json = JSON.stringify(graph, null, 2).replace(/<\//g, '<\\/');
@@ -337,6 +360,7 @@ for (const page of PAGES) {
     }
     const graph = graphFor({ page, locale, kind, trail, slugs, siteName: SITE_NAME[locale], blogUrl: LINKS[locale].blog });
     html = fillRegion(html, 'jsonld', jsonldLines(graph), eol, rel);
+    html = renderImageSizes(html, rel);
 
     const out = path.join(dist, rel);
     fs.mkdirSync(path.dirname(out), { recursive: true });
@@ -367,6 +391,9 @@ function copy(src, dest) {
   }
 }
 for (const rel of STATIC) copy(path.join(root, rel), path.join(dist, rel));
+// Some clients request /favicon.ico regardless of the <link> tags; without
+// this copy they get the 404 page, uncacheable.
+copy(path.join(root, 'assets/img/favicon.ico'), path.join(dist, 'favicon.ico'));
 // Where the next step's terser writes the bundle (terser won't create it).
 fs.mkdirSync(path.join(dist, 'assets/min'), { recursive: true });
 

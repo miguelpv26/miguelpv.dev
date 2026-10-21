@@ -2,14 +2,16 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="theme-color" content="#16c60c" />
 
-    <!-- Preload the three font weights every page uses -->
-    <link rel="preload" href="{{prefix}}assets/fonts/jetbrains-mono-v24-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="{{prefix}}assets/fonts/jetbrains-mono-v24-latin-500.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="{{prefix}}assets/fonts/jetbrains-mono-v24-latin-600.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- Preload the three font weights every page's header paints (500 logo and
+         nav, 600 active language). Root-absolute, written exactly as the build
+         writes the @font-face src, so the match is visible without resolving. -->
+    <link rel="preload" href="/assets/fonts/jetbrains-mono-v24-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/assets/fonts/jetbrains-mono-v24-latin-500.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/assets/fonts/jetbrains-mono-v24-latin-600.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- Favicons and the per-locale web app manifest -->
-    <link rel="icon" type="image/png" href="{{prefix}}assets/img/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="{{prefix}}assets/img/favicon.svg" />
-    <link rel="shortcut icon" href="{{prefix}}assets/img/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="512x512" href="{{prefix}}assets/img/favicon-512x512.png" />
+    <link rel="icon" type="image/png" href="/assets/img/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg" />
+    <link rel="shortcut icon" href="/assets/img/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png" />
     <link rel="manifest" href="{{manifest}}" />

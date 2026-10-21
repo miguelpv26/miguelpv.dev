@@ -24,6 +24,7 @@ import path from 'path';
 import { spawn } from 'child_process';
 import { fileURLToPath } from 'url';
 import { PAGES, LOCALES, CARD_FOOTER } from './site.js';
+import { findBrowser } from './browser.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const outDir = path.join(root, 'assets/img/og');
@@ -34,23 +35,6 @@ const CARDS = Object.fromEntries(
     LOCALES.map(locale => [`${page.card.name}-${locale}`, { ...page.card[locale], footer: CARD_FOOTER[locale] }])
   )
 );
-
-function findBrowser() {
-  const candidates = [
-    process.env.BROWSER_PATH,
-    'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-    'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
-    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-    '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',
-    '/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser', '/usr/bin/microsoft-edge',
-  ];
-  const found = candidates.find(p => p && fs.existsSync(p));
-  if (!found) {
-    console.error('ERROR: no Chrome/Edge found — set BROWSER_PATH');
-    process.exit(1);
-  }
-  return found;
-}
 
 const requested = process.argv.slice(2);
 const unknown = requested.filter(name => !(name in CARDS));

@@ -15,7 +15,8 @@ import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import { fileURLToPath } from 'url';
-import { PAGES, LOCALES, NOT_FOUND_PAGES, SITE_ORIGIN, DIST, fileFor, imageFor } from './site.js';
+import { PAGES, LOCALES, NOT_FOUND_PAGES, SITE_ORIGIN, DIST, fileFor, imageFor, dateTimeFor } from './site.js';
+import { imageSize } from './images.js';
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 // Everything below reads the built site; the source checks use `repo`.
@@ -41,11 +42,46 @@ const meta = (html, key) => {
   return m ? decode(m[1]) : undefined;
 };
 
-/** Every local file a page references (src, href, srcset, poster, data-fullres) must exist. */
+// JSON-LD dates: a plain year or date ("2025", "2026-07-13") is a schema.org
+// Date; anything with a time is a DateTime and must carry its zone, or Google
+// reports "datetime property is missing a timezone". Articles' dates are always
+// DateTimes — Google reads them as such even when given a bare date.
+const ZONED_DATETIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\d{2})$/;
+const PLAIN_DATE = /^\d{4}(-\d{2}(-\d{2})?)?$/;
+const DATE_KEYS = ['datePublished', 'dateModified', 'dateCreated', 'uploadDate', 'startDate', 'endDate'];
+const ARTICLE_TYPES = ['Article', 'BlogPosting', 'NewsArticle', 'TechArticle'];
+// Every {"@id": …} reference must point at a node defined on the same page:
+// Google reads each page's graph on its own and won't follow an @id elsewhere.
+function checkLdRefs(rel, ld) {
+  const defined = new Set(), referenced = new Set();
+  (function walk(value) {
+    if (Array.isArray(value)) return value.forEach(walk);
+    if (!value || typeof value !== 'object') return;
+    const keys = Object.keys(value);
+    if (keys.length === 1 && keys[0] === '@id') referenced.add(value['@id']);
+    else if (value['@id']) defined.add(value['@id']);
+    Object.values(value).forEach(walk);
+  })(ld);
+  for (const id of referenced) if (!defined.has(id)) error(rel, `JSON-LD references ${id}, which no node on the page defines`);
+}
+
+function checkLdDates(rel, value) {
+  if (Array.isArray(value)) return value.forEach(item => checkLdDates(rel, item));
+  if (!value || typeof value !== 'object') return;
+  const isArticle = [].concat(value['@type']).some(type => ARTICLE_TYPES.includes(type));
+  for (const [key, inner] of Object.entries(value)) {
+    if (DATE_KEYS.includes(key)) {
+      const ok = ZONED_DATETIME.test(inner) || (!isArticle && PLAIN_DATE.test(inner));
+      if (!ok) error(rel, `JSON-LD ${value['@type']} ${key} "${inner}" ${isArticle ? 'needs a date-time with a timezone' : 'is neither a date nor a zoned date-time'}`);
+    } else checkLdDates(rel, inner);
+  }
+}
+
+/** Every local file a page references (src, href, srcset, imagesrcset, poster, data-poster, data-fullres) must exist. */
 function checkLocalRefs(rel, html) {
   const body = html.replace(/<style id="inline-css">[\s\S]*?<\/style>/, '').replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/g, '');
   const dir = path.dirname(rel);
-  for (const [, value] of body.matchAll(/\s(?:src|href|srcset|poster|data-fullres)="([^"]+)"/g)) {
+  for (const [, value] of body.matchAll(/\s(?:src|href|srcset|imagesrcset|poster|data-poster|data-fullres)="([^"]+)"/g)) {
     for (const candidate of value.split(',').map(part => part.trim().split(/\s+/)[0])) {
       if (!candidate || /^(https?:|mailto:|tel:|data:|#)/.test(candidate)) continue;
       const clean = decodeURIComponent(candidate.split(/[?#]/)[0]);
@@ -54,6 +90,52 @@ function checkLocalRefs(rel, html) {
       const ok = [target, `${target}.html`, path.posix.join(target, 'index.html')].some(t => t === '' ? true : exists(t));
       if (!ok) error(rel, `broken local reference "${candidate}"`);
     }
+  }
+}
+
+/** The attributes holding a tag's candidates and their sizes: a preload <link> uses image* names. */
+const srcsetAttrs = tag => (tag.startsWith('<link') ? ['imagesrcset', 'imagesizes'] : ['srcset', 'sizes']);
+
+/** A `w`-descriptor srcset — the kind that needs a `sizes` — as [url, width] pairs; null otherwise. */
+const widthCandidates = tag => {
+  const srcset = (tag.match(new RegExp(`\\s${srcsetAttrs(tag)[0]}="([^"]+)"`)) || [])[1];
+  if (!srcset) return null;
+  const candidates = srcset.trim().split(/\s*,\s*/).map(candidate => candidate.split(/\s+/));
+  return candidates.some(([, descriptor]) => /^\d+w$/.test(descriptor || '')) ? candidates : null;
+};
+
+/* Responsive images: the browser picks a srcset candidate by its `w` descriptor
+   before it has seen the file, so each one must be the file's real width; and
+   the `sizes` that goes with them is generated (scripts/images.js), so none may
+   be left as a data-sizes placeholder. An image preload must ask for exactly
+   what its <picture> will — the same candidates and sizes — or the browser
+   preloads one file and then fetches another. */
+function checkResponsiveImages(rel, html) {
+  const sources = [];
+  for (const [tag] of html.matchAll(/<(?:source|img|link)\b[^>]*>/g)) {
+    const candidates = widthCandidates(tag);
+    if (!candidates) continue;
+    const [srcsetAttr, sizesAttr] = srcsetAttrs(tag);
+    const sizes = (tag.match(new RegExp(`\\s${sizesAttr}="([^"]+)"`)) || [])[1];
+    if (/\sdata-sizes=/.test(tag)) error(rel, `data-sizes left in a built page — did build-html.js run? ${tag.slice(0, 80)}`);
+    if (!sizes) error(rel, `${srcsetAttr} with w descriptors but no ${sizesAttr}: ${tag.slice(0, 80)}`);
+    for (const [url, descriptor] of candidates) {
+      const file = path.join(root, path.dirname(rel), decodeURIComponent(url));
+      if (!fs.existsSync(file)) continue; // reported by checkLocalRefs
+      const { width } = imageSize(file);
+      if (descriptor !== `${width}w`) error(rel, `${url} is ${width}px wide but its ${srcsetAttr} descriptor says ${descriptor}`);
+    }
+    const key = `${candidates.map(c => c.join(' ')).join(', ')} | ${sizes}`;
+    if (tag.startsWith('<link')) sources.push({ preload: key, tag });
+    else sources.push({ key });
+  }
+  for (const { preload, tag } of sources.filter(s => s.preload)) {
+    if (!sources.some(s => s.key === preload)) error(rel, `image preload matches no <source> on the page (same candidates and sizes) — it would download a second file: ${tag.slice(0, 80)}`);
+  }
+  // The AVIF and WebP sources of one picture describe the same box.
+  for (const [picture] of html.matchAll(/<picture\b[\s\S]*?<\/picture>/g)) {
+    const values = new Set([...picture.matchAll(/<source\b[^>]*\ssizes="([^"]+)"/g)].map(m => m[1]));
+    if (values.size > 1) error(rel, `the sources of one <picture> have different sizes — give them the same data-sizes: ${picture.slice(0, 80)}`);
   }
 }
 
@@ -76,12 +158,20 @@ function checkDocument(rel, html) {
   for (const [svg] of body.matchAll(/<svg\b[^>]*>/g)) {
     if (!/aria-hidden="true"|role="img"/.test(svg)) error(rel, `<svg> neither aria-hidden nor role="img": ${svg.slice(0, 80)}`);
   }
+  // A slider's hidden slides (every [data-slide] but the .active one) must not
+  // download with the page: images lazy (display:none until the slider starts
+  // keeps them from loading), video posters as data-poster (main.js sets them
+  // when the slider starts — a poster attribute always downloads at once).
+  const hiddenSlide = tag => /\sdata-slide\b/.test(tag) && !/\sclass="[^"]*\bactive\b/.test(tag);
   for (const [img] of body.matchAll(/<img\b[^>]*>/g)) {
     if (!/\salt=/.test(img)) error(rel, `<img> without alt: ${img.slice(0, 80)}`);
+    if (hiddenSlide(img) && !/\sloading="lazy"/.test(img)) error(rel, `hidden slide without loading="lazy": ${img.slice(0, 80)}`);
   }
   for (const [video] of body.matchAll(/<video\b[^>]*>/g)) {
     if (!/preload="none"/.test(video)) error(rel, `<video> without preload="none": ${video.slice(0, 80)}`);
-    if (!/\sposter=/.test(video)) error(rel, `<video> without a poster: ${video.slice(0, 80)}`);
+    if (hiddenSlide(video)) {
+      if (!/\sdata-poster=/.test(video) || /\sposter=/.test(video)) error(rel, `hidden video slide must defer its poster as data-poster: ${video.slice(0, 80)}`);
+    } else if (!/\sposter=/.test(video)) error(rel, `<video> without a poster: ${video.slice(0, 80)}`);
     if (!/\saria-label=/.test(video)) error(rel, `<video> without an aria-label: ${video.slice(0, 80)}`);
   }
   for (const [link] of body.matchAll(/<a\b[^>]*target="_blank"[^>]*>/g)) {
@@ -90,10 +180,15 @@ function checkDocument(rel, html) {
   if (/\sitemprop=/.test(html)) error(rel, 'itemprop found — structured data is JSON-LD only');
 
   for (const [, json] of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
-    try { JSON.parse(json); } catch (e) { error(rel, `invalid JSON-LD: ${e.message}`); }
+    try {
+      const ld = JSON.parse(json);
+      checkLdDates(rel, ld);
+      checkLdRefs(rel, ld);
+    } catch (e) { error(rel, `invalid JSON-LD: ${e.message}`); }
   }
 
   checkLocalRefs(rel, html);
+  checkResponsiveImages(rel, html);
 }
 
 function checkPage(page, locale) {
@@ -130,19 +225,27 @@ function checkPage(page, locale) {
   if (!exists(image.src.slice(1))) error(rel, `social image ${image.src} doesn't exist${page.card ? ` — run npm run og-cards -- ${page.card.name}-${locale}` : ''}`);
   if (meta(html, 'og:image') !== SITE_ORIGIN + image.src) error(rel, `og:image doesn't match site.js — run npm run build:html`);
 
-  // Articles: the dates in site.js, the JSON-LD and the visible <time>s must agree.
+  // Articles: the dates in site.js, the JSON-LD, the Open Graph article:*_time
+  // and the visible <time>s must agree (the <time>s on the day).
   if (page.published) {
+    let published, modified;
+    try {
+      [published, modified] = [dateTimeFor(page.published), dateTimeFor(page.modified)];
+    } catch (e) { error(rel, e.message); }
+    if (published && Date.parse(modified) < Date.parse(published)) error(rel, `site.js modified ${page.modified} is before published ${page.published}`);
     const ld = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
     const graph = ld ? [].concat(JSON.parse(ld[1])['@graph'] || JSON.parse(ld[1])) : [];
     const post = graph.find(node => node['@type'] === 'BlogPosting');
     if (!post) error(rel, 'article without a BlogPosting in its JSON-LD');
     else {
-      if (post.datePublished !== page.published) error(rel, `JSON-LD datePublished ${post.datePublished} ≠ site.js ${page.published}`);
-      if (post.dateModified !== page.modified) error(rel, `JSON-LD dateModified ${post.dateModified} ≠ site.js ${page.modified}`);
+      if (post.datePublished !== published) error(rel, `JSON-LD datePublished ${post.datePublished} ≠ site.js ${published}`);
+      if (post.dateModified !== modified) error(rel, `JSON-LD dateModified ${post.dateModified} ≠ site.js ${modified}`);
       if (post.image !== SITE_ORIGIN + image.src) error(rel, `BlogPosting image ${post.image} ≠ the page's social card`);
     }
+    if (meta(html, 'article:published_time') !== published) error(rel, `article:published_time ≠ site.js ${published} — run npm run build:html`);
+    if (meta(html, 'article:modified_time') !== modified) error(rel, `article:modified_time ≠ site.js ${modified} — run npm run build:html`);
     const times = [...html.matchAll(/<time datetime="([^"]+)"/g)].map(m => m[1]);
-    for (const date of new Set([page.published, page.modified])) {
+    for (const date of new Set([page.published, page.modified].map(value => value.slice(0, 10)))) {
       if (!times.includes(date)) error(rel, `no visible <time datetime="${date}">`);
     }
   }
@@ -165,6 +268,12 @@ for (const rel of new Set([...LOCALES.flatMap(htmlFilesUnder), ...NOT_FOUND_PAGE
   if (/assets\/min\/main\.[0-9a-f]{8}\.min\.js/.test(source)) error(`${rel} (source)`, 'the script tag must reference the unhashed main.min.js');
   for (const [, name, inner] of source.matchAll(/<!-- build:([\w-]+)(?: [^>]*?)? -->([\s\S]*?)<!-- \/build:\1 -->/g)) {
     if (inner.trim()) error(`${rel} (source)`, `build:${name} region must be empty in the source`);
+  }
+  for (const [tag] of source.matchAll(/<(?:source|img|link)\b[^>]*>/g)) {
+    if (!widthCandidates(tag)) continue;
+    const [srcsetAttr, sizesAttr] = srcsetAttrs(tag);
+    if (new RegExp(`\\s${sizesAttr}="`).test(tag)) error(`${rel} (source)`, `${sizesAttr} is generated — name the layout with data-sizes (scripts/images.js) instead: ${tag.slice(0, 80)}`);
+    else if (!/\sdata-sizes="/.test(tag)) error(`${rel} (source)`, `${srcsetAttr} with w descriptors needs data-sizes="LAYOUT" (scripts/images.js): ${tag.slice(0, 80)}`);
   }
 }
 
@@ -200,6 +309,34 @@ for (const line of read('_redirects').split('\n')) {
   if (!parts[0] || parts[0].startsWith('#')) continue;
   if (!pageUrls.has(parts[1])) error('_redirects', `${parts[0]} points at ${parts[1]}, which isn't a page in site.js`);
   if (pageUrls.has(parts[0])) error('_redirects', `${parts[0]} is still a live page — a redirect would hide it`);
+}
+
+// The web app manifests: every icon exists, a PNG's real size is its declared
+// `sizes`, the 192 and 512 PNGs browsers want for installing are there (SVG
+// support in manifests is uneven, so the SVGs are extras, not substitutes),
+// and both locales list the same icons — only names and URLs differ.
+const MANIFESTS = ['site.webmanifest', 'site.es.webmanifest'];
+const iconsOf = manifest => [...(manifest.icons || []), ...(manifest.shortcuts || []).flatMap(s => s.icons || [])];
+const manifests = {};
+for (const rel of MANIFESTS) {
+  if (!exists(rel)) { error(rel, 'missing'); continue; }
+  try { manifests[rel] = JSON.parse(read(rel)); } catch (e) { error(rel, `invalid JSON: ${e.message}`); continue; }
+  for (const icon of iconsOf(manifests[rel])) {
+    const file = icon.src.replace(/^\//, '');
+    if (!exists(file)) { error(rel, `icon ${icon.src} doesn't exist`); continue; }
+    if (icon.type !== 'image/png') continue;
+    const { width, height } = imageSize(path.join(root, file));
+    if (icon.sizes !== `${width}x${height}`) error(rel, `${icon.src} is ${width}x${height} but declares sizes "${icon.sizes}"`);
+  }
+  for (const purpose of ['any', 'maskable']) for (const size of ['192x192', '512x512']) {
+    if (!(manifests[rel].icons || []).some(i => i.type === 'image/png' && i.sizes === size && (i.purpose || 'any').split(' ').includes(purpose))) {
+      error(rel, `no ${size} PNG icon with purpose "${purpose}"`);
+    }
+  }
+}
+if (manifests[MANIFESTS[0]] && manifests[MANIFESTS[1]]
+  && JSON.stringify(iconsOf(manifests[MANIFESTS[0]])) !== JSON.stringify(iconsOf(manifests[MANIFESTS[1]]))) {
+  error(MANIFESTS[1], `icons differ from ${MANIFESTS[0]} — keep the two manifests in sync`);
 }
 
 // security.txt must carry a future Expires (RFC 9116); renew it yearly.

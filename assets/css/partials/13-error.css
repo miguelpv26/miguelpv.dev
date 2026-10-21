@@ -122,7 +122,7 @@
 .error-page__code {
   margin: 0;
   font-size: clamp(4rem, 18vw, 9rem);
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-semibold);
   line-height: 1;
   color: var(--color-primary);
   text-shadow: var(--shadow-glow-md);

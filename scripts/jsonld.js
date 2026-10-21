@@ -10,7 +10,7 @@
                        every post (the same BlogPosting nodes as the articles)
      case study        WebPage about the project
      article           WebPage whose mainEntity is the BlogPosting (headline,
-                       dates, card image, keywords)
+                       dates, card image, keywords), plus the Blog it is part of
 
    The breadcrumb always hangs off the WebPage: schema.org defines it only
    there, so a Blog or BlogPosting carrying it fails validation.
@@ -18,7 +18,7 @@
    plus a BreadcrumbList for every page below the homepage, and the JSON-LD
    entity of each project the page shows (any project with a build:project-*
    region in it). */
-import { SITE_ORIGIN, PERSON, PAGES, imageFor } from './site.js';
+import { SITE_ORIGIN, PERSON, PAGES, imageFor, dateTimeFor } from './site.js';
 import { PROJECTS } from './projects.js';
 
 const abs = path => SITE_ORIGIN + path;
@@ -91,19 +91,41 @@ function sharedNodes(locale, siteName) {
   ];
 }
 
+/**
+ * The Blog — on the hub, and on every article so the post's isPartOf resolves
+ * within the page (Google doesn't follow @ids across pages). The hub adds its
+ * mainEntityOfPage and post list.
+ */
+function blogNode(blogUrl, locale) {
+  const hub = PAGES.find(p => p[locale] === blogUrl);
+  const seo = hub.seo[locale];
+  return {
+    '@type': 'Blog',
+    '@id': abs(`${blogUrl}#blog`),
+    url: abs(blogUrl),
+    name: seo.shareTitle || seo.title,
+    description: seo.description,
+    author: ref(PERSON_ID),
+    publisher: ref(PERSON_ID),
+    inLanguage: locale,
+  };
+}
+
 /** An article's BlogPosting — the same node on its own page and in the blog hub's list. */
 function postNode(page, locale, blogUrl) {
   const url = page[locale];
   return {
     '@type': 'BlogPosting',
     '@id': abs(`${url}#article`),
-    mainEntityOfPage: ref(`${url}#webpage`),
+    // Typed, so the post is complete in the hub's list too, where the article's
+    // full WebPage node isn't (on the article page the two merge by @id).
+    mainEntityOfPage: { '@type': 'WebPage', '@id': abs(`${url}#webpage`) },
     url: abs(url),
     headline: page.headline[locale],
     image: abs(imageFor(page, locale).src),
     description: page.seo[locale].description,
-    datePublished: page.published,
-    dateModified: page.modified,
+    datePublished: dateTimeFor(page.published),
+    dateModified: dateTimeFor(page.modified),
     author: ref(PERSON_ID),
     publisher: ref(PERSON_ID),
     isPartOf: ref(`${blogUrl}#blog`),
@@ -153,18 +175,11 @@ export function graphFor({ page, locale, kind, trail, slugs, siteName, blogUrl }
     // the Blog (a CreativeWork); the Blog lists its posts, newest first.
     const posts = PAGES
       .filter(p => p.published && p[locale].startsWith(`${url}/`))
-      .sort((a, b) => b.published.localeCompare(a.published));
+      .sort((a, b) => Date.parse(dateTimeFor(b.published)) - Date.parse(dateTimeFor(a.published)));
     nodes.push({ '@type': 'CollectionPage', '@id': abs(`${url}#webpage`), ...base, about: ref(PERSON_ID), mainEntity: ref(`${url}#blog`) });
     nodes.push({
-      '@type': 'Blog',
-      '@id': abs(`${url}#blog`),
+      ...blogNode(url, locale),
       mainEntityOfPage: ref(`${url}#webpage`),
-      url: abs(url),
-      name: base.name,
-      description: seo.description,
-      author: ref(PERSON_ID),
-      publisher: ref(PERSON_ID),
-      inLanguage: locale,
       blogPost: posts.map(p => ref(`${p[locale]}#article`)),
     });
     nodes.push(...posts.map(p => postNode(p, locale, url)));
@@ -180,6 +195,7 @@ export function graphFor({ page, locale, kind, trail, slugs, siteName, blogUrl }
     // As on the blog hub, the WebPage carries the breadcrumb; the post is its main entity.
     nodes.push({ '@type': 'WebPage', '@id': abs(`${url}#webpage`), ...base, mainEntity: ref(`${url}#article`) });
     nodes.push(postNode(page, locale, blogUrl));
+    nodes.push(blogNode(blogUrl, locale));
   }
 
   if (trail.length) {

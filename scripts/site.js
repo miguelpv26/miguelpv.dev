@@ -10,8 +10,11 @@
                     assets/img/og/<card.name>-<locale>.png); pages without a card
                     give a ready-made image instead
      crumb.{en,es}  the page's label in its breadcrumb trail (visible and JSON-LD)
-     published /    article dates (YYYY-MM-DD); must match the article's visible
-     modified       <time>, which scripts/check.js verifies
+     published /    article dates (YYYY-MM-DD, or YYYY-MM-DDTHH:MM when the time
+     modified       matters), Madrid wall-clock; dateTimeFor() below turns them
+                    into the zoned date-times JSON-LD and Open Graph need. The
+                    day must match the article's visible <time>, which
+                    scripts/check.js verifies
      headline /     articles: the BlogPosting headline (the full H1) and keywords
      keywords
 
@@ -124,17 +127,17 @@ export const PAGES = [
     crumb: { en: 'Web font strategy', es: 'Estrategia de fuentes web' },
     headline: { en: 'Web Font Strategy: the four steps I always run', es: 'Estrategia de fuentes web: los cuatro pasos que siempre aplico' },
     keywords: {
-      en: 'web font performance, self-hosting fonts, font subsetting, preload fonts, woff2, Core Web Vitals, WPO',
-      es: 'rendimiento de fuentes web, autoalojar fuentes, subconjunto de fuentes, precargar fuentes, woff2, Core Web Vitals, WPO',
+      en: 'web font performance, self-hosting fonts, font subsetting, preload fonts, WOFF2, Core Web Vitals, WPO',
+      es: 'rendimiento de fuentes web, autoalojar fuentes, subconjunto de fuentes, precargar fuentes, WOFF2, Core Web Vitals, WPO',
     },
     seo: {
-      en: { title: 'Web Font Strategy in 4 Steps | Miguel Payá Vañó', description: 'How I make web fonts fast: self-host, woff2, subset and preload. On this site, JetBrains Mono goes from 825 KB of TTF to 65 KB, measured step by step.', shareTitle: 'Web Font Strategy in 4 Steps' },
-      es: { title: 'Estrategia de fuentes web en 4 pasos | Miguel Payá Vañó', description: 'Cómo consigo que las fuentes web carguen rápido: autoalojarlas, woff2, subconjuntos y preload. En esta web, de 825 KB en TTF a 65 KB, medido paso a paso.', shareTitle: 'Estrategia de fuentes web en 4 pasos' },
+      en: { title: 'Web Font Strategy in 4 Steps | Miguel Payá Vañó', description: 'How I make web fonts fast: self-host, WOFF2, subset and preload. On this site, JetBrains Mono goes from 825 KB of TTF to 65 KB, measured step by step.', shareTitle: 'Web Font Strategy in 4 Steps' },
+      es: { title: 'Estrategia de fuentes web en 4 pasos | Miguel Payá Vañó', description: 'Cómo consigo que las fuentes web carguen rápido: autoalojarlas, WOFF2, subconjuntos y preload. En esta web, de 825 KB en TTF a 65 KB, medido paso a paso.', shareTitle: 'Estrategia de fuentes web en 4 pasos' },
     },
     card: {
       name: 'web-font-strategy',
-      en: { eyebrow: 'Blog · Web fonts', title: 'Web Font Strategy', sub: 'The four steps I always run, measured on this site.', chips: 'Self-host|woff2|Subset|Preload', pill: '825 KB -> 65 KB' },
-      es: { eyebrow: 'Blog · Fuentes web', title: 'Estrategia de fuentes web', sub: 'Los cuatro pasos que siempre aplico, medidos en esta web.', chips: 'Autoalojar|woff2|Subconjunto|Preload', pill: '825 KB -> 65 KB', size: 62 },
+      en: { eyebrow: 'Blog · Web fonts', title: 'Web Font Strategy', sub: 'The four steps I always run, measured on this site.', chips: 'Self-host|WOFF2|Subset|Preload', pill: '825 KB -> 65 KB' },
+      es: { eyebrow: 'Blog · Fuentes web', title: 'Estrategia de fuentes web', sub: 'Los cuatro pasos que siempre aplico, medidos en esta web.', chips: 'Autoalojar|WOFF2|Subconjunto|Preload', pill: '825 KB -> 65 KB', size: 62 },
     },
   },
   {
@@ -208,6 +211,40 @@ export const PAGES = [
 /** The HTML file that serves a URL: /en/ → en/index.html, /en/blog → en/blog.html. */
 export function fileFor(url) {
   return url.endsWith('/') ? `${url.slice(1)}index.html` : `${url.slice(1)}.html`;
+}
+
+/** The timezone the article dates in PAGES are written in. */
+export const TIME_ZONE = 'Europe/Madrid';
+
+/** TIME_ZONE's UTC offset at an instant, as "+02:00" (Intl says "GMT+02:00", or plain "GMT" at zero). */
+function offsetAt(ms) {
+  const name = new Intl.DateTimeFormat('en-US', { timeZone: TIME_ZONE, timeZoneName: 'longOffset' })
+    .formatToParts(new Date(ms)).find(part => part.type === 'timeZoneName').value;
+  return name === 'GMT' ? '+00:00' : name.slice(3);
+}
+
+/**
+ * An article date from PAGES as a full ISO 8601 date-time with TIME_ZONE's
+ * offset on that day: '2026-07-13' → '2026-07-13T12:00:00+02:00'. Schema.org
+ * DateTime values and article:*_time want a zone; a bare date has none, and
+ * Google's validators flag it. A date without a time means noon, which stays
+ * on the same calendar day from UTC-10 to UTC+12 (midnight would read as the
+ * previous day anywhere west of Madrid).
+ */
+export function dateTimeFor(value) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?$/.exec(value || '');
+  if (!m) throw new Error(`site.js: article date "${value}" isn't YYYY-MM-DD or YYYY-MM-DDTHH:MM`);
+  const [, y, mo, d, h = '12', mi = '00'] = m;
+  const wall = Date.UTC(+y, mo - 1, +d, +h, +mi);
+  const check = new Date(wall);
+  if (check.getUTCMonth() !== mo - 1 || check.getUTCDate() !== +d || +h > 23 || +mi > 59) {
+    throw new Error(`site.js: article date "${value}" doesn't exist`);
+  }
+  // Reading the wall time as UTC lands within hours of the real instant; asking
+  // again from the corrected instant settles dates right next to a DST switch.
+  const toMs = offset => (offset[0] === '-' ? -1 : 1) * (+offset.slice(1, 3) * 60 + +offset.slice(4, 6)) * 60000;
+  const offset = offsetAt(wall - toMs(offsetAt(wall)));
+  return `${y}-${mo}-${d}T${h}:${mi}:00${offset}`;
 }
 
 /** The page's social image for a locale: { src (root-absolute), alt }. */
