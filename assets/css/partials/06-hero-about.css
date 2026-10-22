@@ -95,6 +95,11 @@
   max-width: 595px;
 }
 
+/* A blank line between the paragraphs, at every size the line-height takes. */
+.hero__paragraph p + p {
+  margin-top: 1lh;
+}
+
 /* Links inside body copy are white, a step above the #dedede around them. */
 .hero__paragraph-link {
   color: var(--color-text-white);

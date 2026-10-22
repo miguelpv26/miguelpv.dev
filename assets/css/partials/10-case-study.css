@@ -133,10 +133,12 @@
   overflow-wrap: anywhere;
 }
 
-/* Middle-dot separators inside a value (stack list, outcome list). */
-.case-study__fields .sep {
+/* Middle-dot separators inside a value (stack list, outcome list). The markup
+   puts a space on each side, so screen readers don't hear "VueNode"; the
+   margin takes one space back, leaving the old 0.15rem beside the bearings. */
+.case-study__fields .sep-dot {
+  margin: 0 calc(0.15rem - 0.39em);
   opacity: 0.4;
-  padding: 0 0.15rem;
 }
 
 /* Status reuses the projects vocabulary (coloured dot) but reads inline. */
@@ -422,10 +424,6 @@
   margin-left: 0;
 }
 
-.case-study__meta-sep {
-  opacity: 0.45;
-}
-
 /*
   ============================================================================
   PERFECT-SCORES PANEL
@@ -522,11 +520,22 @@
   RESPONSIVE  (component-scoped; the shared breakpoints live in 14-responsive)
   ============================================================================
 */
+/*
+  On a phone the number gutter costs a fifth of the line and indents every
+  section's prose away from the page edge. The spine drops to one column and
+  the number becomes a small label above its heading.
+*/
 @media (max-width: 600px) {
   .case-study__section,
   .article__section {
-    grid-template-columns: 1.7rem minmax(0, 1fr);
-    column-gap: var(--spacing-sm);
+    display: block;
+  }
+
+  .case-study__section::before,
+  .article__section::before {
+    display: block;
+    padding-top: 0;
+    margin-bottom: var(--spacing-xs);
   }
 
   .case-study__section--todo {

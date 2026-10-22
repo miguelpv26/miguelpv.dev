@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 
 Sitemap: https://miguelpv.dev/sitemap.xml
+Sitemap: https://miguelpv.dev/en/feed.xml
+Sitemap: https://miguelpv.dev/es/feed.xml

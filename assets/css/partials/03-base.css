@@ -18,7 +18,7 @@
 /* HTML & Body */
 html {
   scrollbar-width: thin;
-  scrollbar-color: rgba(21, 198, 12, 0.5) var(--color-bg-black);
+  scrollbar-color: color-mix(in srgb, var(--color-primary) 50%, transparent) var(--color-bg-black);
   background: var(--color-bg-dark);
   scroll-behavior: smooth;
   overflow-x: hidden;
@@ -44,7 +44,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(21, 198, 12, 0.45);
+  background-color: color-mix(in srgb, var(--color-primary) 45%, transparent);
   border-radius: 999px;
   border: 2px solid var(--color-bg-black);
 }
@@ -162,6 +162,30 @@ h1, h2, h3, h4, h5, h6 {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+/*
+  Middle-dot separator, drawn instead of typed: it's decoration, so it leaves
+  no "·" for screen readers, copy-paste or contrast checkers to pick up. Sized
+  and placed like JetBrains Mono's own middot (0.18em ink, 0.21em side
+  bearings, 0.26em above the baseline), so it takes the glyph's exact room.
+  A fill, not a border (borders snap to whole device pixels and hollow the
+  dot out); forced-color-adjust keeps the fill in forced-colors mode, where it
+  inherits the system text colour.
+  Markup: <span class="sep-dot" aria-hidden="true"></span>, with whitespace
+  around it wherever the words on either side would otherwise run together.
+*/
+.sep-dot {
+  display: inline-block;
+  flex: none;
+  width: 0.18em;
+  height: 0.18em;
+  margin: 0 0.21em;
+  border-radius: 50%;
+  background: currentColor;
+  forced-color-adjust: none;
+  vertical-align: 0.26em;
+  opacity: 0.45;
 }
 
 /* Interactive Element Base */

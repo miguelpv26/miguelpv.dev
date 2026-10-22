@@ -28,6 +28,7 @@
                               "you are here" state
      scripts/og-cards.js    → the social cards
      scripts/check.js       → what each page must declare
+     scripts/feed.js        → the blog's Atom feeds (every page with `published`)
      scripts/deploy.js      → sitemap.xml
 
    To add a page: create both HTML files with the build markers, add an entry

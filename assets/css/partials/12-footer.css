@@ -52,8 +52,9 @@
 }
 
 /* The claims are white; the middots between them drop to grey. */
-.footer__privacy-sep {
+.footer__privacy .sep-dot {
   color: var(--color-text-muted);
+  opacity: 1;
 }
 
 /* On phones, stack the three claims with the middots as centered separators. */
@@ -61,6 +62,11 @@
   .footer__privacy {
     flex-direction: column;
     gap: 0.15rem;
+  }
+
+  /* Each middot keeps a full line between the claims, as the glyph did. */
+  .footer__privacy .sep-dot {
+    margin-block: calc((1lh - 0.18em) / 2);
   }
 }
 

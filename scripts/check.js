@@ -17,6 +17,7 @@ import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 import { PAGES, LOCALES, NOT_FOUND_PAGES, SITE_ORIGIN, DIST, fileFor, imageFor, dateTimeFor } from './site.js';
 import { imageSize } from './images.js';
+import { articles, feedPathFor } from './feed.js';
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 // Everything below reads the built site; the source checks use `repo`.
@@ -26,6 +27,7 @@ if (!fs.existsSync(root)) {
   process.exit(1);
 }
 const MARKERS = ['head', 'seo', 'jsonld', 'header', 'footer'];
+const NEW_TAB = { en: 'opens in a new tab', es: 'se abre en una pestaña nueva' };
 const DESCRIPTION_MAX = 160; // Google truncates around here
 const TITLE_WARN = 70;
 
@@ -174,8 +176,18 @@ function checkDocument(rel, html) {
     } else if (!/\sposter=/.test(video)) error(rel, `<video> without a poster: ${video.slice(0, 80)}`);
     if (!/\saria-label=/.test(video)) error(rel, `<video> without an aria-label: ${video.slice(0, 80)}`);
   }
-  for (const [link] of body.matchAll(/<a\b[^>]*target="_blank"[^>]*>/g)) {
+  // A new-tab link says so in its accessible name: in its aria-label when it
+  // has one (that replaces the content), else in a .sr-only span inside it.
+  // mailto: links are exempt — they open a mail client, not a tab.
+  const lang = (html.match(/<html\b[^>]*\slang="([^"]+)"/) || [])[1];
+  const newTab = NEW_TAB[lang];
+  for (const [anchor, link, content] of body.matchAll(/(<a\b[^>]*target="_blank"[^>]*>)([\s\S]*?)<\/a>/g)) {
     if (!/noopener/.test(link)) error(rel, `target="_blank" without rel="noopener": ${link.slice(0, 80)}`);
+    if (!newTab || /\shref="mailto:/.test(link)) continue;
+    const label = (link.match(/\saria-label="([^"]*)"/) || [])[1];
+    const said = label !== undefined ? label.includes(newTab)
+      : [...content.matchAll(/<span class="sr-only">([^<]*)<\/span>/g)].some(m => m[1].includes(newTab));
+    if (!said) error(rel, `target="_blank" link doesn't announce "${newTab}" (aria-label, or a .sr-only span inside): ${anchor.slice(0, 120)}`);
   }
   if (/\sitemprop=/.test(html)) error(rel, 'itemprop found — structured data is JSON-LD only');
 
@@ -220,6 +232,8 @@ function checkPage(page, locale) {
   for (const [lang, href] of Object.entries(expected)) {
     if (alternates[lang] !== href) error(rel, `hreflang ${lang} is ${alternates[lang]}, expected ${href}`);
   }
+  const feedLink = (html.match(/<link rel="alternate" type="application\/atom\+xml" title="[^"]+" href="([^"]+)"/) || [])[1];
+  if (feedLink !== feedPathFor(locale)) error(rel, `feed link is ${feedLink}, expected ${feedPathFor(locale)} — run npm run build:html`);
 
   const image = imageFor(page, locale);
   if (!exists(image.src.slice(1))) error(rel, `social image ${image.src} doesn't exist${page.card ? ` — run npm run og-cards -- ${page.card.name}-${locale}` : ''}`);
@@ -301,6 +315,32 @@ for (const rel of builtPages) {
 }
 const cssHash = `'sha256-${crypto.createHash('sha256').update(css, 'utf8').digest('base64')}'`;
 if (!read('_headers').includes(`style-src 'self' ${cssHash}`)) error('_headers', 'CSP style-src hash doesn\'t match the inlined CSS');
+
+// Each locale's Atom feed lists every article, newest first, with site.js's
+// dates, and robots.txt points crawlers at it.
+const robots = read('robots.txt');
+for (const locale of LOCALES) {
+  const rel = feedPathFor(locale).slice(1);
+  if (!exists(rel)) { error(rel, 'missing — run npm run build:html'); continue; }
+  const feed = read(rel);
+  const entries = [...feed.matchAll(/<entry>([\s\S]*?)<\/entry>/g)].map(([, entry]) => ({
+    href: (entry.match(/<link rel="alternate" type="text\/html" href="([^"]+)"/) || [])[1],
+    published: (entry.match(/<published>([^<]+)<\/published>/) || [])[1],
+    updated: (entry.match(/<updated>([^<]+)<\/updated>/) || [])[1],
+  }));
+  const expected = articles();
+  if (entries.map(e => e.href).join() !== expected.map(page => SITE_ORIGIN + page[locale]).join()) {
+    error(rel, 'entries aren\'t every article in site.js, newest first');
+  }
+  entries.forEach((entry, i) => {
+    const page = expected[i];
+    if (!page) return;
+    if (entry.published !== dateTimeFor(page.published) || entry.updated !== dateTimeFor(page.modified)) {
+      error(rel, `${entry.href}: dates don't match site.js`);
+    }
+  });
+  if (!robots.includes(`Sitemap: ${SITE_ORIGIN}${feedPathFor(locale)}`)) error('robots.txt', `no Sitemap line for ${feedPathFor(locale)}`);
+}
 
 // Redirect targets must be real pages.
 const pageUrls = new Set(PAGES.flatMap(page => LOCALES.map(locale => page[locale])));

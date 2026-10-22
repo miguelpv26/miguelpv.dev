@@ -698,10 +698,6 @@
   color: var(--color-text-muted);
 }
 
-.project-meta__sep {
-  opacity: 0.45;
-}
-
 .project-status {
   display: inline-flex;
   align-items: center;

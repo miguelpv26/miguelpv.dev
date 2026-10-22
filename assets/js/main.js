@@ -17,12 +17,16 @@ const I18N = {
     goToSlide: (i, n) => `Go to slide ${i} of ${n}`,
     slideOf: (i, n) => `Slide ${i} of ${n}`,
     slideOfLabeled: (i, n, label) => `Slide ${i} of ${n}: ${label}`,
+    pauseSlides: 'Pause slideshow',
+    playSlides: 'Play slideshow',
   },
   es: {
     slideIndicators: 'Indicadores de diapositiva',
     goToSlide: (i, n) => `Ir a la diapositiva ${i} de ${n}`,
     slideOf: (i, n) => `Diapositiva ${i} de ${n}`,
     slideOfLabeled: (i, n, label) => `Diapositiva ${i} de ${n}: ${label}`,
+    pauseSlides: 'Pausar las diapositivas',
+    playSlides: 'Reanudar las diapositivas',
   },
 };
 const STR = I18N[LOCALE] || I18N.en;
@@ -382,11 +386,14 @@ function createSlider(rootEl) {
   // Keep an id the markup already gave a slide; otherwise mint a unique one.
   const slideIds = Array.from(slides, (slide, i) => slide.id || `${sliderId}-slide-${i}`);
 
-  // State
+  // State. isPaused is a temporary hold (hover, focus, hidden tab) that lifts
+  // by itself; userPaused is the pause/play toggle, and only the toggle lifts
+  // it. Reduced motion starts paused: nothing moves until the visitor asks.
   let state = {
     currentIndex: 0,
     autoTimeout: null,
-    isPaused: false
+    isPaused: false,
+    userPaused: prefersReducedMotion()
   };
 
   // Create ARIA live region for screen reader announcements
@@ -402,10 +409,71 @@ function createSlider(rootEl) {
   liveRegion.style.overflow = 'hidden';
   rootEl.appendChild(liveRegion);
 
+  // Pause/play toggle (WCAG 2.2.2) for anything that moves by itself: the
+  // auto-advance, or a looping video.
+  const TOGGLE_ICON = { pause: 'M4 3h3v10H4zM9 3h3v10H9z', play: 'M5 2.5v11L13.5 8z' };
+  const toggleBtn = slides.length > 1 || Array.from(slides).some(isVideo) ? createToggle() : null;
+
   // Create slide indicators (dots)
   const indicators = createIndicators();
-  if (indicators) {
-    rootEl.appendChild(indicators);
+
+  // The toggle and the dots share one centred row at the bottom, so they can't
+  // collide however many dots there are. It goes ahead of the arrows: the
+  // toggle comes first in the slider's tab order, as the APG carousel asks.
+  if (toggleBtn || indicators) {
+    const controls = document.createElement('div');
+    controls.className = 'slider-controls';
+    if (toggleBtn) controls.appendChild(toggleBtn);
+    if (indicators) controls.appendChild(indicators);
+    prevBtn.before(controls);
+  }
+
+  /**
+   * Create the pause/play button (its label and icon are set by updateToggle)
+   */
+  function createToggle() {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'slider-toggle';
+
+    // Built node by node: the CSP's Trusted Types rule out an innerHTML string.
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 16 16');
+    svg.setAttribute('fill', 'currentColor');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.appendChild(document.createElementNS('http://www.w3.org/2000/svg', 'path'));
+    btn.appendChild(svg);
+
+    btn.addEventListener('click', () => setUserPaused(!state.userPaused));
+    return btn;
+  }
+
+  /**
+   * Label the toggle with what it will do next, as the APG pattern does
+   */
+  function updateToggle() {
+    if (!toggleBtn) return;
+    toggleBtn.setAttribute('aria-label', state.userPaused ? STR.playSlides : STR.pauseSlides);
+    toggleBtn.querySelector('path').setAttribute('d', state.userPaused ? TOGGLE_ICON.play : TOGGLE_ICON.pause);
+  }
+
+  /**
+   * Pause or play the slideshow from the toggle: the timer and the shown video
+   */
+  function setUserPaused(paused) {
+    state.userPaused = paused;
+    updateToggle();
+
+    const activeSlide = slides[state.currentIndex];
+    if (paused) {
+      stopAutoTimer();
+      if (isVideo(activeSlide)) activeSlide.pause();
+    } else {
+      // Play means now, even with the pointer or focus still on the slider.
+      state.isPaused = false;
+      if (isVideo(activeSlide)) playVideo(activeSlide);
+      startAutoTimer();
+    }
   }
 
   /**
@@ -426,7 +494,7 @@ function createSlider(rootEl) {
       dot.setAttribute('aria-controls', slideIds[i]);
 
       dot.addEventListener('click', () => {
-        show(i);
+        show(i, true);
         resetTimer();
       });
 
@@ -483,6 +551,18 @@ function createSlider(rootEl) {
   }
 
   /**
+   * Play a video slide from where it is
+   */
+  function playVideo(video) {
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(err => {
+        console.info('Video autoplay blocked (expected behavior):', err.message);
+      });
+    }
+  }
+
+  /**
    * Handle video playback. Video slides loop, so they never fire `ended`: how
    * long one stays up is its data-duration, like any other slide. They ship
    * preload="none" with a poster (a hidden one as data-poster, set when the
@@ -493,23 +573,18 @@ function createSlider(rootEl) {
 
     if (shouldPlay) {
       slide.currentTime = 0;
-
-      // Attempt to play
-      const playPromise = slide.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(err => {
-          console.info('Video autoplay blocked (expected behavior):', err.message);
-        });
-      }
+      playVideo(slide);
     } else {
       slide.pause();
     }
   }
 
   /**
-   * Show specific slide
+   * Show specific slide. announce is for changes the visitor made (arrows,
+   * dots, keys): the auto-advance stays silent, or a screen reader would be
+   * interrupted every few seconds, and so does the first slide on start.
    */
-  function show(index) {
+  function show(index, announce = false) {
     // Validate index
     if (index < 0 || index >= slides.length) {
       console.warn(`Invalid slide index: ${index}`);
@@ -521,17 +596,21 @@ function createSlider(rootEl) {
       slide.classList.toggle('active', isActive);
       slide.setAttribute('aria-hidden', !isActive);
       
-      // Handle video playback
-      handleVideo(slide, isActive);
+      // Handle video playback (a paused slideshow shows a video's poster or
+      // last frame, and plays nothing)
+      handleVideo(slide, isActive && !state.userPaused);
     });
 
     state.currentIndex = index;
     updateIndicators();
 
-    // Announce to screen readers, including the slide description if available
+    // Announce to screen readers, including the slide description if available.
+    // Otherwise the region is emptied, so returning to the slide last announced
+    // is still a change a screen reader reads out.
     const activeSlide = slides[index];
     const slideLabel = activeSlide.getAttribute('alt') || activeSlide.getAttribute('aria-label') || '';
-    liveRegion.textContent = slideLabel
+    if (!announce) liveRegion.textContent = '';
+    else liveRegion.textContent = slideLabel
       ? STR.slideOfLabeled(index + 1, slides.length, slideLabel)
       : STR.slideOf(index + 1, slides.length);
   }
@@ -539,17 +618,17 @@ function createSlider(rootEl) {
   /**
    * Go to next slide
    */
-  function next() {
+  function next(announce = false) {
     const nextIndex = (state.currentIndex + 1) % slides.length;
-    show(nextIndex);
+    show(nextIndex, announce);
   }
 
   /**
    * Go to previous slide
    */
-  function prev() {
+  function prev(announce = false) {
     const prevIndex = (state.currentIndex - 1 + slides.length) % slides.length;
-    show(prevIndex);
+    show(prevIndex, announce);
   }
 
   /**
@@ -560,8 +639,8 @@ function createSlider(rootEl) {
 
     clearTimeout(state.autoTimeout);
 
-    // Don't auto-advance if user prefers reduced motion
-    if (prefersReducedMotion()) return;
+    // Paused from the toggle (which reduced motion starts in)
+    if (state.userPaused) return;
 
     const currentSlide = slides[state.currentIndex];
     const duration = getSlideDuration(currentSlide);
@@ -608,12 +687,12 @@ function createSlider(rootEl) {
 
   // Button event listeners
   nextBtn.addEventListener('click', () => {
-    next();
+    next(true);
     resetTimer();
   });
 
   prevBtn.addEventListener('click', () => {
-    prev();
+    prev(true);
     resetTimer();
   });
 
@@ -622,19 +701,19 @@ function createSlider(rootEl) {
     rootEl.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
-        prev();
+        prev(true);
         resetTimer();
       } else if (e.key === 'ArrowRight') {
         e.preventDefault();
-        next();
+        next(true);
         resetTimer();
       } else if (e.key === 'Home') {
         e.preventDefault();
-        show(0);
+        show(0, true);
         resetTimer();
       } else if (e.key === 'End') {
         e.preventDefault();
-        show(slides.length - 1);
+        show(slides.length - 1, true);
         resetTimer();
       }
     });
@@ -678,6 +757,7 @@ function createSlider(rootEl) {
   });
 
   show(state.currentIndex);
+  updateToggle();
   startAutoTimer();
 
   return true; // signal successful initialization to initSliders()
@@ -720,44 +800,43 @@ function initSliders() {
  * FULL RESOLUTION IMAGE CONTEXT MENU
  ************************************************************/
 
+/**
+ * Open a same-origin file in a new tab, reporting whether a tab opened.
+ * window.open() with the 'noopener' feature always returns null, opened or
+ * blocked alike, so it's called plainly and the opener cut by hand instead.
+ * @param {string} url
+ * @returns {boolean}
+ */
+function openInNewTab(url) {
+  try {
+    const tab = window.open(url, '_blank');
+    if (!tab) {
+      console.warn('Popup blocked by browser');
+      return false;
+    }
+    tab.opener = null;
+    return true;
+  } catch (err) {
+    console.error('Failed to open file:', err);
+    return false;
+  }
+}
+
 function initContextMenuHandlers() {
-  const pictures = document.querySelectorAll('picture[data-fullres]');
-
-  if (!pictures.length) return;
-
-  pictures.forEach(pic => {
+  // Right-click opens the full-size file instead of the menu. When the tab is
+  // blocked, the browser's own menu shows as usual.
+  document.querySelectorAll('picture[data-fullres]').forEach(pic => {
     pic.addEventListener('contextmenu', (e) => {
       const url = pic.dataset.fullres;
-      
-      if (!url) return;
-
-      try {
-        const opened = window.open(url, '_blank', 'noopener,noreferrer');
-        
-        if (opened) {
-          e.preventDefault();
-        } else {
-          console.warn('Popup blocked by browser');
-        }
-      } catch (err) {
-        console.error('Failed to open image:', err);
-      }
+      if (url && openInNewTab(url)) e.preventDefault();
     });
   });
 
-    // --- FULL RESOLUTION VIDEO CONTEXT MENU ---
+  // --- FULL RESOLUTION VIDEO CONTEXT MENU ---
   document.addEventListener('contextmenu', (e) => {
     const video = e.target.closest('video[data-slide]');
-    if (!video) return;
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    const videoSrc = video.getAttribute('src');
-
-    if (videoSrc) {
-      window.open(videoSrc, '_blank', 'noopener,noreferrer');
-    }
+    const videoSrc = video && video.getAttribute('src');
+    if (videoSrc && openInNewTab(videoSrc)) e.preventDefault();
   });
 }
 

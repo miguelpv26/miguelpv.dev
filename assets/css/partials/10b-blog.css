@@ -18,6 +18,25 @@
   padding: 0 52px 78px;
 }
 
+/* The hub's pointer to the Atom feed (scripts/feed.js), a quiet line under the intro. */
+.page-header__feed {
+  margin-top: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.page-header__feed a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: var(--transition-color);
+}
+
+.page-header__feed a:hover,
+.page-header__feed a:focus-visible {
+  color: var(--color-text-white);
+}
+
 .post-list {
   display: grid;
   grid-template-columns: 1fr;
@@ -69,11 +88,6 @@
   font-size: var(--font-size-sm);
   font-variant-numeric: tabular-nums;
   color: var(--color-text-muted);
-}
-
-.post-card__meta-sep,
-.article__meta-sep {
-  opacity: 0.45;
 }
 
 .post-card__excerpt {

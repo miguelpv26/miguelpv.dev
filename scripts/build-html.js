@@ -35,6 +35,7 @@ import { PAGES, LOCALES, NOT_FOUND_PAGES, SITE_ORIGIN, SITE_NAME, DIST, fileFor,
 import { PROJECTS, TAGS, CATEGORIES, STATUSES } from './projects.js';
 import { graphFor } from './jsonld.js';
 import { imageSize, sizesFor } from './images.js';
+import { feedFor, feedPathFor, feedTitleFor } from './feed.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -134,6 +135,8 @@ function varsFor(page, locale) {
     image: SITE_ORIGIN + image.src,
     imageAlt: esc(image.alt),
     articleMeta,
+    feedUrl: feedPathFor(locale),
+    feedTitle: esc(feedTitleFor(locale, links.blog)),
     prefix: '../'.repeat(depth),
     manifest: links.manifest,
     year: String(new Date().getFullYear()),
@@ -188,9 +191,9 @@ function renderProject(kind, slug, args, { locale, isHub, cardIndex }, where) {
       return [
         '<p class="project-meta">',
         `  <span>${role}</span>`,
-        '  <span class="project-meta__sep" aria-hidden="true">·</span>',
+        '  <span class="sep-dot" aria-hidden="true"></span>',
         `  <span>${yearsText}</span>`,
-        '  <span class="project-meta__sep" aria-hidden="true">·</span>',
+        '  <span class="sep-dot" aria-hidden="true"></span>',
         `  <button type="button" class="project-type" data-tag="${project.category}" aria-pressed="false">#${esc(CATEGORIES[project.category][locale])}</button>`,
         `  ${statusSpan(status[locale])}`,
         '</p>',
@@ -220,7 +223,7 @@ function renderProject(kind, slug, args, { locale, isHub, cardIndex }, where) {
       return [
         '<p class="case-study__meta">',
         `  <span>${role}</span>`,
-        '  <span class="case-study__meta-sep" aria-hidden="true">·</span>',
+        '  <span class="sep-dot" aria-hidden="true"></span>',
         `  <span>${yearsText}</span>`,
         `  ${statusSpan(status[locale])}`,
         '</p>',
@@ -372,6 +375,11 @@ for (const page of PAGES) {
 // script, which the next two build steps add, like every other page.
 for (const rel of NOT_FOUND_PAGES) fs.copyFileSync(path.join(root, rel), path.join(dist, rel));
 
+// The blog's Atom feed per locale (scripts/feed.js), linked from every page's SEO block.
+for (const locale of LOCALES) {
+  fs.writeFileSync(path.join(dist, feedPathFor(locale).slice(1)), feedFor(locale, LINKS[locale].blog, LINKS[locale].home));
+}
+
 // Everything else that ships, copied as-is. This list is the deploy whitelist:
 // a new top-level asset directory or root file must be added here.
 const STATIC = [
@@ -397,4 +405,4 @@ copy(path.join(root, 'assets/img/favicon.ico'), path.join(dist, 'favicon.ico'));
 // Where the next step's terser writes the bundle (terser won't create it).
 fs.mkdirSync(path.join(dist, 'assets/min'), { recursive: true });
 
-console.log(`Built ${PAGES.length * LOCALES.length} pages (${BLOCKS.join('/')}) + ${NOT_FOUND_PAGES.length} 404s into ${DIST}/, and copied ${STATIC.length} static paths.`);
+console.log(`Built ${PAGES.length * LOCALES.length} pages (${BLOCKS.join('/')}) + ${NOT_FOUND_PAGES.length} 404s + ${LOCALES.length} feeds into ${DIST}/, and copied ${STATIC.length} static paths.`);

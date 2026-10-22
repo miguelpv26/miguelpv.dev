@@ -34,10 +34,15 @@
     and stands out by weight alone.
   */
 
-  /* Colors - Primary */
+  /* Colors - Primary. The translucent steps are --color-primary (22, 198, 12)
+     written out: a token can't be a color-mix(), because build-css.js's plain
+     fallback twin only works for real properties — a custom property accepts
+     any value, so an old browser would keep the mix and drop the colour. Every
+     other translucent green is color-mix(in srgb, var(--color-primary) N%,
+     transparent) at the point of use. */
   --color-primary: #16c60c;
-  --color-primary-dim: rgba(21, 198, 12, 0.85);
-  --color-primary-faint: rgba(21, 198, 12, 0.172);
+  --color-primary-dim: rgba(22, 198, 12, 0.85);
+  --color-primary-faint: rgba(22, 198, 12, 0.172);
 
   /* Colors - Code (literal code, code-block frames, the fun-fact aside) */
   --color-code: #b48cff;
@@ -105,7 +110,7 @@
   --shadow-glow-header: var(--color-primary) 0px -4px 16px 0px;
   --shadow-glow-footer: var(--color-primary) 0px 0px 16px 0px;
   --shadow-glow-md: 0 0 6px var(--color-primary);
-  --shadow-glow-icon: 0 0 5px rgba(21, 198, 12, 0.675);
+  --shadow-glow-icon: 0 0 5px rgba(22, 198, 12, 0.675);
   --shadow-image: 0 0 10px var(--color-primary-dim);
   
   /* Z-index Scale */
@@ -120,13 +125,5 @@
   --slider-button-size: 32px;
   --slider-dot-size: 10px;
   --slider-transition: opacity 0.5s ease-in-out;
-  
-  /* Breakpoints (reference only) */
-  --breakpoint-xs: 320px;
-  --breakpoint-sm: 640px;
-  --breakpoint-md: 1008px;
-  --breakpoint-lg: 1040px;
-  --breakpoint-xl: 1100px;
-  --breakpoint-2xl: 1400px;
 }
 

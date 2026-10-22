@@ -72,20 +72,56 @@
   right: 10px;
 }
 
-/* Slider Indicators (Dots) - Styled by JS. They sit on top of the slide, so
-   they ride on a dark pill: without it the white outlines vanished on a white
-   screenshot and only the active dot was left showing. */
-.slider-indicators {
+/* Bottom controls row (built by main.js): the pause/play toggle, then the dots,
+   centred as one so they can't collide. bottom: 8px centres the 24px row where
+   the 20px dots' pill sat at bottom: 10px before the toggle joined it. */
+.slider-controls {
   position: absolute;
-  bottom: 10px;
+  bottom: 8px;
   left: 50%;
   transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: var(--z-indicators);
+}
+
+/* Pause/play toggle: the arrows' chip at the 24px minimum target size. */
+.slider-toggle {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  background-color: var(--color-overlay);
+  border: none;
+  border-radius: var(--border-radius-full);
+  cursor: pointer;
+  transition: var(--transition-all);
+}
+
+.slider-toggle:hover,
+.slider-toggle:focus-visible {
+  background-color: var(--color-overlay-dark);
+  transform: scale(1.1);
+}
+
+.slider-toggle svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Slider Indicators (Dots) - Styled by JS, inside .slider-controls. They sit on
+   top of the slide, so they ride on a dark pill: without it the white outlines
+   vanished on a white screenshot and only the active dot was left showing. */
+.slider-indicators {
   display: flex;
   gap: var(--spacing-xs);
   padding: 5px 8px;
   border-radius: 999px;
   background-color: var(--color-overlay);
-  z-index: var(--z-indicators);
 }
 
 .slider-dot {
