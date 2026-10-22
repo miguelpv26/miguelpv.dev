@@ -30,10 +30,10 @@
             <p class="article__subtitle">Autoalojamiento, WOFF2, subconjunto y preload, medidos en esta web.</p>
 
             <p class="article__lede">
-              Todo el texto de esta web está en JetBrains Mono, así que si la fuente va lenta, va lenta la
-              página entera. Los tres pesos que uso suman 825 KB en los TTF tal y como los publica JetBrains.
-              Lo que se sirve de verdad son 65 KB, desde mi propio servidor y pedidos antes de que el navegador
-              sepa siquiera que los va a necesitar. Así paso de una cifra a la otra, en el orden en que lo hago.
+              Todo el texto de esta web utiliza la fuente tipográfica JetBrains Mono. Así que, si la fuente va lenta, va lenta la
+              página entera. Los tres font-weight que uso suman 825 KB en los TTF tal y como los publica JetBrains.
+              Lo que se carga de verdad son 65 KB, desde mi propio servidor y pedidos antes de que el navegador
+              sepa siquiera que los va a necesitar. Así es cómo logro hacerlo consistentemente:
             </p>
 
             <p class="article__meta">
@@ -60,12 +60,12 @@
           <div class="article__text">
             <h2>Autoaloja la fuente</h2>
             <p>
-              Lo primero que hago siempre es sacar la fuente de cualquier servicio externo y servirla desde mi
-              propio dominio. Un enlace a Google Fonts obliga al navegador a hablar con dos servidores nuevos:
-              uno para la hoja de estilos, que bloquea el renderizado, y otro para el archivo de fuente al que
-              apunta esa hoja. Cada servidor nuevo cuesta una consulta DNS y un handshake TLS antes de que se
-              mueva un solo byte. Al autoalojarla, todo eso se queda en una única petición por una conexión que
-              la página ya tenía abierta.
+              Lo primero que hago siempre es quitar la importación de fuente de un servicio de terceros y
+              servirla desde mi propio dominio. Un enlace a Google Fonts obliga al navegador a hablar con 
+              dos servidores nuevos: uno para la hoja de estilos, que bloquea el renderizado, y otro para el
+              archivo de fuente al que apunta esa hoja. Cada servidor nuevo cuesta una consulta DNS y un
+              handshake TLS antes de que se mueva un solo byte. Al autoalojarla, todo eso se queda en una
+              única petición por una conexión que la página ya tenía abierta.
             </p>
             <p>
               Un <code>preconnect</code> puede adelantar esos handshakes, pero no se salta la hoja de estilos
@@ -80,7 +80,7 @@
             <pre tabindex="0"><code>/assets/fonts/*
   Cache-Control: public, max-age=31536000, immutable</code></pre>
             <p>
-              Lo hago por la velocidad, pero sale ganando por partida doble: una dependencia externa menos y
+              Lo hago por la velocidad, pero no es el único beneficio: una dependencia externa menos y
               ningún servidor ajeno enterándose de quién entra. Y eso último no es teórico: en 2022, un
               tribunal alemán condenó al dueño de una web a indemnizar a un visitante por usar Google Fonts,
               porque enviaba su IP a Google sin su consentimiento.
@@ -126,13 +126,13 @@
           <div class="article__text">
             <h2>Sírvela en <code>woff2</code></h2>
             <p>
-              El formato es la mejora que sale gratis. <code>woff2</code> es el formato de fuente web más
-              comprimido que hay, y todos los navegadores para los que desarrollo lo entienden desde hace
-              años. Los mismos glifos con un tercio de los bytes: JetBrains Mono Regular pesa 274 KB en TTF y
-              92 KB en WOFF2.
+              La elección del formato es más simple de lo que parece: <code>woff2</code> es el formato de
+              fuente web más comprimido que hay, y todos los navegadores para los que desarrollo lo entienden
+              desde hace años. Los mismos glifos con un tercio de los bytes: JetBrains Mono Regular pesa
+              274 KB en TTF y 92 KB en WOFF2.
             </p>
             <p>
-              Así que sirvo WOFF2 y nada más: un <code>@font-face</code> por peso, cada uno apuntando a un
+              Así que sirvo WOFF2 y nada más: un <code>@font-face</code> por font-weight, cada uno apuntando a un
               único archivo. Sin formatos de reserva ni una lista de <code>src</code> que el navegador tenga
               que ir probando.
             </p>
@@ -157,17 +157,17 @@
 
         <section class="article__section article__section--split">
           <div class="article__text">
-            <h2>Haz un subconjunto y quita los pesos que no uses</h2>
+            <h2>Haz un subconjunto y quita los font-weight que no uses</h2>
             <p>
               En proporción, aquí está el mayor recorte: el WOFF2 ya dejaba los archivos en un tercio, y el
               subconjunto vuelve a dividirlos entre más de cuatro. Un archivo de fuente completo trae cirílico,
               griego, vietnamita y cientos de símbolos que esta web no usa nunca, así que sólo sirvo el
-              subconjunto latino. Cubre también la versión en español, porque la á, la é, la ñ, el ¿ y el ¡
+              <code>subconjunto latin</code>. Cubre también la versión en español, porque la á, la é, la ñ, el ¿ y el ¡
               están todos en él, así que un mismo archivo sirve para los dos idiomas. El WOFF2 completo pesa
-              92 KB; el latino, 21 KB.
+              92 KB; el latin, 21 KB.
             </p>
             <p>
-              Después recorto los pesos a los que el diseño usa de verdad. Aquí son tres (regular, medium y
+              Después recorto los font-weight a los que el diseño usa de verdad. Aquí son tres (regular, medium y
               semibold) y ninguna cursiva: cada peso o estilo de más es otro archivo que descargar.
             </p>
           </div>
@@ -194,8 +194,8 @@
                 </ul>
               </div>
               <figcaption>
-                Los tres pesos que usa esta web (400, 500 y 600), sumados. El TTF y el WOFF2 completos son de
-                la versión oficial 2.304 de JetBrains Mono; el subconjunto latino son los archivos que sirve
+                Los tres font-weights que usa esta web (400, 500 y 600), sumados. El TTF y el WOFF2 completos son de
+                la versión oficial 2.304 de JetBrains Mono; el subconjunto latin son los archivos que sirve
                 esta web de verdad. Casi 13 veces más ligero, sin perder nada visible.
               </figcaption>
             </figure>
@@ -247,7 +247,7 @@
                 </div>
               </div>
               <figcaption>
-                Sin preload, la petición de la fuente espera a que termine el parseo. Con él, la petición sale
+                Sin preload, la petición de la fuente espera a que termine el parseo. Con ella, la petición sale
                 mientras el <code>&lt;head&gt;</code> todavía se está leyendo, así que la fuente ya está ahí
                 cuando el texto la necesita. Ilustrativo, no a escala.
               </figcaption>
