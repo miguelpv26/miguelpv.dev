@@ -58,6 +58,9 @@ async function handleRequest(request) {
       'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
       'X-Content-Type-Options': 'nosniff',
       'Referrer-Policy': 'strict-origin-when-cross-origin',
+      'Cross-Origin-Opener-Policy': 'same-origin',
+      // The redirect has no body, so its policy allows nothing at all.
+      'Content-Security-Policy': "default-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
     },
   });
 }

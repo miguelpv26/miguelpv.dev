@@ -340,6 +340,10 @@ for (const locale of LOCALES) {
     }
   });
   if (!robots.includes(`Sitemap: ${SITE_ORIGIN}${feedPathFor(locale)}`)) error('robots.txt', `no Sitemap line for ${feedPathFor(locale)}`);
+  // The hub's visible "Atom feed" link is hand-written, so it can point at the wrong locale.
+  const hub = fileFor(`/${locale}/blog`);
+  const visible = (read(hub).match(/<a href="([^"]+)" type="application\/atom\+xml">/) || [])[1];
+  if (visible !== feedPathFor(locale)) error(hub, `visible feed link is ${visible}, expected ${feedPathFor(locale)}`);
 }
 
 // Redirect targets must be real pages.

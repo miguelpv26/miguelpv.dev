@@ -2,9 +2,6 @@ node_modules/
 *.zip
 .DS_Store
 Thumbs.db
-.claude
-claude/
-CLAUDE.md
 
 # The built site — regenerated from scratch by `npm run build` / `npm run deploy`.
 # Source of truth lives in en/, es/, templates/, assets/ and scripts/site.js.
