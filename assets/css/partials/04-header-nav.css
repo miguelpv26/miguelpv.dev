@@ -11,7 +11,7 @@
   right: 0;
   z-index: var(--z-header);
   background-color: var(--color-bg-black);
-  border-bottom: var(--border-width) solid var(--color-primary);
+  border-bottom: var(--border-width) solid var(--color-code);
   box-shadow: var(--shadow-glow-header);
   transition: var(--transition-all);
 }

@@ -189,17 +189,18 @@
 .section-divider-container:hover section,
 .section-divider-container:focus-within .section-divider__tab,
 .section-divider-container:focus-within section {
-  border-color: var(--color-primary);
+  border-color: var(--color-code);
 }
 
+/* Violet, not green: the tab is a heading, not something to click. */
 .section-divider-container:hover .section-divider__tab,
 .section-divider-container:focus-within .section-divider__tab {
-  color: var(--color-primary);
+  color: var(--color-code);
 }
 
 .section-divider-container:hover .section-divider__icon,
 .section-divider-container:focus-within .section-divider__icon {
-  filter: drop-shadow(var(--shadow-glow-icon));
+  filter: drop-shadow(var(--shadow-glow-code-icon));
 }
 
 /*
@@ -256,7 +257,7 @@
 .about__whoami::before {
   content: "$ ";
   content: "$ " / "";
-  color: var(--color-primary);
+  color: var(--color-code);
 }
 
 /* Flows into as many columns as fit: two beside the photo, three when the
@@ -278,7 +279,7 @@
 .about__interests li::before {
   content: "> ";
   content: "> " / "";
-  color: var(--color-primary);
+  color: var(--color-code);
 }
 
 .about__slider {

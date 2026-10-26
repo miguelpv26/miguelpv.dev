@@ -39,11 +39,12 @@
   transition: var(--transition-all);
 }
 
+/* Violet, not green: a skill tile isn't clickable, and green means "action". */
 .skills__item:hover,
 .skills__item:focus-within {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-  box-shadow: var(--shadow-glow-primary);
+  border-color: var(--color-code);
+  color: var(--color-code);
+  box-shadow: var(--shadow-glow-code);
   transform: scale(1.05);
 }
 
@@ -57,6 +58,6 @@
 
 .skills__item:hover svg,
 .skills__item:focus-within svg {
-  filter: drop-shadow(var(--shadow-glow-md));
+  filter: drop-shadow(var(--shadow-glow-code-md));
 }
 

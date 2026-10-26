@@ -206,7 +206,7 @@
 
 .article__related h2::before {
   content: "-> ";
-  color: color-mix(in srgb, var(--color-primary) 50%, transparent);
+  color: color-mix(in srgb, var(--color-code) 67%, transparent);
 }
 
 .article__related ul {
@@ -225,7 +225,7 @@
 
 .article__related li::before {
   content: "> ";
-  color: color-mix(in srgb, var(--color-primary) 50%, transparent);
+  color: color-mix(in srgb, var(--color-code) 67%, transparent);
 }
 
 .article__related a {

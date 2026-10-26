@@ -64,11 +64,13 @@ function createSlider(rootEl) {
   // State. isPaused is a temporary hold (hover, focus, hidden tab) that lifts
   // by itself; userPaused is the pause/play toggle, and only the toggle lifts
   // it. Reduced motion starts paused: nothing moves until the visitor asks.
+  // offscreen is set while the slider is scrolled out of view.
   let state = {
     currentIndex: 0,
     autoTimeout: null,
     isPaused: false,
-    userPaused: prefersReducedMotion()
+    userPaused: prefersReducedMotion(),
+    offscreen: false
   };
 
   // Create ARIA live region for screen reader announcements
@@ -310,7 +312,7 @@ function createSlider(rootEl) {
    * Start auto-advance timer
    */
   function startAutoTimer() {
-    if (state.isPaused) return;
+    if (state.isPaused || state.offscreen) return;
 
     clearTimeout(state.autoTimeout);
 
@@ -321,7 +323,7 @@ function createSlider(rootEl) {
     const duration = getSlideDuration(currentSlide);
 
     state.autoTimeout = setTimeout(() => {
-      if (!state.isPaused) {
+      if (!state.isPaused && !state.offscreen) {
         next();
         startAutoTimer();
       }
@@ -422,6 +424,22 @@ function createSlider(rootEl) {
     }
   };
   document.addEventListener('visibilitychange', handleVisibilityChange);
+
+  // Hold while scrolled out of view: nobody is watching, so it shouldn't
+  // advance or play (and download) a video. A flag of its own rather than
+  // isPaused, so a stray mouseleave or focusout can't restart it off-screen,
+  // and coming back can't lift a hover, focus or toggle pause.
+  new IntersectionObserver(([entry]) => {
+    state.offscreen = !entry.isIntersecting;
+    const activeSlide = slides[state.currentIndex];
+    if (state.offscreen) {
+      stopAutoTimer();
+      if (isVideo(activeSlide)) activeSlide.pause();
+    } else {
+      if (isVideo(activeSlide) && !state.userPaused) playVideo(activeSlide);
+      startAutoTimer();
+    }
+  }).observe(rootEl);
 
   // Initialize
   slides.forEach((slide, i) => {

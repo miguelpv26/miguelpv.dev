@@ -26,9 +26,11 @@
   
   /*
     Colors — one job per hue. Green words mean "you can click this" or "you are
-    here" (links, buttons, active nav, breadcrumb); green on glyphs, borders and
-    glows (##, $, the matrix) is brand chrome. Violet is literal code and the
-    technical "// fun fact" aside. Amber is unfinished or paused. Everything
+    here" (links, buttons, active nav, breadcrumb); green on glyphs and glows
+    (the matrix) is brand chrome. Violet is code and the frame around the
+    content: literal code, the technical "// fun fact" aside, Markdown and
+    terminal markers (#, ##, $, >), the header and footer rules, and the hover
+    on things you can't click (section tabs, skill tiles). Amber is unfinished or paused. Everything
     else is a grey, and hierarchy comes from the grey step, size and weight:
     only headings and metrics are pure white; <strong> stays in the body grey
     and stands out by weight alone.
@@ -45,7 +47,7 @@
   --color-primary-faint: rgba(22, 198, 12, 0.172);
 
   /* Colors - Code (literal code, code-block frames, the fun-fact aside) */
-  --color-code: #b48cff;
+  --color-code: #cb8cff;
 
   /* Colors - Background */
   --color-bg-dark: #0d0d0d;
@@ -107,9 +109,14 @@
   
   /* Shadows */
   --shadow-glow-primary: 0 0 12px 0 var(--color-primary);
-  --shadow-glow-header: var(--color-primary) 0px -4px 16px 0px;
-  --shadow-glow-footer: var(--color-primary) 0px 0px 16px 0px;
+  --shadow-glow-header: var(--color-code) 0px -4px 16px 0px;
+  --shadow-glow-footer: var(--color-code) 0px 0px 16px 0px;
   --shadow-glow-md: 0 0 6px var(--color-primary);
+  --shadow-glow-code: 0 0 12px 0 var(--color-code);
+  --shadow-glow-code-md: 0 0 6px var(--color-code);
+  /* --color-code (203, 140, 255) written out, for the reason given at
+     --color-primary-dim: update it with the token. */
+  --shadow-glow-code-icon: 0 0 5px rgba(203, 140, 255, 0.675);
   --shadow-glow-icon: 0 0 5px rgba(22, 198, 12, 0.675);
   --shadow-image: 0 0 10px var(--color-primary-dim);
   

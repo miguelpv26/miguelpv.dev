@@ -261,7 +261,7 @@
   padding-top: 0.5rem;
   font-size: var(--font-size-sm);
   font-variant-numeric: tabular-nums;
-  color: color-mix(in srgb, var(--color-primary) 50%, transparent);
+  color: color-mix(in srgb, var(--color-code) 67%, transparent);
 }
 
 .case-study__section h2,
@@ -277,7 +277,7 @@
 .case-study__section h2::before,
 .article__section h2::before {
   content: "## ";
-  color: color-mix(in srgb, var(--color-primary) 50%, transparent);
+  color: color-mix(in srgb, var(--color-code) 67%, transparent);
 }
 
 .case-study__section p,
@@ -325,7 +325,7 @@
 
 .case-study__section li::marker,
 .article__section li::marker {
-  color: color-mix(in srgb, var(--color-primary) 70%, transparent);
+  color: color-mix(in srgb, var(--color-code) 67%, transparent);
 }
 
 /* Inline code: the body font is already monospace, so set it apart with a chip

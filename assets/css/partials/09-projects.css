@@ -111,6 +111,23 @@
 
 .project-card ul li {
   margin: 0.25rem 0;
+  padding-left: 0.73em;
+  text-indent: -0.73em;
+}
+
+/* The bullet is drawn, like .sep-dot, not a typed "·" that screen readers
+   would read out before every item. Its 0.73em (width + margins) is the
+   hanging indent above, so a wrapped line starts under the text. */
+.project-card ul li::before {
+  content: '';
+  display: inline-block;
+  width: 0.18em;
+  height: 0.18em;
+  margin: 0 0.45em 0 0.1em;
+  border-radius: 50%;
+  background: currentColor;
+  forced-color-adjust: none;
+  vertical-align: 0.26em;
 }
 
 .project-actions {
@@ -261,10 +278,11 @@
 }
 
 /* Markdown level one: the page title's "# " sits one level above the
-   sections' "## " (10-case-study.css), in the same half-strength green. */
+   sections' "## " (10-case-study.css), in the same 67% violet: it's Markdown
+   syntax, so it takes the code colour, and violet greys out at 50%. */
 .page-header__title::before {
   content: "# ";
-  color: color-mix(in srgb, var(--color-primary) 50%, transparent);
+  color: color-mix(in srgb, var(--color-code) 67%, transparent);
 }
 
 .page-header__intro {
@@ -751,6 +769,20 @@
 
 .projects-cta {
   margin-top: var(--spacing-xl);
+}
+
+/* What the asterisk on "Biglo*" / "Digitalando*" means: visible text under the
+   grid (a title tooltip never reached touch or keyboard users), tied to both
+   buttons with aria-describedby. Under the grid, not in the cards, so the
+   button rows still line up across all three. */
+.projects-note {
+  margin-top: var(--spacing-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.projects-note + .projects-cta {
+  margin-top: var(--spacing-lg);
 }
 
 .projects-back .btn,
