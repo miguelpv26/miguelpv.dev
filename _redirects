@@ -1,2 +1,7 @@
 # Renamed URLs. Keep the old path here so shared links and indexed results still land.
 /es/blog/web-font-strategy /es/blog/estrategia-fuentes-web 301
+# The CVs: the old names were served lowercase while the site linked them mixed-case, and both may be in sent applications.
+/assets/pdf/cv-miguelpv-english.pdf /assets/pdf/cv-miguelpv-en.pdf 301
+/assets/pdf/CV-MiguelPV-English.pdf /assets/pdf/cv-miguelpv-en.pdf 301
+/assets/pdf/cv-miguelpv-castellano.pdf /assets/pdf/cv-miguelpv-es.pdf 301
+/assets/pdf/CV-MiguelPV-Castellano.pdf /assets/pdf/cv-miguelpv-es.pdf 301

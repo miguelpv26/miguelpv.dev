@@ -26,7 +26,7 @@
   pointer-events: auto;
 }
 
-/* Hidden slides stay out of layout until their slider starts (main.js marks it
+/* Hidden slides stay out of layout until their slider starts (the JS marks it
    data-slider-initialized once it nears the viewport). Stacked under the shown
    slide, they'd otherwise count as "near the viewport" and every lazy one would
    download with the page, competing with the hero. */
@@ -72,7 +72,7 @@
   right: 10px;
 }
 
-/* Bottom controls row (built by main.js): the pause/play toggle, then the dots,
+/* Bottom controls row (built by the JS): the pause/play toggle, then the dots,
    centred as one so they can't collide. bottom: 8px centres the 24px row where
    the 20px dots' pill sat at bottom: 10px before the toggle joined it. */
 .slider-controls {

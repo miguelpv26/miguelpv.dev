@@ -5,14 +5,14 @@
   Breakpoints are set where the content breaks, not on a device scale, and
   there are no breakpoint tokens: @media can't read custom properties. The
   page-wide ones live here; a component's own (blog, case study, footer) sit
-  in its partial. Several are restated in scripts/images.js IMAGE_LAYOUTS —
+  in its partial. Several are restated in data/images.js IMAGE_LAYOUTS —
   move one and update the table, then run npm run audit-sizes.
 */
 
 /*
   Large Devices (≤1276px) - Mobile Menu Breakpoint
   ----------------------------------------------------------------------------
-  NOTE: 1276px must stay in sync with MOBILE_BREAKPOINT_PX in assets/js/main.js.
+  NOTE: 1276px must stay in sync with MOBILE_BREAKPOINT_PX in assets/js/partials/02-mobile-menu.js.
   @media queries cannot reference CSS custom properties, so this value is
   duplicated. If you change one, change the other.
 */

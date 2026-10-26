@@ -3,7 +3,7 @@
 
    Usage:  npm run build && npm run audit-sizes
 
-   The `sizes` values come from the layout table in scripts/images.js, which
+   The `sizes` values come from the layout table in data/images.js, which
    restates the CSS as formulas. Nothing ties the two together except this
    audit: it loads every built page in a local headless Chrome/Edge (see
    browser.js), sweeps the viewport from 320px to 2560px — every 8px, plus both

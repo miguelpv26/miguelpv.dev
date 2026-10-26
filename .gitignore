@@ -4,7 +4,7 @@ node_modules/
 Thumbs.db
 
 # The built site — regenerated from scratch by `npm run build` / `npm run deploy`.
-# Source of truth lives in en/, es/, templates/, assets/ and scripts/site.js.
+# Source of truth lives in en/, es/, templates/, assets/ and data/site.js.
 dist/
 # Where the JS bundle was built before dist/ existed; kept ignored in case an
 # old checkout still has one lying around.

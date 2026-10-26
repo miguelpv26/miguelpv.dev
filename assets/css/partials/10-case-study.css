@@ -14,7 +14,7 @@
   them on the left) so the two terminals stay distinct — and it isn't macOS.
 
   The numbered "## " SECTION SPINE further down is deliberately shared with the
-  blog (.article / .article__section, see 10b-blog.css): a case study and an
+  blog (.article / .article__section, see 11-blog.css): a case study and an
   article are the same kind of document, and the house voice should read the
   same in both. Everything ABOVE the spine (terminal hero, manifest, media) is
   case-study-only.
@@ -517,7 +517,7 @@
 
 /*
   ============================================================================
-  RESPONSIVE  (component-scoped; the shared breakpoints live in 14-responsive)
+  RESPONSIVE  (component-scoped; the shared breakpoints live in 15-responsive)
   ============================================================================
 */
 /*

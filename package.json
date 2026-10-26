@@ -2,7 +2,7 @@
   "type": "module",
   "scripts": {
     "build:html": "node scripts/build-html.js",
-    "build:js": "terser assets/js/main.js --compress drop_console=true --mangle --source-map \"filename=main.min.js.map,url=main.min.js.map\" -o dist/assets/min/main.min.js && node scripts/fingerprint-js.js",
+    "build:js": "node scripts/build-js.js && node scripts/fingerprint-js.js",
     "build:css": "node scripts/build-css.js",
     "build": "npm run build:html && npm run build:js && npm run build:css",
     "preview": "node scripts/preview.js",

@@ -6,7 +6,7 @@
    these regions of the source pages:
 
      <!-- build:project-card SLUG -->     the hub card's opening <article> tag,
-                                          with the filter data main.js reads
+                                          with the filter data the JS reads
                                           (data-tags, data-updated, data-ongoing)
      <!-- build:project-meta SLUG -->     the hub card's role · years · #category
                                           · status line
@@ -118,7 +118,7 @@ export const PROJECTS = {
     category: 'client',
     status: 'live',
     tags: ['html', 'css', 'javascript', 'cloudflare', 'seo'],
-    image: '/assets/img/abogadadelatierra/inicio.png',
+    image: '/assets/img/abogada-de-la-tierra/inicio.png',
     // A client's site: described as that website, credited to me as its creator.
     schema: {
       type: 'WebSite',

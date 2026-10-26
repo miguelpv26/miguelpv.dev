@@ -1,5 +1,5 @@
-/* jsonld.js — each page's structured data (JSON-LD), built from scripts/site.js
-   and scripts/projects.js. Used by build-html.js to fill <!-- build:jsonld -->.
+/* jsonld.js — each page's structured data (JSON-LD), built from data/site.js
+   and data/projects.js. Used by build-html.js to fill <!-- build:jsonld -->.
 
    Every page gets the same WebSite and Person (with his profile image), so the
    entities that share an @id across pages can never disagree. On top of that:
@@ -19,7 +19,7 @@
    entity of each project the page shows (any project with a build:project-*
    region in it). */
 import { SITE_ORIGIN, PERSON, PAGES, imageFor, dateTimeFor } from './site.js';
-import { PROJECTS } from './projects.js';
+import { PROJECTS } from '../data/projects.js';
 
 const abs = path => SITE_ORIGIN + path;
 const ref = path => ({ '@id': abs(path) });

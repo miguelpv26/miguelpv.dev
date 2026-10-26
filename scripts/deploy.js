@@ -82,7 +82,7 @@ archive.pipe(output);
 // what ships lives in build-html.js), at the root of the zip.
 archive.directory(`${DIST}/`, false);
 
-// Generated at deploy time from scripts/site.js, dated from git (see lastModified).
+// Generated at deploy time from data/site.js, dated from git (see lastModified).
 archive.append(buildSitemap(), { name: 'sitemap.xml' });
 
 archive.finalize();

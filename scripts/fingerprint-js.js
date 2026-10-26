@@ -1,7 +1,7 @@
 /* fingerprint-js.js — second build step: give the JS bundle a content-addressed
    filename and point every page in dist/ at it.
 
-   Pipeline:  terser writes dist/assets/min/main.min.js (+ .map)
+   Pipeline:  build-js.js writes dist/assets/min/main.min.js (+ .map)
               →  hash its bytes  →  main.<hash>.min.js (+ .map)
               →  rewrite <script src> on every page in dist/
               →  delete the unhashed files and any stale hashes
@@ -31,7 +31,7 @@ const PLAIN_MAP = 'main.min.js.map';
 
 const plainJsPath = path.join(minDir, PLAIN_JS);
 if (!fs.existsSync(plainJsPath)) {
-  console.error(`ERROR: ${DIST}/assets/min/${PLAIN_JS} not found — run terser (npm run build:js) first`);
+  console.error(`ERROR: ${DIST}/assets/min/${PLAIN_JS} not found — run build-js.js (npm run build:js) first`);
   process.exit(1);
 }
 

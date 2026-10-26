@@ -7,7 +7,7 @@
    steps (fingerprint-js.js, build-css.js) finish the pages inside dist/; the
    sources are never written to, so git only ever shows real edits.
 
-   Pipeline:  templates/{head,seo,header,footer}.html  +  scripts/site.js (pages)
+   Pipeline:  templates/{head,seo,header,footer}.html  +  data/site.js (pages)
               →  fill {{placeholders}} per page (locale, depth, SEO data,
                  "you are here")
               →  write the page to dist/ with its build regions filled
@@ -32,7 +32,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { PAGES, LOCALES, NOT_FOUND_PAGES, SITE_ORIGIN, SITE_NAME, DIST, fileFor, imageFor, dateTimeFor } from './site.js';
-import { PROJECTS, TAGS, CATEGORIES, STATUSES } from './projects.js';
+import { PROJECTS, TAGS, CATEGORIES, STATUSES } from '../data/projects.js';
 import { graphFor } from './jsonld.js';
 import { imageSize, sizesFor } from './images.js';
 import { feedFor, feedPathFor, feedTitleFor } from './feed.js';
@@ -162,7 +162,7 @@ function render(template, vars, locale, where) {
 }
 
 /* Project regions — <!-- build:project-KIND SLUG [terminal] --> — rendered from
-   scripts/projects.js (see the comment there for what each kind is). Returns
+   data/projects.js (see the comment there for what each kind is). Returns
    the region's lines without indentation; the caller indents them to match
    the marker. */
 const PRESENT = { en: 'present', es: 'actualidad' };
@@ -171,7 +171,7 @@ const textFor = (value, locale) => (typeof value === 'string' ? value : value[lo
 
 function renderProject(kind, slug, args, { locale, isHub, cardIndex }, where) {
   const project = PROJECTS[slug];
-  if (!project) throw new Error(`${where}: no project "${slug}" in scripts/projects.js`);
+  if (!project) throw new Error(`${where}: no project "${slug}" in data/projects.js`);
   const { years } = project;
   const yearsText = years.to === null ? `${years.from} &ndash; ${PRESENT[locale]}`
     : years.from === years.to ? String(years.from) : `${years.from} &ndash; ${years.to}`;
@@ -323,7 +323,7 @@ function htmlFilesUnder(dir) {
 const listed = new Set(PAGES.flatMap(page => LOCALES.map(locale => fileFor(page[locale]))));
 const unlisted = LOCALES.flatMap(htmlFilesUnder).filter(rel => !listed.has(rel) && !NOT_FOUND_PAGES.includes(rel));
 if (unlisted.length) {
-  console.error(`ERROR: pages missing from scripts/site.js:\n  ${unlisted.join('\n  ')}`);
+  console.error(`ERROR: pages missing from data/site.js:\n  ${unlisted.join('\n  ')}`);
   process.exit(1);
 }
 

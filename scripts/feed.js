@@ -1,4 +1,4 @@
-/* feed.js — the blog's Atom feed, one per locale, built from scripts/site.js.
+/* feed.js — the blog's Atom feed, one per locale, built from data/site.js.
 
    Every page with `published` is an article and gets an entry: its headline,
    meta description (as the summary), dates and URL, newest first. Nothing in

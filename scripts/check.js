@@ -3,7 +3,7 @@
    Usage:  npm run build && npm run check    (`npm run deploy` runs both and
                                               stops if any check fails)
 
-   Each built page is checked against what scripts/site.js says it should be,
+   Each built page is checked against what data/site.js says it should be,
    so the checks catch drift that no browser would complain about: a canonical
    that points at the wrong locale, a social card that was never rendered, an
    article date that disagrees with its structured data, a broken local link,
@@ -37,7 +37,22 @@ const error = (where, msg) => errors.push(`${where}: ${msg}`);
 const warn = (where, msg) => warnings.push(`${where}: ${msg}`);
 
 const read = rel => fs.readFileSync(path.join(root, rel), 'utf8');
-const exists = rel => fs.existsSync(path.join(root, rel));
+// Cloudflare Pages matches URLs case-sensitively, but Windows and macOS file
+// systems don't, so a plain existsSync passed links to CV-MiguelPV-English.pdf
+// while production 404'd. Compare every segment's real spelling instead.
+const listings = new Map();
+const listing = dir => {
+  if (!listings.has(dir)) listings.set(dir, fs.existsSync(dir) ? fs.readdirSync(dir) : []);
+  return listings.get(dir);
+};
+const exists = rel => {
+  let dir = root;
+  return path.relative(root, path.join(root, rel)).split(path.sep).filter(Boolean).every(part => {
+    const ok = part === '..' || listing(dir).includes(part);
+    dir = path.join(dir, part);
+    return ok;
+  });
+};
 const decode = s => s.replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
 const meta = (html, key) => {
   const m = html.match(new RegExp(`<meta (?:name|property)="${key}" content="([^"]*)"`));
@@ -162,7 +177,7 @@ function checkDocument(rel, html) {
   }
   // A slider's hidden slides (every [data-slide] but the .active one) must not
   // download with the page: images lazy (display:none until the slider starts
-  // keeps them from loading), video posters as data-poster (main.js sets them
+  // keeps them from loading), video posters as data-poster (the slider sets them
   // when the slider starts — a poster attribute always downloads at once).
   const hiddenSlide = tag => /\sdata-slide\b/.test(tag) && !/\sclass="[^"]*\bactive\b/.test(tag);
   for (const [img] of body.matchAll(/<img\b[^>]*>/g)) {
@@ -276,7 +291,7 @@ const htmlFilesUnder = dir => fs.readdirSync(path.join(repo, dir), { withFileTyp
   return entry.name.endsWith('.html') ? [rel] : [];
 });
 for (const rel of new Set([...LOCALES.flatMap(htmlFilesUnder), ...NOT_FOUND_PAGES])) {
-  if (!NOT_FOUND_PAGES.includes(rel) && !listed.has(rel)) error(rel, 'not listed in scripts/site.js');
+  if (!NOT_FOUND_PAGES.includes(rel) && !listed.has(rel)) error(rel, 'not listed in data/site.js');
   const source = fs.readFileSync(path.join(repo, rel), 'utf8');
   if (!/<style id="inline-css"><\/style>/.test(source)) error(`${rel} (source)`, 'the inline-css block must be empty in the source');
   if (/assets\/min\/main\.[0-9a-f]{8}\.min\.js/.test(source)) error(`${rel} (source)`, 'the script tag must reference the unhashed main.min.js');
@@ -286,8 +301,8 @@ for (const rel of new Set([...LOCALES.flatMap(htmlFilesUnder), ...NOT_FOUND_PAGE
   for (const [tag] of source.matchAll(/<(?:source|img|link)\b[^>]*>/g)) {
     if (!widthCandidates(tag)) continue;
     const [srcsetAttr, sizesAttr] = srcsetAttrs(tag);
-    if (new RegExp(`\\s${sizesAttr}="`).test(tag)) error(`${rel} (source)`, `${sizesAttr} is generated — name the layout with data-sizes (scripts/images.js) instead: ${tag.slice(0, 80)}`);
-    else if (!/\sdata-sizes="/.test(tag)) error(`${rel} (source)`, `${srcsetAttr} with w descriptors needs data-sizes="LAYOUT" (scripts/images.js): ${tag.slice(0, 80)}`);
+    if (new RegExp(`\\s${sizesAttr}="`).test(tag)) error(`${rel} (source)`, `${sizesAttr} is generated — name the layout with data-sizes (data/images.js) instead: ${tag.slice(0, 80)}`);
+    else if (!/\sdata-sizes="/.test(tag)) error(`${rel} (source)`, `${srcsetAttr} with w descriptors needs data-sizes="LAYOUT" (data/images.js): ${tag.slice(0, 80)}`);
   }
 }
 
@@ -346,13 +361,14 @@ for (const locale of LOCALES) {
   if (visible !== feedPathFor(locale)) error(hub, `visible feed link is ${visible}, expected ${feedPathFor(locale)}`);
 }
 
-// Redirect targets must be real pages.
+// Redirect targets must be real pages or shipped files.
 const pageUrls = new Set(PAGES.flatMap(page => LOCALES.map(locale => page[locale])));
+const isFile = url => /\.\w+$/.test(url) && exists(url.slice(1));
 for (const line of read('_redirects').split('\n')) {
   const parts = line.trim().split(/\s+/);
   if (!parts[0] || parts[0].startsWith('#')) continue;
-  if (!pageUrls.has(parts[1])) error('_redirects', `${parts[0]} points at ${parts[1]}, which isn't a page in site.js`);
-  if (pageUrls.has(parts[0])) error('_redirects', `${parts[0]} is still a live page — a redirect would hide it`);
+  if (!pageUrls.has(parts[1]) && !isFile(parts[1])) error('_redirects', `${parts[0]} points at ${parts[1]}, which isn't a page in site.js or a shipped file`);
+  if (pageUrls.has(parts[0]) || isFile(parts[0])) error('_redirects', `${parts[0]} is still live — a redirect would hide it`);
 }
 
 // The web app manifests: every icon exists, a PNG's real size is its declared

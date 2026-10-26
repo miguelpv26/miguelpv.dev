@@ -3,7 +3,7 @@
    Usage:  npm run og-cards                  # every card
            npm run og-cards -- biglo-en …    # just these (<card.name>-<locale>)
 
-   The copy for each card lives with its page in scripts/site.js (`card`), so
+   The copy for each card lives with its page in data/site.js (`card`), so
    the image and its alt text (which build-html.js derives from the same copy)
    can't disagree. Each card is templates/og-card.html filled with that copy and
    screenshotted by a local headless Chrome or Edge. A tiny server on a random

@@ -282,7 +282,7 @@
 }
 
 /*
-  Filter toolbar. Ships `hidden` and is revealed by main.js, so a JS-less visitor
+  Filter toolbar. Ships `hidden` and is revealed by the JS, so a JS-less visitor
   gets the full, unfiltered list instead of dead controls. Reads as a shell
   prompt (`$` caret, `#tag` chips) to stay inside the site's CLI identity.
 */
@@ -488,7 +488,7 @@
 /*
   Alternate the media side on every second visible row. This is a class rather
   than :nth-child(even) because filtering hides rows and sorting reorders them —
-  :nth-child would keep counting the hidden ones. main.js re-stamps it after
+  :nth-child would keep counting the hidden ones. The JS re-stamps it after
   every pass; the markup ships it pre-stamped for the JS-less default order.
 */
 .project-collection .project-card--reverse {
@@ -515,7 +515,7 @@
 
 /*
   Media panel. z-index:2 keeps it ABOVE the stretched whole-card link overlay
-  so its right-click "open full-resolution" handler and main.js's left-click
+  so its right-click "open full-resolution" handler and the JS's left-click
   wiring both keep working.
 */
 .project-collection .project-card .project-thumb {

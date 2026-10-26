@@ -7,9 +7,7 @@
   SAME one the case studies use and is defined in 10-case-study.css against
   .article__section — a case study and an article are the same kind of
   document, so they must not drift apart. Tag pills reuse .project-tags .tag.
-
-  Filename note: sorts between 10-case-study.css and 11-contact.css, which is
-  where it belongs in the cascade (it extends the long-form layer).
+  Some rules here refine that shared spine, so this file loads after it.
 */
 
 .post-collection {
