@@ -100,8 +100,8 @@ export const PAGES = [
     },
     card: {
       name: 'projects',
-      en: { eyebrow: 'Projects', title: 'Everything I\'ve built', sub: 'Products, client work and open-source tools, all held to the same bar.', chips: 'Vue|Node|TypeScript|React|JavaScript' },
-      es: { eyebrow: 'Proyectos', title: 'Todo lo que he construido', sub: 'Productos, webs para clientes y herramientas open source, con el mismo listón para todos.', chips: 'Vue|Node|TypeScript|React|JavaScript', size: 80 },
+      en: { eyebrow: 'Projects', title: 'Everything I\'ve built', sub: 'Products, client work and open-source tools, all held to the same bar.', chips: 'Vue|Node|TypeScript|React|JavaScript', size: 72 },
+      es: { eyebrow: 'Proyectos', title: 'Todo lo que he construido', sub: 'Productos, webs para clientes y herramientas open source, con el mismo listón para todos.', chips: 'Vue|Node|TypeScript|React|JavaScript', size: 61 },
     },
   },
   {
@@ -133,7 +133,7 @@ export const PAGES = [
     card: {
       name: 'web-font-strategy',
       en: { eyebrow: 'Blog · Web fonts', title: 'Web Font Strategy', sub: 'The four steps I always run, measured on this site.', chips: 'Self-host|WOFF2|Subset|Preload', pill: '825 KB -> 65 KB' },
-      es: { eyebrow: 'Blog · Fuentes web', title: 'Estrategia de fuentes web', sub: 'Los cuatro pasos que siempre aplico, medidos en esta web.', chips: 'Autoalojar|WOFF2|Subconjunto|Preload', pill: '825 KB -> 65 KB', size: 62 },
+      es: { eyebrow: 'Blog · Fuentes web', title: 'Estrategia de fuentes web', sub: 'Los cuatro pasos que siempre aplico, medidos en esta web.', chips: 'Autoalojar|WOFF2|Subconjunto|Preload', pill: '825 KB -> 65 KB', size: 61 },
     },
   },
   {
@@ -184,8 +184,8 @@ export const PAGES = [
     },
     card: {
       name: 'abogada-de-la-tierra',
-      en: { eyebrow: 'Case study · Client', title: 'Abogada de la Tierra', sub: 'The website I designed and built for an administrative-law firm in Alicante.', chips: 'HTML|CSS|JavaScript|Cloudflare|SEO', pill: 'FREELANCE', size: 80 },
-      es: { eyebrow: 'Caso práctico · Cliente', title: 'Abogada de la Tierra', sub: 'La web que diseñé y desarrollé para un despacho de Derecho Administrativo en Alicante.', chips: 'HTML|CSS|JavaScript|Cloudflare|SEO', pill: 'FREELANCE', size: 80 },
+      en: { eyebrow: 'Case study · Client', title: 'Abogada de la Tierra', sub: 'The website I designed and built for an administrative-law firm in Alicante.', chips: 'HTML|CSS|JavaScript|Cloudflare|SEO', pill: 'FREELANCE', size: 76 },
+      es: { eyebrow: 'Caso práctico · Cliente', title: 'Abogada de la Tierra', sub: 'La web que diseñé y desarrollé para un despacho de Derecho Administrativo en Alicante.', chips: 'HTML|CSS|JavaScript|Cloudflare|SEO', pill: 'FREELANCE', size: 76 },
     },
   },
   {
@@ -197,8 +197,8 @@ export const PAGES = [
     },
     card: {
       name: 'input-color-feedback',
-      en: { eyebrow: 'Case study · Open source', title: 'Input Color Feedback', sub: 'Live colour and icon feedback for form inputs. Pure CSS, no JavaScript, published on npm.', chips: 'npm|CSS|Open Source|MIT', pill: '~0.97 KB', size: 80 },
-      es: { eyebrow: 'Caso práctico · Open source', title: 'Input Color Feedback', sub: 'Feedback de color e icono en vivo para formularios. CSS puro, sin JavaScript, publicado en npm.', chips: 'npm|CSS|Open Source|MIT', pill: '~0,97 KB', size: 80 },
+      en: { eyebrow: 'Case study · Open source', title: 'Input Color Feedback', sub: 'Live colour and icon feedback for form inputs. Pure CSS, no JavaScript, published on npm.', chips: 'npm|CSS|Open Source|MIT', pill: '~0.97 KB', size: 76 },
+      es: { eyebrow: 'Caso práctico · Open source', title: 'Input Color Feedback', sub: 'Feedback de color e icono en vivo para formularios. CSS puro, sin JavaScript, publicado en npm.', chips: 'npm|CSS|Open Source|MIT', pill: '~0,97 KB', size: 76 },
     },
   },
 ];

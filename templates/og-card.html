@@ -1,64 +1,94 @@
 <!doctype html>
-<!-- Social card (1200×630) rendered by scripts/og-cards.js. Not deployed. -->
+<!-- Social card (1200×630) rendered by scripts/og-cards.js. Not deployed.
+     The title, its green full stop included, must fit one line of 960px (clear of the mark),
+     or two balanced ones at ≤ 76px (more would push the footer off the card): a JetBrains Mono
+     character is 0.6em wide, so `size` ≤ 1600 / (characters + 1) for one line, counting only
+     the longer line for two. -->
 <html><head><meta charset="utf-8">
 <style>
 @font-face { font-family: JBM; src: url(/assets/fonts/jetbrains-mono-v24-latin-regular.woff2) format('woff2'); font-weight: 400; font-display: block; }
 @font-face { font-family: JBM; src: url(/assets/fonts/jetbrains-mono-v24-latin-500.woff2) format('woff2'); font-weight: 500; font-display: block; }
 @font-face { font-family: JBM; src: url(/assets/fonts/jetbrains-mono-v24-latin-600.woff2) format('woff2'); font-weight: 600; font-display: block; }
-* { box-sizing: border-box; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { width: 1200px; height: 630px; overflow: hidden; }
 body {
-  font-family: JBM, monospace; color: #fff;
-  background:
-    radial-gradient(900px 520px at 100% 0%, rgba(22,198,12,.30), transparent 60%),
-    linear-gradient(135deg, #0b0b0b 0%, #0d0d0d 55%, #0a120a 100%);
-  position: relative;
+  position: relative; font-family: JBM, monospace; font-variant-ligatures: none; letter-spacing: .025em;
+  background: radial-gradient(640px 440px at 100% 0%, rgba(203,140,255,.32), transparent 70%), #0d0d0d;
 }
-body::before { /* faint grid, like the original card */
-  content: ""; position: absolute; inset: 0;
-  background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
-  background-size: 40px 40px;
+.frame { position: absolute; inset: 24px; border: 1px solid rgba(203,140,255,.45); }
+.rain { /* the homepage's matrix effect, frozen: right edge only, below the mark, never behind text */
+  position: absolute; top: 140px; right: 34px; display: flex; gap: 5.2px;
+  font: 400 18px/20px JBM, monospace; letter-spacing: 0; color: #1bff0f;
 }
-.card { position: absolute; inset: 0; padding: 72px 82px 64px; display: flex; flex-direction: column; }
-.eyebrow { display: flex; align-items: center; gap: 16px; font-size: 21px; letter-spacing: .2em; text-transform: uppercase; color: #d6d6d6; }
-.dot { width: 12px; height: 12px; border-radius: 50%; background: #16c60c; box-shadow: 0 0 12px #16c60c; flex: none; }
-h1 { margin-top: 26px; font-weight: 500; letter-spacing: -.01em; line-height: 1.08; font-size: var(--title, 88px); max-width: 1040px; }
+.rain div { display: flex; flex-direction: column; }
+.rain span { height: 20px; }
+.mark { position: absolute; top: 67px; right: 88px; width: 56px; height: 56px; border: 1px solid #16c60c; border-radius: 50%;
+  box-shadow: 0 0 16px rgba(22,198,12,.35); display: flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: 600; color: #16c60c; letter-spacing: 0; }
+.card { position: absolute; inset: 80px 88px; display: flex; flex-direction: column; }
+.eyebrow { font-size: 24px; font-weight: 500; line-height: 1.25; color: #cb8cff; max-width: 920px; }
+h1 { margin-top: 20px; font-size: var(--title, 88px); font-weight: 600; line-height: 1.1; color: #fff; letter-spacing: 0; max-width: 960px; text-wrap: balance; }
 h1 .end { color: #16c60c; text-shadow: 0 0 14px rgba(22,198,12,.8); }
-.sub { margin-top: 24px; margin-bottom: 28px; font-size: 31px; line-height: 1.42; color: #9a9a9a; max-width: 1030px; }
-.chips { margin-top: auto; display: flex; flex-wrap: wrap; gap: 16px; }
-.chip { display: flex; align-items: center; gap: 12px; padding: 14px 20px; border: 1px solid rgba(255,255,255,.13); border-radius: 10px; background: rgba(255,255,255,.04); font-size: 23px; font-weight: 500; color: #eee; }
-.chip i { width: 10px; height: 10px; border-radius: 50%; background: var(--c, #16c60c); box-shadow: 0 0 8px var(--c, #16c60c); }
-.foot { margin-top: 38px; display: flex; align-items: center; justify-content: space-between; font-size: 23px; }
-.foot b { font-weight: 600; }
-.foot span { color: #8a8a8a; }
-.pill { display: flex; align-items: center; gap: 12px; padding: 12px 24px; border: 1.5px solid rgba(22,198,12,.55); border-radius: 999px; background: rgba(22,198,12,.07); color: #16c60c; font-size: 20px; font-weight: 600; letter-spacing: .14em; }
-.pill.ligs { letter-spacing: 0; font-variant-ligatures: normal; }
+.sub { margin-top: 20px; font-size: 30px; line-height: 1.45; color: #b0b0b0; text-wrap: balance; }
+.nowrap { white-space: nowrap; }
+.chips { margin-top: auto; padding-top: 24px; display: flex; flex-wrap: wrap; gap: 12px; }
+.chip { padding: 10px 16px; border: 1px solid #3a3a3a; border-radius: 6px; background: #1a1a1a; font-size: 23px; font-weight: 500; line-height: 1.25; color: #b0b0b0; }
+.foot { margin-top: 24px; height: 40px; display: flex; align-items: center; justify-content: space-between; font-size: 23px; line-height: 1.25; }
+.brand { font-weight: 600; color: #dedede; }
+.dot { display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: #8a8a8a; margin: 0 14px; vertical-align: middle; }
+.role { color: #8a8a8a; }
+.pill { padding: 7px 16px; border-radius: 6px; background: #16c60c; color: #000; font-size: 21px; font-weight: 600; line-height: 1.25; }
+.pill.ligs { letter-spacing: 0; font-variant-ligatures: normal; } /* "->" as the arrow ligature; letter-spacing would disable it */
 </style></head>
 <body>
+<div class="frame"></div>
+<div class="rain" id="rain"></div>
+<div class="mark">&lt;/&gt;</div>
 <div class="card">
-  <div class="eyebrow"><span class="dot"></span><span id="eyebrow"></span></div>
+  <p class="eyebrow" id="eyebrow"></p>
   <h1 id="title"></h1>
   <p class="sub" id="sub"></p>
   <div class="chips" id="chips"></div>
-  <div class="foot"><div><b>miguelpv.dev</b> <span id="footer"></span></div><div class="pill" id="pill"><span class="dot" style="width:9px;height:9px"></span><span id="pilltext"></span></div></div>
+  <div class="foot"><p><span class="brand">miguelpv.dev</span><span class="dot"></span><span class="role" id="footer"></span></p><p class="pill" id="pill"></p></div>
 </div>
 <script>
 const q = new URLSearchParams(location.search);
-const COLORS = { Vue: '#41b883', Node: '#5fa04e', TypeScript: '#3178c6', MongoDB: '#47a248', React: '#61dafb', Tailwind: '#38bdf8', JavaScript: '#f7df1e', HTML: '#e34f26', CSS: '#2965f1', npm: '#cb3837' };
-document.getElementById('eyebrow').textContent = q.get('eyebrow');
-const t = document.getElementById('title');
-t.textContent = q.get('title');
-const end = document.createElement('span'); end.className = 'end'; end.textContent = '.'; t.append(end);
+// Rain: three trails, each brightest at its head and fading upwards, like 03-matrix.js
+// mid-fall. Seeded, so every card gets the same glyphs.
+let seed = 2026;
+const random = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+const GLYPHS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%&*()[]{}<>?/\\|~^+=-';
+for (const [head, length] of [[8, 7], [17, 13], [13, 9]]) { // rows of 20px from y = 140; heads end above the pill's row
+  const col = document.createElement('div');
+  for (let row = 0; row <= head; row++) {
+    const span = document.createElement('span');
+    const t = (row - (head - length)) / length; // 0 at the tail's end, 1 at the head
+    span.textContent = GLYPHS[Math.floor(random() * GLYPHS.length)];
+    span.style.opacity = t <= 0 ? 0 : row === head ? .75 : (.4 * t ** 1.6).toFixed(3);
+    col.append(span);
+  }
+  document.getElementById('rain').append(col);
+}
+// Balanced wrapping may break at a hyphen ("open-/source"); hyphenated words stay whole.
+function fill(el, text) {
+  text.split(/(\S+-\S+)/).forEach((part, i) => {
+    if (i % 2) { const s = document.createElement('span'); s.className = 'nowrap'; s.textContent = part; el.append(s); }
+    else el.append(part);
+  });
+}
+document.getElementById('eyebrow').textContent = '// ' + q.get('eyebrow');
+const title = document.getElementById('title');
+fill(title, q.get('title'));
+const end = document.createElement('span'); end.className = 'end'; end.textContent = '.'; title.append(end);
 if (q.get('size')) document.body.style.setProperty('--title', q.get('size') + 'px');
-document.getElementById('sub').textContent = q.get('sub');
-document.getElementById('footer').textContent = '· ' + q.get('footer');
+fill(document.getElementById('sub'), q.get('sub'));
+document.getElementById('footer').textContent = q.get('footer');
 for (const c of (q.get('chips') || '').split('|').filter(Boolean)) {
-  const el = document.createElement('span'); el.className = 'chip';
-  const i = document.createElement('i'); if (COLORS[c]) i.style.setProperty('--c', COLORS[c]);
-  el.append(i, c); document.getElementById('chips').append(el);
+  const el = document.createElement('span'); el.className = 'chip'; el.textContent = c;
+  document.getElementById('chips').append(el);
 }
 const pill = q.get('pill');
-if (pill) { document.getElementById('pilltext').textContent = pill; if (pill.includes('->')) document.getElementById('pill').classList.add('ligs'); }
+if (pill) { document.getElementById('pill').textContent = pill; if (pill.includes('->')) document.getElementById('pill').classList.add('ligs'); }
 else document.getElementById('pill').remove();
 </script>
 </body></html>

@@ -16,7 +16,8 @@
    Card copy rules: titles in the page's own words; a subtitle that fits two
    lines; a pill only for a figure that won't go stale. The subset font has no
    arrow or "≈" glyphs — write "->" (the pill renders it as an arrow ligature)
-   and "~". `chips` are |-separated; `size` overrides the 88px title. */
+   and "~". `chips` are |-separated; `size` overrides the 88px title (the template's
+   header comment gives the most a title of a given length can take). */
 import fs from 'fs';
 import http from 'http';
 import os from 'os';
