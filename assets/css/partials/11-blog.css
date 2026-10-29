@@ -558,12 +558,26 @@
   background: color-mix(in srgb, var(--color-text-white) 45%, transparent);
 }
 
-/* 825 KB is the 100% mark; 280 KB ≈ 34%; 65 KB ≈ 7.9%. */
+/* Each chart's widths, scaled to its own largest bar. */
+
+/* Fonts: 825 KB is the 100% mark; 280 KB ≈ 34%; 65 KB ≈ 7.9%. */
 .bytes__fill--ttf { width: 100%; }
 .bytes__fill--woff2 { width: 34%; }
+.bytes__fill--subset { width: 7.9%; }
 
-.bytes__fill--subset {
-  width: 7.9%;
+/* First-load JS, gzipped: Biglo is the 100% mark. PENDING: once Biglo is
+   measured, set the other two as 4.3 KB (client) and 4.7 KB (this site)
+   ÷ Biglo's KB. */
+.bytes__fill--js-biglo { width: 100%; }
+.bytes__fill--js-client { width: 10%; }
+.bytes__fill--js-site { width: 3%; }
+
+/* LCP: 6.7 s is the 100% mark; 3.2 s ≈ 47.8%; Google's 2.5 s "good" ≈ 37.3%. */
+.bytes__fill--lcp-before { width: 100%; }
+.bytes__fill--lcp-after { width: 47.8%; }
+.bytes__fill--lcp-good { width: 37.3%; }
+
+.bytes__row--win .bytes__fill {
   background: var(--color-primary);
   box-shadow: var(--shadow-glow-md);
 }

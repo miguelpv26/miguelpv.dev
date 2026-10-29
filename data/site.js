@@ -118,6 +118,25 @@ export const PAGES = [
     },
   },
   {
+    en: '/en/blog/framework-earns-its-weight', es: '/es/blog/cuando-compensa-un-framework', priority: '0.7',
+    published: '2026-10-28', modified: '2026-10-28',
+    crumb: { en: 'When a framework earns its weight', es: 'Cuándo compensa un framework' },
+    headline: { en: 'When a framework earns its weight', es: 'Cuándo compensa un framework' },
+    keywords: {
+      en: 'framework vs vanilla JavaScript, when to use a framework, Vue, React, Nuxt, Next.js, web performance, WPO',
+      es: 'framework o JavaScript puro, cuándo usar un framework, Vue, React, Nuxt, Next.js, rendimiento web, WPO',
+    },
+    seo: {
+      en: { title: 'When a Framework Earns Its Weight | Miguel Payá Vañó', description: 'Vue, React or plain HTML, CSS and JS? How I chose on four real projects, with the numbers, and the questions I ask before adding a framework.', shareTitle: 'When a Framework Earns Its Weight' },
+      es: { title: 'Cuándo compensa un framework | Miguel Payá Vañó', description: '¿Vue, React o HTML, CSS y JS puros? Cómo elegí en cuatro proyectos reales, con cifras, y las preguntas que me hago antes de añadir un framework.', shareTitle: 'Cuándo compensa un framework' },
+    },
+    card: {
+      name: 'framework-earns-its-weight',
+      en: { eyebrow: 'Blog · Frameworks', title: 'When a framework earns its weight', sub: 'Vue, React or plain HTML: how I chose on four real projects.', chips: 'Vue|React|Vanilla|WPO', pill: '4.7 KB of JS', size: 72 },
+      es: { eyebrow: 'Blog · Frameworks', title: 'Cuándo compensa un framework', sub: 'Vue, React o HTML a secas: cómo elegí en cuatro proyectos reales.', chips: 'Vue|React|Vanilla|WPO', pill: '4,7 KB de JS', size: 72 },
+    },
+  },
+  {
     en: '/en/blog/web-font-strategy', es: '/es/blog/estrategia-fuentes-web', priority: '0.7',
     published: '2026-07-13', modified: '2026-10-16',
     crumb: { en: 'Web font strategy', es: 'Estrategia de fuentes web' },

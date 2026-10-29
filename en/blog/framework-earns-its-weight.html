@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- build:head -->
+    <!-- /build:head -->
+
+    <!-- build:seo -->
+    <!-- /build:seo -->
+
+    <!-- build:jsonld -->
+    <!-- /build:jsonld -->
+
+    <style id="inline-css"></style>
+  </head>
+
+  <body class="projects-page">
+    <!-- build:header -->
+    <!-- /build:header -->
+
+    <main id="main" tabindex="-1">
+      <canvas id="matrix-canvas" aria-hidden="true"></canvas>
+
+      <article>
+      <header class="page-header page-header--article">
+        <!-- build:breadcrumb -->
+        <!-- /build:breadcrumb -->
+        <div class="article__hero">
+          <div class="article__hero-text">
+            <h1 class="page-header__title">When a framework<br/>earns its weight</h1>
+            <p class="article__subtitle">Vue, React or plain HTML: how I chose on four real projects.</p>
+
+            <p class="article__lede">
+              I've built a Vue app on my own, worked on a large React one as part of a team, and built this
+              site and a client's site with no framework at all. Each time the choice came down to the same
+              question, and it was never "which framework is best". It was: how much of this page has to live
+              in the browser, and who pays for it? This is how I answered it, project by project.
+            </p>
+
+            <p class="article__meta">
+              <time datetime="2026-10-28">28 Oct 2026</time>
+              <span class="sep-dot" aria-hidden="true"></span>
+              <span>7 min read</span>
+            </p>
+
+            <div class="project-tags">
+              <span class="tag">Frameworks</span>
+              <span class="tag">Web Performance</span>
+              <span class="tag">Vue</span>
+              <span class="tag">React</span>
+            </div>
+          </div>
+          <div class="article__cover" aria-hidden="true"><mark>[PENDING: cover image, 680×680 WebP]</mark></div>
+        </div>
+      </header>
+
+      <div class="article">
+        <section class="article__section article__section--split">
+          <div class="article__text">
+            <h2>Start from what the page does</h2>
+            <p>
+              Before I think about a stack, I sort the page into one of two kinds. Some pages are for reading:
+              content, a few interactions, often a single visit that started on a search engine. Others are
+              for using: someone signs in, moves between views that share the same data, and stays a while.
+            </p>
+            <p>
+              <a href="/en/projects/portfolio">This site</a> is the first kind. Everything on it that moves
+              comes down to six small features: the mobile menu, the matrix animation behind this text, the
+              image sliders, right-click to open an image at full size, the clickable project cards and the
+              filters on the projects page. All of that ships as one script of 13.1 KB, 4.7 KB once
+              compressed. The rest is HTML that's already there when the page arrives, so there's nothing for a
+              framework to manage.
+            </p>
+            <p>
+              That's how I think about frameworks: they're tools for keeping state in sync across a page. When
+              a page has almost no state, the framework has nothing to do, and the visitor still downloads it.
+            </p>
+          </div>
+
+          <div class="article__visual">
+            <figure class="article__figure">
+              <div class="article__figure-panel">
+                <ul class="bytes">
+                  <li class="bytes__row bytes__row--win">
+                    <span class="bytes__label">miguelpv.dev</span>
+                    <span class="bytes__bar"><span class="bytes__fill bytes__fill--js-site"></span></span>
+                    <span class="bytes__value">4.7 KB</span>
+                  </li>
+                  <li class="bytes__row">
+                    <span class="bytes__label">Client site</span>
+                    <span class="bytes__bar"><span class="bytes__fill bytes__fill--js-client"></span></span>
+                    <span class="bytes__value">4.3 KB</span>
+                  </li>
+                  <li class="bytes__row">
+                    <span class="bytes__label">Biglo (Vue)</span>
+                    <span class="bytes__bar"><span class="bytes__fill bytes__fill--js-biglo"></span></span>
+                    <span class="bytes__value">?? KB</span>
+                  </li>
+                </ul>
+              </div>
+              <figcaption>
+                JavaScript each site sends on the first load of its home page, compressed, from the browser's
+                Network tab. The client site is Abogada de la Tierra, further down.
+                <mark>[PENDING: measure Biglo, then set the bar widths in 11-blog.css.]</mark>
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="article__section article__section--split">
+          <div class="article__text">
+            <h2>Where it earned it: Biglo</h2>
+            <p>
+              <a href="/en/projects/biglo">Biglo</a> is the second kind of page from end to end. It's a B2B
+              logistics platform with three kinds of user (companies looking for space, warehouse owners and
+              logistics operators), sign-in, an interactive map, availability calendars, service requests and
+              two languages, all sharing the same data across many views. I built it on my own. Doing that
+              without a framework would have meant writing my own, smaller and worse.
+            </p>
+            <p>I chose Vue, for three reasons:</p>
+            <ul>
+              <li>
+                <strong class="lead-in">One toolkit, from one team.</strong> Routing (Vue Router), shared state
+                (Pinia) and translations (vue-i18n) all come from the Vue team and are built to work together.
+                With React I'd have had to pick each of those myself and keep packages from different authors
+                in step. When you're the only developer, every decision you don't have to make is time back.
+              </li>
+              <li>
+                <strong class="lead-in">I already knew it.</strong> With a three-sided marketplace to ship
+                alone, the framework I'm fastest in beat any that might have been slightly better on paper.
+              </li>
+              <li>
+                <strong class="lead-in">Less work to keep it fast.</strong> Vue tracks which data each part of
+                the page depends on and updates only what changed, so I didn't have to tune re-renders by hand.
+                That's exactly the work I spent time on later, in a React codebase.
+              </li>
+            </ul>
+            <p>
+              And it still scored 100 in all four Lighthouse categories. The framework didn't cost the score:
+              splitting the code by route did most of the work, so each screen downloads when someone opens
+              it, not with the home page. A framework doesn't make a site slow. Shipping all of it on the
+              first load does.
+            </p>
+            <p>
+              The code is
+              <a href="https://github.com/miguelpv26/Biglo" target="_blank" rel="noopener noreferrer">on GitHub<span class="sr-only"> (opens in a new tab)</span></a>.
+            </p>
+          </div>
+
+          <div class="article__visual">
+            <figure class="article__figure">
+              <pre tabindex="0"><code>// [PENDING: the real route from Biglo's router]
+{
+  path: '/warehouses/:id',
+  component: () =&gt; import('./views/WarehouseView.vue'),
+}</code></pre>
+              <figcaption>
+                A lazy-loaded route in Vue Router: the view's code downloads the first time someone opens it.
+                <mark>[PENDING: replace with the real route from the Biglo repo and link the file.]</mark>
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="article__section article__section--split">
+          <div class="article__text">
+            <h2>When it isn't your choice: Digitalando</h2>
+            <p>
+              Most of the time you don't choose the framework, you join it.
+              <a href="/en/projects/digitalando">Digitalando</a> was a large platform with many modules and a
+              team already writing React when I joined as a frontend developer, in its final months. There,
+              React wasn't just a library. It was the language the whole team shared, and that's worth a lot
+              on its own.
+            </p>
+            <p>
+              So the question changed from "which framework?" to "how light can I keep this one?". I
+              lazy-loaded the heavy modules, removed unused libraries and dead code, fixed components that
+              re-rendered for no reason and optimized the images. The landing page's LCP went from 6.7s to
+              3.2s.
+            </p>
+            <p>
+              3.2s still isn't good: Google's threshold is 2.5s. What was left wasn't React. It was a
+              background video the landing page was built around, and the analytics and consent tags the
+              business ran on, and leaving React wouldn't have fixed either. Inside a framework, discipline
+              matters more than the framework: most of what I removed was code and assets someone had added,
+              not the runtime.
+            </p>
+            <p>
+              The platform is offline now, but my notes on it are
+              <a href="https://github.com/miguelpv26/digitalando" target="_blank" rel="noopener noreferrer">on GitHub<span class="sr-only"> (opens in a new tab)</span></a>.
+            </p>
+          </div>
+
+          <div class="article__visual">
+            <figure class="article__figure">
+              <div class="article__figure-panel">
+                <ul class="bytes">
+                  <li class="bytes__row">
+                    <span class="bytes__label">Before</span>
+                    <span class="bytes__bar"><span class="bytes__fill bytes__fill--lcp-before"></span></span>
+                    <span class="bytes__value">6.7 s</span>
+                  </li>
+                  <li class="bytes__row bytes__row--win">
+                    <span class="bytes__label">After</span>
+                    <span class="bytes__bar"><span class="bytes__fill bytes__fill--lcp-after"></span></span>
+                    <span class="bytes__value">3.2 s</span>
+                  </li>
+                  <li class="bytes__row">
+                    <span class="bytes__label">"Good" LCP</span>
+                    <span class="bytes__bar"><span class="bytes__fill bytes__fill--lcp-good"></span></span>
+                    <span class="bytes__value">2.5 s</span>
+                  </li>
+                </ul>
+              </div>
+              <figcaption>
+                Largest Contentful Paint of Digitalando's landing page, the median of several Lighthouse runs,
+                next to the 2.5 s Google counts as good. Half the time, and still a step short.
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="article__section article__section--split">
+          <div class="article__text">
+            <h2>Where it didn't: a client's website</h2>
+            <p>
+              <a href="/en/projects/abogada-de-la-tierra">Abogada de la Tierra</a> is a law firm in Alicante,
+              and its website is a page for reading: who they are, what they do and how to get in touch. I
+              built it the same way as this site: no framework, no runtime dependencies, the critical CSS
+              inlined at build time and a serverless contact form.
+            </p>
+            <p>What the client doesn't see, but still gets:</p>
+            <ul>
+              <li>
+                <strong class="lead-in">Nothing to upgrade.</strong> No new major version of a framework to
+                migrate to, and no dependency tree to audit and patch every few months. The site will keep
+                working as it is for years.
+              </li>
+              <li>
+                <strong class="lead-in">Cheap to host, easy to hand over.</strong> Static files and one small
+                form function (5 KB, running on Cloudflare, never downloaded by the visitor), with no server to
+                keep running.
+              </li>
+            </ul>
+            <p>
+              It ships 4.3 KB of JavaScript, compressed, and scores <mark>[PENDING: Lighthouse scores]</mark>.
+              You don't have to take my word for it:
+              <a href="https://abogadadelatierra.es" target="_blank" rel="noopener noreferrer">open the live site<span class="sr-only"> (opens in a new tab)</span></a>
+              and run Lighthouse on it yourself.
+            </p>
+            <p>
+              For a client, every dependency is a maintenance bill they didn't know they'd signed.
+            </p>
+          </div>
+
+          <div class="article__visual">
+            <figure class="article__figure">
+              <div class="article__figure-panel chain chain--6">
+                <div class="chain__lane">
+                  <p class="chain__label">Static site</p>
+                  <ol class="chain__track">
+                    <li class="chain__step chain__step--paint">HTML</li>
+                    <li class="chain__step chain__step--neutral">CSS</li>
+                    <li class="chain__step chain__step--neutral">JS</li>
+                  </ol>
+                </div>
+                <div class="chain__lane">
+                  <p class="chain__label">Single-page app</p>
+                  <ol class="chain__track">
+                    <li class="chain__step chain__step--neutral">shell</li>
+                    <li class="chain__step chain__step--overhead">runtime</li>
+                    <li class="chain__step chain__step--overhead">router</li>
+                    <li class="chain__step chain__step--overhead">state</li>
+                    <li class="chain__step chain__step--overhead">app</li>
+                    <li class="chain__step chain__step--paint">content</li>
+                  </ol>
+                </div>
+              </div>
+              <figcaption>
+                Where the content sits in what the browser downloads. A static page carries it in the HTML; a
+                single-page app sends an empty shell and builds the content once its JavaScript has run.
+                Illustrative, not to scale.
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="article__section">
+          <h2>The middle ground: Nuxt and Next</h2>
+          <p>
+            Some projects are both: an app people use, with pages people need to find through search and see
+            quickly on a first visit, like public listings, a landing page or a blog. That's what Nuxt (for
+            Vue) and Next (for React) are for. They render the HTML on the server or at build time, and the
+            framework takes over in the browser afterwards.
+          </p>
+          <p>
+            Biglo got there. At one point we discussed moving it to Nuxt, for SEO and performance: a Vue
+            single-page app shows search engines and first-time visitors an empty page until its JavaScript
+            runs, and rendering the HTML first fixes both. Nuxt rather than Next because we already had Vue.
+            That didn't decide it for us, since we could have gone to Next, but Nuxt kept our components, our
+            store and everything we already knew, so the migration would have been far simpler. Unless you
+            have a reason not to, take the natural step.
+          </p>
+          <p>
+            We agreed it was the right move, and we didn't make it. There were other priorities: improving
+            Biglo's own search for spaces and services, plus work already underway on CORS, a CDN for the
+            images and trying out Redis for caching. We went one step at a time, and server rendering wasn't
+            the main problem then. Knowing which tool fits best doesn't mean switching to it today.
+          </p>
+          <p>
+            So I haven't shipped Nuxt or Next in production yet. When I do, it'll be for that reason: an app
+            whose pages also have to rank and load fast.
+          </p>
+        </section>
+
+        <section class="article__section article__section--split article__section--coda">
+          <div class="article__text">
+            <h2>The questions I ask</h2>
+            <p>When a new project comes in, these are the questions I go through, in this order:</p>
+            <ul>
+              <li>
+                Will people mostly read this page, or use it? If they read it, I don't use a framework.
+              </li>
+              <li>
+                Does the same data need to stay in sync across several views? If it does, a framework will do
+                that better than I would by hand.
+              </li>
+              <li>
+                Does it also need to rank, or show up fast on a first visit? Then Nuxt or Next, or static pages
+                next to the app.
+              </li>
+              <li>
+                Is there already a team or a codebase? Then the framework is chosen, and my job is to keep it
+                light.
+              </li>
+              <li>
+                Who looks after it once I've handed it over? If it's a client with no developer, as few
+                dependencies as possible.
+              </li>
+            </ul>
+            <p>
+              Two things would change my answer. A site that starts as pages to read but is clearly going to
+              become an app: there, starting with a framework is cheaper than migrating later.
+              <mark>[PENDING: confirm you agree with this one.]</mark> And a team that only knows one
+              framework: going without it has a real cost for them too.
+            </p>
+            <p>
+              The framework itself isn't the expensive part. The bytes the visitor downloads and the upkeep
+              afterwards are. I use one when it does work I'd otherwise do worse by hand, and not before.
+            </p>
+          </div>
+
+          <div class="article__visual">
+            <aside class="article__section article__section--aside">
+              <h2>fun fact: no framework still has a build</h2>
+              <p>
+                The nerdy bit. This site has no framework, but it does have a build step. A script joins the
+                JavaScript files, minifies them and puts a hash of their content in the file name, so browsers
+                can cache it for a year and still get new code the moment it changes. It also inlines the CSS
+                into every page and computes the hash the Content Security Policy needs to allow it. Vanilla
+                means nothing extra runs in the visitor's browser. It doesn't mean no tooling.
+              </p>
+            </aside>
+          </div>
+        </section>
+
+        <div class="article__related">
+          <h2>Related reading</h2>
+          <ul>
+            <li><a href="/en/projects/portfolio">miguelpv.dev — case study</a>: the vanilla side, in full.</li>
+            <li><a href="/en/projects/biglo">Biglo — case study</a>: the Vue side.</li>
+            <li><a href="/en/projects/digitalando">Digitalando — case study</a>: the React side, and the LCP numbers.</li>
+            <li><a href="/en/projects/abogada-de-la-tierra">Abogada de la Tierra — case study</a>: the same vanilla approach, for a client.</li>
+            <li><a href="/en/blog/web-font-strategy">Web Font Strategy</a>: the other half of keeping a page light.</li>
+          </ul>
+        </div>
+
+        <div class="projects-back">
+          <a class="btn" href="/en/blog">&lt; Back to blog</a>
+        </div>
+      </div>
+      </article>
+    </main>
+    <!-- build:footer -->
+    <!-- /build:footer -->
+    <script src="../../assets/min/main.min.js" defer></script>
+  </body>
+</html>
